@@ -15,6 +15,8 @@ Aplicación estática e independiente para practicar resolución de problemas ma
 - Dos pistas progresivas por ejercicio y comprobación opcional. Ante un error, orientación específica de la opción y una pregunta para revisar, sin mostrar la respuesta correcta. El planteo completo aparece al acertar.
 - Navegación hacia atrás, borrado y revisión antes de finalizar; se puede finalizar con actividades sin responder.
 - Resultado automático sobre **cinco respuestas cerradas**. En los resultados, los errores y las actividades vacías tampoco revelan soluciones; permiten reintentar. El puntaje se recalcula con las respuestas actuales al finalizar de nuevo.
+- Recorrido de aprendizaje por actividad: primera respuesta comprobada, reintentos con respuestas diferentes y pistas consultadas antes de la primera comprobación. Un resumen separa aciertos iniciales sin pistas, con pistas y después de revisar, sin penalizar la ayuda.
+- Refuerzo opcional después de corregir un error: otra variante del mismo tipo con datos distintos, guardada por separado y sin sumar una séptima actividad ni modificar el puntaje principal.
 - La respuesta escrita recibe preguntas de reflexión. El modelo y la rúbrica de **autoevaluación** solo se muestran al abrir una comparación explícita: no se pretende corregir lenguaje natural automáticamente.
 - Progreso, combinación sorteada y resultados guardados en `localStorage`, solo en ese navegador y origen. Un nuevo intento reemplaza al anterior, previa confirmación. No hay cuentas, analítica ni envío de respuestas.
 - Diseño adaptable a celulares, navegación por teclado, controles nativos y gráficas SVG propias sin recursos externos.
@@ -23,6 +25,28 @@ Aplicación estática e independiente para practicar resolución de problemas ma
 - [Página de orientaciones](./orientaciones.html) con síntesis propia de la sección 3 de ANEP y acceso a la fuente oficial completa. No es una transcripción; distingue los contenidos oficiales del alcance parcial de la app.
 
 Las variantes se sortean de manera independiente. Los ejercicios de áreas y de tendencias incluyen todos sus propios datos: no dependen de la variante elegida en otra posición. Un nuevo intento puede repetir ejercicios; no se garantiza una combinación distinta.
+
+## Primer intento, reintentos y refuerzo
+
+Una respuesta se registra cuando está completa y se pulsa **Comprobar respuesta** o se entrega al finalizar el bloque. En la actividad escrita se registra al consultar la guía o al finalizar, pero no recibe una evaluación automática. Escribir, elegir y cambiar opciones, navegar o borrar **no cuenta como un intento comprobado**.
+
+La primera respuesta registrada es una instantánea: no cambia al corregir o borrar la respuesta actual. Repetir la comprobación de la misma respuesta consecutiva no aumenta el contador; cambiarla, comprobar otra y volver a la anterior sí registra otra entrega. Finalizar nuevamente sin cambios tampoco duplica el último intento.
+
+El resumen de aprendizaje incluye solo las cinco actividades cerradas:
+
+- **Primer intento sin pistas:** la primera respuesta comprobada fue correcta y no había pistas, orientación ni solución consultadas antes.
+- **Primer intento con pistas:** fue correcta en la primera comprobación, después de consultar pistas.
+- **Resuelta después de revisar:** ahora está correcta, pero la primera comprobación fue incorrecta o ya había exposición previa a una orientación o solución.
+- **Para seguir practicando:** la respuesta actual es incorrecta o está vacía, aunque haya existido un acierto anterior.
+- **Sin registro inicial:** la respuesta actual es correcta, pero el intento proviene de una versión anterior o no tiene datos suficientes para atribuir un primer intento.
+
+El puntaje sobre cinco siempre describe las respuestas actuales. Consultar ayudas no descuenta puntos. «Sin pistas» solo describe las ayudas observables de la app: no permite saber si hubo apoyo externo ni implica dominio de todo un tema. Las pistas que se ven después de la primera comprobación no reescriben su registro inicial.
+
+Cuando se corrige una actividad que antes se comprobó incorrectamente, se ofrece un refuerzo usando **otra variante de la misma posición del banco**. Es opcional; las actividades escritas no ofrecen refuerzo automático. La variante se sortea una sola vez por actividad y se conserva al salir y volver. Tiene sus propias respuestas, pistas y comprobaciones; no cambia la combinación de seis ni sus resultados. Se puede consultar su devolución con las mismas reglas: preguntas ante el error y desarrollo al acertar.
+
+El primer acierto del refuerzo sin sus propias pistas permite observar cómo se resolvió ese nuevo problema después de estudiar el original, no certificar aprendizaje permanente. Si una posición solo tiene una variante, no se ofrece un refuerzo inventado.
+
+Los progresos anteriores se conservan, pero se identifican como registros parciales: no se reconstruyen ni se atribuyen primeros intentos que no fueron observados. **Borrar una respuesta no borra su recorrido**; iniciar otro intento reemplaza todo el intento anterior, incluidos sus refuerzos. Todavía no hay un historial de varios bloques.
 
 ## Usar localmente
 
@@ -75,6 +99,7 @@ Publicá también los archivos de `vendor`, incluida la carpeta `fonts` y la lic
 - [scripts/vendor-math.js](./scripts/vendor-math.js): preparación de los recursos locales.
 - [data/activities.json](./data/activities.json): módulos y ejercicios editables.
 - [tests/core.test.js](./tests/core.test.js): pruebas del motor y de las respuestas matemáticas.
+- [tests/learning.test.js](./tests/learning.test.js): registro de primeros intentos, migración y aislamiento de los refuerzos.
 
 ## Agregar ejercicios en JSON
 
@@ -174,7 +199,7 @@ Con Node.js 20 o superior:
 npm test
 ```
 
-Las pruebas verifican las seis posiciones y sus tres variantes, selección independiente, corrección, restauración de progreso, rechazo de datos inválidos, formatos SVG y **cálculos de las soluciones**: sistemas, porcentajes sucesivos, vecindad de caras, áreas, desigualdades estrictas y tendencias. También recorren todos los distractores y las combinaciones de precios para comprobar la cobertura de la orientación sin soluciones.
+Las pruebas verifican las seis posiciones y sus tres variantes, selección independiente, corrección, restauración de progreso, rechazo de datos inválidos, formatos SVG y **cálculos de las soluciones**: sistemas, porcentajes sucesivos, vecindad de caras, áreas, desigualdades estrictas y tendencias. También recorren todos los distractores y las combinaciones de precios, validan LaTeX y comprueban el registro inmutable del primer intento, la deduplicación de entregas, la migración de progresos anteriores y el aislamiento del refuerzo.
 
 Después de editar el banco, ejecutá las pruebas y revisá el flujo en el navegador. El validador detecta varios errores de estructura, pero no sustituye la revisión pedagógica ni comprueba automáticamente cualquier ejercicio nuevo.
 

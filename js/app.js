@@ -1,4 +1,8 @@
-import { STORAGE_KEY, validateBank, createAttempt, questionsFor, isAnswered, grade, errorGuidance, summarize, restoreAttempt } from "./core.js";
+import {
+  STORAGE_KEY, validateBank, createAttempt, questionsFor, isAnswered, grade, errorGuidance, summarize, restoreAttempt,
+  recordSubmission, markFeedback, markModelViewed, learningCategory, learningSummary,
+  reinforcementCandidates, startReinforcement, reinforcementQuestion
+} from "./core.js";
 import { escapeHTML as e, visualHTML, boxSVG } from "./visuals.js";
 import { initializeMath, reasoningHTML as math } from "./math.js";
 
@@ -8,6 +12,17 @@ const labels = { correct: "Correcta", incorrect: "Para repasar", unanswered: "Si
 let bank;
 let attempt = null;
 let screen = "home";
+const learningLabels = {
+  independent: "Primer intento sin pistas", withHints: "Primer intento con pistas",
+  afterReview: "Resuelta después de revisar", toPractice: "Para seguir practicando", unknown: "Sin registro inicial"
+};
+
+function activityContext() {
+  if (attempt.activeReinforcement) {
+    return { q: reinforcementQuestion(bank, attempt), state: attempt.reinforcements[attempt.activeReinforcement], reinforcement: true };
+  }
+  return { q: questionsFor(bank, attempt)[attempt.index], state: attempt, reinforcement: false };
+}
 
 function warn(message, error) {
   console.error(message, error);
@@ -33,7 +48,7 @@ function badge(status) {
 
 function render(focus = false) {
   root.innerHTML = screen === "home" ? homeHTML() :
-    attempt.phase === "exercise" ? exerciseHTML() :
+    attempt.activeReinforcement || attempt.phase === "exercise" ? exerciseHTML() :
     attempt.phase === "review" ? reviewHTML() : resultsHTML();
   if (focus) {
     root.focus();
@@ -63,7 +78,7 @@ function homeHTML() {
         <div class="module-top"><span class="module-letter">${e(module.id)}</span><span class="badge">${ready ? "Disponible" : "Próximamente"}</span></div>
         <h3>${e(module.title)}</h3><p>${e(module.description)}</p>
         <div class="module-meta">${ready ? `${count} ejercicios en el banco · 6 por intento` : "Banco de actividades pendiente"}</div>
-        ${ready ? button(resumable ? "resume" : "new", resumable ? (attempt.phase === "results" ? "Ver mis resultados →" : "Continuar mi práctica →") : "Comenzar módulo " + e(module.id) + " →", "primary", `data-module="${e(module.id)}"`) : '<button type="button" disabled>Aún no disponible</button>'}
+        ${ready ? button(resumable ? "resume" : "new", resumable ? (attempt.phase === "results" && !attempt.activeReinforcement ? "Ver mis resultados →" : "Continuar mi práctica →") : "Comenzar módulo " + e(module.id) + " →", "primary", `data-module="${e(module.id)}"`) : '<button type="button" disabled>Aún no disponible</button>'}
         ${resumable ? button("new", "Iniciar otro intento", "text-button", `data-module="${e(module.id)}"`) : ""}
       </article>`;
     }).join("")}</div>
@@ -77,8 +92,8 @@ function promptHTML(q) {
   return q.prompt.map(p => `<p>${e(p)}</p>`).join("") + visualHTML(q.visual);
 }
 
-function answerHTML(q) {
-  const value = attempt.answers[q.id];
+function answerHTML(q, state = attempt) {
+  const value = state.answers[q.id];
   if (q.type === "select") {
     return `<fieldset><legend>Completá los dos espacios</legend><div class="select-row">${q.fields.map(f => `<label>${e(f.label)}<select data-field="${e(f.id)}" aria-label="${e(f.label)}"><option value="">Elegí una opción</option>${f.options.map(o => `<option value="${e(o.id)}" ${value?.[f.id] === o.id ? "selected" : ""}>${e(o.label)}</option>`).join("")}</select></label>`).join("")}</div></fieldset>`;
   }
@@ -90,26 +105,27 @@ function answerHTML(q) {
     <p id="written-note" class="field-note">Hasta 6000 caracteres. Esta respuesta no tiene corrección automática: podrás compararla con una solución orientativa y una lista de criterios.</p>`;
 }
 
-function feedbackHTML(q) {
-  const status = grade(q, attempt.answers[q.id]);
+function feedbackHTML(q, state = attempt, reinforcement = false) {
+  const status = grade(q, state.answers[q.id]);
   let content;
   if (status === "incorrect") {
-    const guidance = errorGuidance(q, attempt.answers[q.id]);
-    const index = questionsFor(bank, attempt).findIndex(item => item.id === q.id);
+    const guidance = errorGuidance(q, state.answers[q.id]);
+    const index = reinforcement ? null : questionsFor(bank, attempt).findIndex(item => item.id === q.id);
     content = `<p>${math(guidance.reason)}</p>
       ${guidance.calculation ? `<h4>Para revisar el cálculo</h4><p class="calculation">${math(guidance.calculation)}</p>` : ""}
       <h4>La pregunta para hacerte</h4><blockquote class="reflection-question">${math(guidance.question)}</blockquote>
       <p class="field-note">La orientación parte de tu elección: no permite saber con certeza qué procedimiento hiciste. No mostramos la solución para que puedas revisar tu estrategia.</p>
-      ${button("retry", "Volver a intentarlo", "", `data-index="${index}"`)}`;
+      ${button("retry", "Volver a intentarlo", "", reinforcement ? "" : `data-index="${index}"`)}`;
   } else if (status === "manual") {
     content = `<p>Tu texto necesita una revisión personal: no podemos afirmar automáticamente si está bien o mal. Antes de mirar una solución, preguntate:</p>
       <ul>${q.reflectionQuestions.map(question => `<li>${math(question)}</li>`).join("")}</ul>
-      <details class="model-answer"><summary>Comparar con un modelo (muestra una posible solución)</summary>
+      <details class="model-answer" data-model-question="${e(q.id)}"><summary>Comparar con un modelo (muestra una posible solución)</summary>
         <p>${math(q.explanation)}</p><h4>Una respuesta posible</h4><p>${math(q.modelAnswer)}</p>${rubricHTML(q)}
       </details>`;
   } else if (status === "correct") {
     content = `<p>Respuesta verificada: <strong>${e(expectedAnswer(q))}</strong></p>
-      <h4>Planteo y resolución completa</h4><p class="worked-solution">${math(q.explanation)}</p>`;
+      <h4>Planteo y resolución completa</h4><p class="worked-solution">${math(q.explanation)}</p>
+      ${reinforcement ? `<p class="transfer-note"><strong>${e(learningLabels[learningCategory(q, state)])} en este refuerzo.</strong> Este resultado describe una variante nueva, no demuestra por sí solo el dominio de todo el tema.</p>` : reinforcementOfferHTML(q)}`;
   } else {
     throw new Error("No se puede mostrar una devolución sin una respuesta completa.");
   }
@@ -124,25 +140,64 @@ function rubricHTML(q) {
   return `<fieldset class="rubric"><legend>Autoevaluación personal (no suma al puntaje automático)</legend>${q.rubric.map((r, i) => `<label><input type="checkbox" data-rubric="${i}" data-question="${e(q.id)}" ${checks[i] ? "checked" : ""}><span>${math(r)}</span></label>`).join("")}</fieldset>`;
 }
 
+function learningRecordHTML(q, state = attempt) {
+  const record = state.learning[q.id];
+  const first = record?.submissions[0];
+  if (!first) return `<p class="field-note learning-note">${state.trackingFromStart ? "Todavía no hay respuestas comprobadas. Editar, navegar o borrar no cuenta como intento." : "Este progreso es anterior al registro: no conocemos sus primeros intentos."}</p>`;
+  return `<details class="learning-record"><summary>Tu recorrido: ${record.submissions.length} ${record.submissions.length === 1 ? "respuesta comprobada" : "respuestas comprobadas"}</summary>
+    ${!state.trackingFromStart ? '<p class="field-note">Registro parcial: no podemos reconstruir lo ocurrido antes de esta actualización.</p>' : ""}
+    <p><strong>Primera respuesta ${state.trackingFromStart ? "" : "registrada desde la actualización"}</strong></p>
+    <p class="saved-answer">${e(answerText(q, first.answer))}</p>
+    <p>${q.type === "open" ? "Entrega escrita: requiere autoevaluación." : `Resultado de esa respuesta: ${e(labels[first.outcome])}.`} Pistas consultadas antes: ${first.hintsUsed}.</p>
+    <p class="field-note">${Math.max(0, record.submissions.length - 1)} reintentos con una respuesta diferente. Pistas vistas en total: ${state.hints[q.id] ?? 0}. Volver a comprobar la misma respuesta no suma intentos.</p>
+  </details>`;
+}
+
+function reinforcementOfferHTML(q) {
+  if (!reinforcementCandidates(bank, attempt, q.id).length) return "";
+  const practice = attempt.reinforcements[q.id];
+  let status = "Un problema del mismo tipo, con datos distintos. Intentá resolverlo antes de consultar sus pistas.";
+  if (practice) {
+    const variant = reinforcementQuestion(bank, attempt, q.id);
+    status = practice.checked[variant.id] ? `Estado del refuerzo: ${grade(variant, practice.answers[variant.id]) === "correct" ? learningLabels[learningCategory(variant, practice)] : "para seguir practicando"}.` : "Tenés una variante de refuerzo en curso; podés retomarla sin perder tus respuestas.";
+  }
+  return `<aside class="reinforcement-offer"><h4>Ahora probá lo aprendido con otros datos</h4><p>${e(status)}</p>
+    <p class="field-note">Es opcional y no cambia el puntaje ni las respuestas del bloque de seis.</p>
+    ${button("reinforce", practice ? "Retomar mi refuerzo" : "Probar un ejercicio de refuerzo", "", `data-question="${e(q.id)}"`)}</aside>`;
+}
+
+function learningSummaryHTML(questions) {
+  const counts = learningSummary(questions, attempt);
+  return `<section class="learning-summary" aria-labelledby="learning-title"><h2 id="learning-title">Cómo llegaste a tus respuestas</h2>
+    <p>El puntaje muestra tus respuestas actuales. Este recorrido distingue cómo resolviste las cinco actividades cerradas, sin descontar puntos por pedir ayuda.</p>
+    <dl class="learning-grid">${Object.entries(counts).filter(([key, count]) => key !== "unknown" || count > 0).map(([key, count]) => `<div><dt>${e(learningLabels[key])}</dt><dd>${count}</dd></div>`).join("")}</dl>
+    <p class="field-note">El primer intento es la primera respuesta completa que comprobaste o entregaste al finalizar. Las ediciones sin comprobar no cuentan. «Sin pistas» se refiere a las ayudas observables en esta app, no a ayuda externa.</p>
+    ${!attempt.trackingFromStart ? '<p class="legacy-note">Conservamos tu progreso anterior, pero no inventamos su historia: el registro empezó después de que este intento ya existiera.</p>' : ""}
+  </section>`;
+}
+
 function exerciseHTML() {
   const questions = questionsFor(bank, attempt);
-  const q = questions[attempt.index];
-  const count = attempt.hints[q.id] ?? 0;
-  const slot = bank.modules.find(m => m.id === attempt.moduleId).slots[attempt.index];
-  return `<div class="exercise-top"><p class="eyebrow">Módulo ${e(attempt.moduleId)} · Tu práctica</p>${button("home", "← Módulos", "text-button")}
-    <div class="progress-layout"><span class="progress-label">Actividad ${attempt.index + 1} de 6</span>
+  const { q, state, reinforcement } = activityContext();
+  const count = state.hints[q.id] ?? 0;
+  const index = reinforcement ? attempt.questionIds.indexOf(attempt.activeReinforcement) : attempt.index;
+  const slot = bank.modules.find(m => m.id === attempt.moduleId).slots[index];
+  return `<div class="exercise-top"><p class="eyebrow">Módulo ${e(attempt.moduleId)} · ${reinforcement ? "Refuerzo opcional" : "Tu práctica"}</p>${button(reinforcement ? "back-main" : "home", reinforcement ? "← Volver al bloque" : "← Módulos", "text-button")}
+    ${reinforcement ? '<p class="field-note">Otro problema, la misma estrategia. Este ejercicio no ocupa una de las seis posiciones ni suma al puntaje.</p>' : `<div class="progress-layout"><span class="progress-label">Actividad ${attempt.index + 1} de 6</span>
     <ol class="steps" aria-label="Navegar por las actividades">${questions.map((item, i) => `<li>${button("goto", String(i + 1), isAnswered(item, attempt.answers[item.id]) ? "answered" : "", `data-index="${i}" aria-label="Actividad ${i + 1}${isAnswered(item, attempt.answers[item.id]) ? ", respondida" : ", sin responder"}" ${i === attempt.index ? 'aria-current="step"' : ""}`)}</li>`).join("")}</ol></div>
+    `}
   </div>
   <div class="workspace"><div>
     <article class="question-card"><div class="question-heading"><p class="eyebrow">${e(slot.title)}</p><h1>${e(q.title)}</h1></div>
       <div class="question-body">${promptHTML(q)}</div>
-      <div class="answer-area">${answerHTML(q)}
+      <div class="answer-area">${answerHTML(q, state)}
         <p id="answer-error" class="error-inline" role="alert" hidden></p>
         <div class="actions"><div class="actions-group">${button("check", q.type === "open" ? "Ver guía de respuesta" : "Comprobar respuesta")}${button("clear", "Borrar", "text-button")}</div></div>
-        <div id="live-feedback">${attempt.checked[q.id] ? feedbackHTML(q) : ""}</div>
+        <div id="live-feedback">${state.checked[q.id] ? feedbackHTML(q, state, reinforcement) : ""}</div>
+        ${learningRecordHTML(q, state)}
       </div>
     </article>
-    <nav class="actions" aria-label="Avanzar en la práctica">${button("previous", "← Anterior", "", attempt.index === 0 ? "disabled" : "")}${button("next", attempt.index === 5 ? "Revisar mis respuestas →" : "Siguiente →", "primary")}</nav>
+    <nav class="actions" aria-label="Avanzar en la práctica">${reinforcement ? button("back-main", "Volver al bloque principal", "primary") : `${button("previous", "← Anterior", "", attempt.index === 0 ? "disabled" : "")}${button("next", attempt.index === 5 ? "Revisar mis respuestas →" : "Siguiente →", "primary")}`}</nav>
   </div>
   <aside class="sidebar"><section class="side-card"><p class="eyebrow">Una ayuda, no la solución</p><h2>¿Necesitás una pista?</h2><p>Intentá resolverlo primero. Si te trabás, vamos paso a paso.</p>
     ${button("hint", count === q.hints.length ? "Ya viste todas las pistas" : `Ver pista ${count + 1} de ${q.hints.length}`, "", count === q.hints.length ? "disabled" : "")}
@@ -150,8 +205,7 @@ function exerciseHTML() {
   </section><section class="side-card neutral"><h2>Tomate tu tiempo</h2><p>No hay cronómetro. Usá papel y calculadora. Podés cambiar tu respuesta antes de finalizar.</p><p>Las pistas no descuentan puntos. El objetivo es aprender.</p></section></aside></div>`;
 }
 
-function answerText(q) {
-  const answer = attempt.answers[q.id];
+function answerText(q, answer = attempt.answers[q.id]) {
   if (!isAnswered(q, answer) && q.type !== "select") return "Sin responder";
   if (q.type === "select") return q.fields.map(f => `${f.label}: ${f.options.find(o => o.id === answer?.[f.id])?.label ?? "Sin responder"}`).join(" · ");
   if (q.type === "choice") return q.options.find(o => o.id === answer)?.label ?? "Sin responder";
@@ -177,15 +231,18 @@ function resultsHTML() {
   const summary = summarize(questions, attempt.answers);
   return `<header class="review-header"><p class="eyebrow">Módulo ${e(attempt.moduleId)} · Práctica finalizada</p><h1>Cada intento te enseña algo.</h1><p>Revisá qué resolviste bien y qué podés seguir practicando. Este resultado es orientativo: no es una calificación oficial.</p></header>
     <section class="score-panel" aria-label="Resultado automático"><div class="score-number">${summary.correct}<span style="font-size:24px"> / ${summary.automaticTotal}</span></div><div><strong>Respuestas cerradas correctas</strong><p>${summary.incorrect} para repasar · ${questions.filter(q => q.type !== "open" && !isAnswered(q, attempt.answers[q.id])).length} sin responder</p><p>La actividad escrita se autoevalúa por separado. No está incluida en este puntaje.</p></div></section>
+    ${learningSummaryHTML(questions)}
     <h2>Tu recorrido, actividad por actividad</h2><p class="field-note">Los aciertos muestran el planteo completo. Los errores te orientan sin revelar la solución y permiten volver a intentarlo.</p>
-    ${questions.map((q, i) => `<details class="result-card"><summary>${i + 1}. ${e(q.title)} ${badge(grade(q, attempt.answers[q.id]))}</summary>
+    ${questions.map((q, i) => `<details class="result-card" data-result-question="${e(q.id)}"><summary>${i + 1}. ${e(q.title)} ${badge(grade(q, attempt.answers[q.id]))}</summary>
       <div class="result-content">${promptHTML(q)}<h3>Tu respuesta</h3><p class="saved-answer">${e(answerText(q))}</p>
       ${isAnswered(q, attempt.answers[q.id]) ? feedbackHTML(q) : `<p>No hay una respuesta para revisar todavía. Probá un planteo antes de consultar una devolución.</p>${button("retry", "Intentar esta actividad", "", `data-index="${i}"`)}`}
+      ${learningRecordHTML(q)}
       <p class="field-note">Pistas consultadas: ${attempt.hints[q.id] ?? 0} de ${q.hints.length}.</p></div></details>`).join("")}
     <div class="actions">${button("home", "← Volver a módulos")}${button("new", "Practicar otra combinación →", "primary", `data-module="${e(attempt.moduleId)}"`)}</div>`;
 }
 
 function moveTo(index) {
+  attempt.activeReinforcement = null;
   attempt.index = index;
   attempt.phase = "exercise";
   save();
@@ -204,10 +261,24 @@ root.addEventListener("click", event => {
   }
   if (action === "resume") { screen = "attempt"; render(true); return; }
   if (!attempt) return;
+  if (action === "reinforce") {
+    startReinforcement(bank, attempt, target.dataset.question);
+    save(); render(true); return;
+  }
+  if (action === "back-main") {
+    attempt.activeReinforcement = null;
+    save(); render(true); return;
+  }
   if (action === "retry") {
-    const index = Number(target.dataset.index);
-    delete attempt.checked[attempt.questionIds[index]];
-    moveTo(index);
+    if (attempt.activeReinforcement) {
+      const { q, state } = activityContext();
+      delete state.checked[q.id];
+      save(); render(true);
+    } else {
+      const index = Number(target.dataset.index);
+      delete attempt.checked[attempt.questionIds[index]];
+      moveTo(index);
+    }
     root.querySelector(".answer-area input, .answer-area select, .answer-area textarea")?.focus();
     return;
   }
@@ -218,49 +289,67 @@ root.addEventListener("click", event => {
     else { attempt.phase = "review"; save(); render(true); }
     return;
   }
-  if (action === "finalize") { attempt.phase = "results"; save(); render(true); return; }
-  const q = questionsFor(bank, attempt)[attempt.index];
+  if (action === "finalize") {
+    for (const q of questionsFor(bank, attempt)) if (isAnswered(q, attempt.answers[q.id])) recordSubmission(q, attempt);
+    attempt.phase = "results"; save(); render(true); return;
+  }
+  const { q, state } = activityContext();
   if (action === "hint") {
-    attempt.hints[q.id] = Math.min(q.hints.length, (attempt.hints[q.id] ?? 0) + 1);
+    state.hints[q.id] = Math.min(q.hints.length, (state.hints[q.id] ?? 0) + 1);
     save(); render();
     const hint = root.querySelector(".side-card ol li:last-child");
     hint.tabIndex = -1;
     hint.focus();
   }
   if (action === "clear") {
-    delete attempt.answers[q.id]; delete attempt.checked[q.id]; delete attempt.selfChecks[q.id];
+    delete state.answers[q.id]; delete state.checked[q.id]; delete state.selfChecks[q.id];
     save(); render();
     root.querySelector(".answer-area input, .answer-area select, .answer-area textarea")?.focus();
   }
   if (action === "check") {
-    if (!isAnswered(q, attempt.answers[q.id])) {
+    if (!isAnswered(q, state.answers[q.id])) {
       const error = root.querySelector("#answer-error");
       error.textContent = q.type === "select" ? "Completá los dos precios para comprobar la respuesta." : "Escribí o seleccioná una respuesta antes de consultar la devolución.";
       error.hidden = false;
       root.querySelector(".answer-area input, .answer-area select, .answer-area textarea")?.focus();
       return;
     }
-    attempt.checked[q.id] = true; save(); render();
+    recordSubmission(q, state, true);
+    state.checked[q.id] = true; save(); render();
     root.querySelector(".feedback").focus();
   }
 });
 
 function recordAnswer(target) {
-  const q = questionsFor(bank, attempt)[attempt.index];
+  const { q, state, reinforcement } = activityContext();
   if (target.matches("select[data-field]")) {
-    attempt.answers[q.id] = { ...attempt.answers[q.id], [target.dataset.field]: target.value };
+    state.answers[q.id] = { ...state.answers[q.id], [target.dataset.field]: target.value };
   } else if (target.matches('input[name="answer"]:checked, textarea')) {
-    attempt.answers[q.id] = target.value;
+    state.answers[q.id] = target.value;
   } else return;
-  delete attempt.checked[q.id]; delete attempt.selfChecks[q.id];
+  delete state.checked[q.id]; delete state.selfChecks[q.id];
   save();
   root.querySelector("#live-feedback").innerHTML = "";
   root.querySelector("#answer-error").hidden = true;
-  const step = root.querySelector(`.steps button[data-index="${attempt.index}"]`);
-  const answered = isAnswered(q, attempt.answers[q.id]);
-  step.classList.toggle("answered", answered);
-  step.setAttribute("aria-label", `Actividad ${attempt.index + 1}, ${answered ? "respondida" : "sin responder"}`);
+  if (!reinforcement) {
+    const step = root.querySelector(`.steps button[data-index="${attempt.index}"]`);
+    const answered = isAnswered(q, state.answers[q.id]);
+    step.classList.toggle("answered", answered);
+    step.setAttribute("aria-label", `Actividad ${attempt.index + 1}, ${answered ? "respondida" : "sin responder"}`);
+  }
 }
+
+root.addEventListener("toggle", event => {
+  const details = event.target;
+  if (!attempt || screen === "home" || !details.isConnected || !details.open) return;
+  const id = details.dataset.modelQuestion ?? details.dataset.resultQuestion;
+  if (!id) return;
+  const q = questionsFor(bank, attempt).find(item => item.id === id);
+  if (!isAnswered(q, attempt.answers[q.id])) return;
+  if (details.dataset.modelQuestion) markModelViewed(q, attempt);
+  else markFeedback(q, attempt);
+  save();
+}, true);
 
 root.addEventListener("change", event => {
   const target = event.target;

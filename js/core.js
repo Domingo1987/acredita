@@ -61,12 +61,16 @@ export function validateBank(bank) {
   return bank;
 }
 
+function createResponseState() {
+  return { answers: {}, hints: {}, checked: {}, selfChecks: {}, learning: {}, trackingFromStart: true };
+}
+
 export function createAttempt(module, random = Math.random) {
   if (module.status !== "ready") throw new Error("Este módulo todavía no está disponible.");
   return {
     moduleId: module.id,
     questionIds: module.slots.map(slot => slot.questions[Math.floor(random() * slot.questions.length)].id),
-    answers: {}, hints: {}, checked: {}, selfChecks: {}, index: 0, phase: "exercise"
+    ...createResponseState(), reinforcements: {}, activeReinforcement: null, index: 0, phase: "exercise"
   };
 }
 
@@ -111,16 +115,121 @@ export function summarize(questions, answers) {
   return counts;
 }
 
+function learningRecord(question, state) {
+  return state.learning[question.id] ??= { submissions: [], feedbackSeen: false, solutionSeen: false };
+}
+
+export function markFeedback(question, state) {
+  const outcome = grade(question, state.answers[question.id]);
+  if (outcome === "unanswered") throw new Error("No hay una respuesta completa cuya devolución se pueda consultar.");
+  const record = learningRecord(question, state);
+  record.feedbackSeen = true;
+  if (outcome === "correct") record.solutionSeen = true;
+}
+
+export function markModelViewed(question, state) {
+  if (question.type !== "open" || !isAnswered(question, state.answers[question.id])) throw new Error("La comparación requiere una respuesta escrita completa.");
+  const record = learningRecord(question, state);
+  record.feedbackSeen = true;
+  record.solutionSeen = true;
+}
+
+export function recordSubmission(question, state, showFeedback = false) {
+  const answer = state.answers[question.id];
+  if (!isAnswered(question, answer)) throw new Error("No se puede registrar una respuesta incompleta.");
+  const snapshot = question.type === "select" ? Object.fromEntries(question.fields.map(f => [f.id, answer[f.id]])) :
+    question.type === "open" ? answer.trim() : answer;
+  const record = learningRecord(question, state);
+  const last = record.submissions.at(-1);
+  if (!last || JSON.stringify(last.answer) !== JSON.stringify(snapshot)) {
+    record.submissions.push({
+      answer: snapshot, outcome: grade(question, snapshot), hintsUsed: state.hints[question.id] ?? 0,
+      afterFeedback: record.feedbackSeen, afterSolution: record.solutionSeen
+    });
+  }
+  if (showFeedback) markFeedback(question, state);
+  return record;
+}
+
+export function learningCategory(question, state) {
+  if (question.type === "open") return "manual";
+  if (grade(question, state.answers[question.id]) !== "correct") return "toPractice";
+  const first = state.learning[question.id]?.submissions[0];
+  if (!state.trackingFromStart || !first) return "unknown";
+  if (first.outcome !== "correct" || first.afterFeedback || first.afterSolution) return "afterReview";
+  return first.hintsUsed > 0 ? "withHints" : "independent";
+}
+
+export function learningSummary(questions, state) {
+  const counts = { independent: 0, withHints: 0, afterReview: 0, toPractice: 0, unknown: 0 };
+  for (const q of questions.filter(item => item.type !== "open")) counts[learningCategory(q, state)] += 1;
+  return counts;
+}
+
+export function reinforcementCandidates(bank, attempt, questionId) {
+  const index = attempt.questionIds.indexOf(questionId);
+  if (index < 0) throw new Error("La actividad de origen no pertenece a este intento.");
+  const question = questionsFor(bank, attempt)[index];
+  if (question.type === "open" || grade(question, attempt.answers[questionId]) !== "correct" ||
+      !attempt.learning[questionId]?.submissions.some(s => s.outcome === "incorrect")) return [];
+  return bank.modules.find(m => m.id === attempt.moduleId).slots[index].questions.filter(q => q.id !== questionId);
+}
+
+export function startReinforcement(bank, attempt, questionId, random = Math.random) {
+  const candidates = reinforcementCandidates(bank, attempt, questionId);
+  if (!candidates.length) throw new Error("No hay un refuerzo disponible: primero corregí un error en esta actividad.");
+  attempt.reinforcements[questionId] ??= {
+    questionId: candidates[Math.floor(random() * candidates.length)].id, ...createResponseState()
+  };
+  attempt.activeReinforcement = questionId;
+  return attempt.reinforcements[questionId];
+}
+
+export function reinforcementQuestion(bank, attempt, parentId = attempt.activeReinforcement) {
+  const index = attempt.questionIds.indexOf(parentId);
+  const practice = attempt.reinforcements[parentId];
+  if (index < 0 || !practice) throw new Error("El refuerzo no tiene una actividad de origen válida.");
+  const slot = bank.modules.find(m => m.id === attempt.moduleId).slots[index];
+  const question = slot.questions.find(q => q.id === practice.questionId && q.id !== parentId && q.type !== "open");
+  if (!question) throw new Error("El refuerzo guardado no coincide con el banco actual.");
+  return question;
+}
+
 export function restoreAttempt(bank, value) {
   if (!value || !["exercise", "review", "results"].includes(value.phase) ||
       !Number.isInteger(value.index) || value.index < 0 || value.index > 5) throw new Error("El progreso guardado no tiene un formato válido.");
   const module = bank.modules.find(m => m.id === value.moduleId && m.status === "ready");
   if (!module || !Array.isArray(value.questionIds) || value.questionIds.length !== 6 ||
       value.questionIds.some((id, i) => !module.slots[i].questions.some(q => q.id === id))) throw new Error("El progreso guardado ya no coincide con el banco actual.");
-  for (const key of ["answers", "hints", "checked", "selfChecks"]) {
-    if (!value[key] || typeof value[key] !== "object" || Array.isArray(value[key])) throw new Error("El progreso guardado está incompleto.");
+  validateResponseState(questionsFor(bank, value), value, true);
+  if (value.reinforcements === undefined && value.activeReinforcement === undefined) {
+    value.reinforcements = {};
+    value.activeReinforcement = null;
   }
-  for (const q of questionsFor(bank, value)) {
+  if (!value.reinforcements || typeof value.reinforcements !== "object" || Array.isArray(value.reinforcements) ||
+      (value.activeReinforcement !== null && (typeof value.activeReinforcement !== "string" ||
+        !Object.hasOwn(value.reinforcements, value.activeReinforcement)))) throw new Error("Los refuerzos guardados no son válidos.");
+  for (const [parentId, practice] of Object.entries(value.reinforcements)) {
+    if (!practice || typeof practice !== "object") throw new Error("El refuerzo guardado está incompleto.");
+    const question = reinforcementQuestion(bank, value, parentId);
+    validateResponseState([question], practice);
+  }
+  return value;
+}
+
+function validateResponseState(questions, value, migrateLegacy = false) {
+  for (const key of ["answers", "hints", "checked", "selfChecks"]) {
+    if (!value[key] || typeof value[key] !== "object" || Array.isArray(value[key]) ||
+        Object.keys(value[key]).some(id => !questions.some(q => q.id === id))) throw new Error("El progreso guardado está incompleto o contiene otra actividad.");
+  }
+  if (migrateLegacy && value.learning === undefined && value.trackingFromStart === undefined) {
+    value.learning = {};
+    value.trackingFromStart = false;
+  }
+  if (!value.learning || typeof value.learning !== "object" || Array.isArray(value.learning) ||
+      typeof value.trackingFromStart !== "boolean" ||
+      Object.keys(value.learning).some(id => !questions.some(q => q.id === id))) throw new Error("El registro de aprendizaje no es válido.");
+  for (const q of questions) {
     const answer = value.answers[q.id];
     if (answer !== undefined) {
       if (q.type === "open" && (typeof answer !== "string" || answer.length > 6000)) throw new Error("Respuesta escrita guardada inválida.");
@@ -133,6 +242,11 @@ export function restoreAttempt(bank, value) {
     if (value.checked[q.id] !== undefined && typeof value.checked[q.id] !== "boolean") throw new Error("Revisión guardada inválida.");
     if (value.selfChecks[q.id] !== undefined && (q.type !== "open" || !Array.isArray(value.selfChecks[q.id]) ||
         value.selfChecks[q.id].length !== q.rubric.length || value.selfChecks[q.id].some(v => typeof v !== "boolean"))) throw new Error("Autoevaluación guardada inválida.");
+    const record = value.learning[q.id];
+    if (record !== undefined && (!record || !Array.isArray(record.submissions) || typeof record.feedbackSeen !== "boolean" ||
+        typeof record.solutionSeen !== "boolean" || record.submissions.some(s => !s || !isAnswered(q, s.answer) ||
+          (q.type === "open" && s.answer.length > 6000) ||
+          s.outcome !== grade(q, s.answer) || !Number.isInteger(s.hintsUsed) || s.hintsUsed < 0 || s.hintsUsed > (value.hints[q.id] ?? 0) ||
+          typeof s.afterFeedback !== "boolean" || typeof s.afterSolution !== "boolean"))) throw new Error("Las respuestas del registro de aprendizaje no son válidas.");
   }
-  return value;
 }

@@ -92,11 +92,12 @@ export function errorGuidance(question, answer) {
   if (grade(question, answer) !== "incorrect") throw new Error("La orientación de error requiere una respuesta incorrecta completa.");
   if (question.type === "choice") return question.errorFeedback[answer];
   const format = value => new Intl.NumberFormat("es-UY", { maximumFractionDigits: 2 }).format(value);
+  const latex = value => new Intl.NumberFormat("es-UY", { useGrouping: false, maximumFractionDigits: 2 }).format(value).replace(",", "{,}");
   const prices = question.fields.map(f => Number(answer[f.id]));
   const checks = question.verification.map((v, i) => {
     const total = v.quantities.reduce((sum, quantity, index) => sum + quantity * prices[index], 0);
-    const expression = v.quantities.map((quantity, index) => `${format(quantity)} × ${format(prices[index])}`).join(" + ");
-    return `Compra ${i + 1}: ${expression} = $${format(total)}. El enunciado indica $${format(v.total)}: ${Math.abs(total - v.total) < 0.005 ? "coincide" : "no coincide"}.`;
+    const expression = v.quantities.map((quantity, index) => `${latex(quantity)} \\times ${latex(prices[index])}`).join(" + ");
+    return `Compra ${i + 1}: \\[${expression} = ${latex(total)}\\] El enunciado indica $${format(v.total)}: ${Math.abs(total - v.total) < 0.005 ? "coincide" : "no coincide"}.`;
   });
   return { ...question.errorFeedback, calculation: checks.join("\n") };
 }

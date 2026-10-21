@@ -21,8 +21,8 @@
                 {"id": "pan", "label": "Precio de un pan (pesos)", "options": [{"id": "40", "label": "$40"}, {"id": "50", "label": "$50"}, {"id": "60", "label": "$60"}, {"id": "80", "label": "$80"}], "answer": "60"},
                 {"id": "galleta", "label": "Precio de una galleta (pesos)", "options": [{"id": "10", "label": "$10"}, {"id": "20", "label": "$20"}, {"id": "30", "label": "$30"}, {"id": "40", "label": "$40"}], "answer": "20"}
               ],
-              "hints": ["Llamá p al precio de un pan y g al de una galleta. Escribí una ecuación por compra.", "Duplicá la segunda compra: 4p + 8g = 400. Comparala con 4p + 6g = 360."],
-              "explanation": "Al restar las ecuaciones 4p + 8g = 400 y 4p + 6g = 360, queda 2g = 40. Cada galleta cuesta $20. Luego, 2p + 4 × 20 = 200, así que cada pan cuesta $60. Verificación: 4 × 60 + 6 × 20 = 360."
+              "hints": ["Llamá \\(p\\) al precio de un pan y \\(g\\) al de una galleta. Escribí una ecuación por compra.", "Duplicá la segunda compra: \\(4p+8g=400\\). Comparala con \\(4p+6g=360\\)."],
+              "explanation": "Llamamos \\(p\\) al precio del pan y \\(g\\) al de la galleta. Las dos compras forman el sistema:\\[\\begin{cases}4p+6g=360\\\\2p+4g=200\\end{cases}\\]Duplicamos la segunda ecuación y restamos la primera:\\[(4p+8g)-(4p+6g)=400-360\\]\\[2g=40\\quad\\Rightarrow\\quad g=20\\]Sustituimos ese precio en la segunda compra:\\[2p+4\\cdot20=200\\]\\[p=\\frac{200-80}{2}=60\\]Cada pan cuesta $60 y cada galleta $20. Comprobamos ambas compras:\\[4\\cdot60+6\\cdot20=360\\]\\[2\\cdot60+4\\cdot20=200\\]"
             },
             {
               "id": "a-precios-2",
@@ -35,8 +35,8 @@
                 {"id": "cuaderno", "label": "Precio de un cuaderno (pesos)", "options": [{"id": "60", "label": "$60"}, {"id": "80", "label": "$80"}, {"id": "90", "label": "$90"}, {"id": "100", "label": "$100"}], "answer": "90"},
                 {"id": "lapiz", "label": "Precio de un lápiz (pesos)", "options": [{"id": "5", "label": "$5"}, {"id": "10", "label": "$10"}, {"id": "15", "label": "$15"}, {"id": "20", "label": "$20"}], "answer": "10"}
               ],
-              "hints": ["Si c es el precio del cuaderno y l el del lápiz, entonces 3c + 2l = 290 y 2c + 4l = 220.", "Duplicá la primera ecuación y restá la segunda para eliminar los lápices."],
-              "explanation": "El doble de la primera compra da 6c + 4l = 580. Al restar 2c + 4l = 220, resulta 4c = 360 y c = 90. Después, 2 × 90 + 4l = 220 implica l = 10. Cuaderno: $90; lápiz: $10."
+              "hints": ["Si \\(c\\) es el precio del cuaderno y \\(l\\) el del lápiz, entonces \\(3c+2l=290\\) y \\(2c+4l=220\\).", "Duplicá la primera ecuación y restá la segunda para eliminar los lápices."],
+              "explanation": "Representamos los precios con \\(c\\) para cuaderno y \\(l\\) para lápiz:\\[\\begin{cases}3c+2l=290\\\\2c+4l=220\\end{cases}\\]Duplicamos la primera ecuación y restamos la segunda:\\[(6c+4l)-(2c+4l)=580-220\\]\\[4c=360\\quad\\Rightarrow\\quad c=90\\]Sustituimos en la segunda compra:\\[2\\cdot90+4l=220\\]\\[l=\\frac{220-180}{4}=10\\]Cuaderno: $90; lápiz: $10. Verificamos:\\[3\\cdot90+2\\cdot10=290\\]\\[2\\cdot90+4\\cdot10=220\\]"
             },
             {
               "id": "a-precios-3",
@@ -49,8 +49,8 @@
                 {"id": "adulto", "label": "Entrada de adulto (pesos)", "options": [{"id": "180", "label": "$180"}, {"id": "200", "label": "$200"}, {"id": "220", "label": "$220"}, {"id": "250", "label": "$250"}], "answer": "200"},
                 {"id": "infantil", "label": "Entrada infantil (pesos)", "options": [{"id": "120", "label": "$120"}, {"id": "150", "label": "$150"}, {"id": "180", "label": "$180"}, {"id": "200", "label": "$200"}], "answer": "180"}
               ],
-              "hints": ["Las ecuaciones son 2a + 3i = 940 y 4a + 2i = 1160.", "Duplicá la primera ecuación y restá la segunda. Así quedan solamente entradas infantiles."],
-              "explanation": "Al duplicar la primera ecuación se obtiene 4a + 6i = 1880. Restando la segunda: 4i = 720, entonces i = 180. Sustituyendo: 2a + 540 = 940, de donde a = 200."
+              "hints": ["Las ecuaciones son \\(2a+3i=940\\) y \\(4a+2i=1160\\).", "Duplicá la primera ecuación y restá la segunda. Así quedan solamente entradas infantiles."],
+              "explanation": "Sean \\(a\\) e \\(i\\) los precios de las entradas de adulto e infantil:\\[\\begin{cases}2a+3i=940\\\\4a+2i=1160\\end{cases}\\]Duplicamos la primera ecuación y restamos la segunda:\\[(4a+6i)-(4a+2i)=1880-1160\\]\\[4i=720\\quad\\Rightarrow\\quad i=180\\]Sustituimos:\\[2a+3\\cdot180=940\\]\\[a=\\frac{940-540}{2}=200\\]La entrada de adulto cuesta $200 y la infantil $180. Verificamos:\\[2\\cdot200+3\\cdot180=940\\]\\[4\\cdot200+2\\cdot180=1160\\]"
             }
           ]
         },
@@ -60,47 +60,47 @@
             {
               "id": "a-porcentaje-1",
               "errorFeedback": {
-                "a": {"reason": "Esta elección puede aparecer al deshacer una sola pérdida del 20 %, dejando pendiente la otra etapa.", "calculation": "480 ÷ 0,8 = 600. Pero al comprobar esa elección en las dos etapas: 600 × 0,8 × 0,8 = 384 g, no los 480 g pedidos.", "question": "¿Cuántas etapas de pérdida atraviesa el zapallo? ¿Qué parte se conserva en cada una?"},
-                "b": {"reason": "Esta opción coincide con aumentar la masa final en un 40 %. Recuperar dos pérdidas no equivale a sumar esos porcentajes a la masa final.", "calculation": "480 × 1,4 = 672. Con esa masa inicial, 672 × 0,8 × 0,8 = 430,08 g.", "question": "¿Sobre qué masa se calcula cada pérdida? ¿Agregar un porcentaje al final deshace una reducción del mismo porcentaje?"},
-                "d": {"reason": "Esta elección es compatible con sumar las pérdidas como un 40 % de una única masa inicial. En realidad, la segunda reducción se aplica a lo que queda.", "calculation": "480 ÷ 0,6 = 800. Eso supone conservar el 60 % en una sola etapa.", "question": "Después de pelar, ¿sobre qué cantidad se calcula el siguiente 20 %? ¿Debés sumar los porcentajes o encadenar los factores que se conservan?"}
+                "a": {"reason": "Esta elección puede aparecer al deshacer una sola pérdida del 20 %, dejando pendiente la otra etapa.", "calculation": "\\[\\frac{480}{0{,}8}=600\\]Pero al comprobar esa elección en las dos etapas:\\[600\\cdot0{,}8\\cdot0{,}8=384\\ \\mathrm{g}\\]No se obtienen los 480 g pedidos.", "question": "¿Cuántas etapas de pérdida atraviesa el zapallo? ¿Qué parte se conserva en cada una?"},
+                "b": {"reason": "Esta opción coincide con aumentar la masa final en un 40 %. Recuperar dos pérdidas no equivale a sumar esos porcentajes a la masa final.", "calculation": "\\[480\\cdot1{,}4=672\\]Comprobamos esa masa inicial:\\[672\\cdot0{,}8\\cdot0{,}8=430{,}08\\ \\mathrm{g}\\]", "question": "¿Sobre qué masa se calcula cada pérdida? ¿Agregar un porcentaje al final deshace una reducción del mismo porcentaje?"},
+                "d": {"reason": "Esta elección es compatible con sumar las pérdidas como un 40 % de una única masa inicial. En realidad, la segunda reducción se aplica a lo que queda.", "calculation": "\\[\\frac{480}{0{,}6}=800\\]Eso supone conservar el 60 % en una sola etapa.", "question": "Después de pelar, ¿sobre qué cantidad se calcula el siguiente 20 %? ¿Debés sumar los porcentajes o encadenar los factores que se conservan?"}
               },
               "type": "choice",
               "title": "Del zapallo al puré",
               "prompt": ["Una receta necesita 480 g de puré de zapallo cocido. Al pelar el zapallo se pierde el 20 % de su masa. Durante la cocción se pierde el 20 % de la masa que quedó después de pelarlo.", "¿Qué masa de zapallo con cáscara hay que cortar al principio?"],
               "options": [{"id": "a", "label": "600 g"}, {"id": "b", "label": "672 g"}, {"id": "c", "label": "750 g"}, {"id": "d", "label": "800 g"}],
               "answer": "c",
-              "hints": ["Después de una pérdida del 20 %, queda el 80 %: multiplicás por 0,8.", "La masa final es la inicial × 0,8 × 0,8. Para volver al inicio, dividí entre 0,64."],
-              "explanation": "Las pérdidas se aplican sobre masas distintas: queda el 80 % del 80 %, es decir, el 64 % de la masa inicial. Si m × 0,64 = 480, entonces m = 480 ÷ 0,64 = 750 g. No corresponde sumar las pérdidas como si fueran un único 40 %."
+              "hints": ["Después de una pérdida del 20 %, queda el 80 %: multiplicás por \\(0{,}8\\).", "La masa final es \\(m\\cdot0{,}8\\cdot0{,}8\\). Para volver al inicio, ¿qué operación deshace esos factores?"],
+              "explanation": "Sea \\(m\\) la masa inicial. Cada etapa conserva el 80 % de la masa que recibe; los porcentajes no se suman porque sus bases son distintas:\\[m\\cdot0{,}8\\cdot0{,}8=480\\]El factor conservado es \\(0{,}64\\). Despejamos:\\[m=\\frac{480}{0{,}8\\cdot0{,}8}=750\\ \\mathrm{g}\\]Comprobación: al pelar quedan \\(750\\cdot0{,}8=600\\) g y al cocinar, \\(600\\cdot0{,}8=480\\) g."
             },
             {
               "id": "a-porcentaje-2",
               "errorFeedback": {
-                "a": {"reason": "Esta elección puede salir al deshacer solo la pérdida del 25 % de la cocción, sin recuperar lo eliminado en la limpieza.", "calculation": "810 ÷ 0,75 = 1080. Si esos fueran los gramos de fruta entera, 1080 × 0,9 × 0,75 = 729 g cocidos.", "question": "¿Los gramos que obtuviste corresponden a fruta entera o ya limpia? ¿Qué transformación anterior todavía falta deshacer?"},
-                "c": {"reason": "Este valor aproxima el resultado de sumar 10 % y 25 % como si ambas pérdidas se calcularan sobre la misma masa.", "calculation": "810 ÷ (1 − 0,10 − 0,25) ≈ 1246 g. En ese planteo se usa la misma base para las dos pérdidas.", "question": "¿El 25 % se calcula sobre la fruta entera o sobre la fruta que quedó limpia? ¿Cómo representarías las etapas por separado?"},
-                "d": {"reason": "Con esta elección la preparación termina con más fruta de la solicitada. Revisá los factores y la masa sobre la que aplicaste cada porcentaje.", "calculation": "Al comprobar tu elección: 1350 × 0,9 × 0,75 = 911,25 g, no 810 g.", "question": "¿Qué porcentaje queda después de cada etapa? Si aplicás ambos factores a tu masa inicial, ¿obtenés exactamente la masa de la receta?"}
+                "a": {"reason": "Esta elección puede salir al deshacer solo la pérdida del 25 % de la cocción, sin recuperar lo eliminado en la limpieza.", "calculation": "\\[\\frac{810}{0{,}75}=1080\\]Si fueran gramos de fruta entera:\\[1080\\cdot0{,}9\\cdot0{,}75=729\\ \\mathrm{g}\\]", "question": "¿Los gramos que obtuviste corresponden a fruta entera o ya limpia? ¿Qué transformación anterior todavía falta deshacer?"},
+                "c": {"reason": "Este valor aproxima el resultado de sumar 10 % y 25 % como si ambas pérdidas se calcularan sobre la misma masa.", "calculation": "\\[\\frac{810}{1-0{,}10-0{,}25}\\approx1246\\ \\mathrm{g}\\]En ese planteo se usa la misma base para las dos pérdidas.", "question": "¿El 25 % se calcula sobre la fruta entera o sobre la fruta que quedó limpia? ¿Cómo representarías las etapas por separado?"},
+                "d": {"reason": "Con esta elección la preparación termina con más fruta de la solicitada. Revisá los factores y la masa sobre la que aplicaste cada porcentaje.", "calculation": "Al comprobar tu elección:\\[1350\\cdot0{,}9\\cdot0{,}75=911{,}25\\ \\mathrm{g}\\]El objetivo era 810 g.", "question": "¿Qué porcentaje queda después de cada etapa? Si aplicás ambos factores a tu masa inicial, ¿obtenés exactamente la masa de la receta?"}
               },
               "type": "choice",
               "title": "Preparar fruta para una conserva",
               "prompt": ["Para una conserva se necesitan 810 g de fruta cocida. Al retirar cáscaras y semillas se pierde el 10 % de la masa inicial. Al cocinar se pierde el 25 % de la masa de fruta ya limpia.", "¿Cuánta fruta entera se necesita?"],
               "options": [{"id": "a", "label": "1080 g"}, {"id": "b", "label": "1200 g"}, {"id": "c", "label": "1246 g"}, {"id": "d", "label": "1350 g"}],
               "answer": "b",
-              "hints": ["Tras limpiar queda el 90 %. Tras cocinar queda el 75 % de esa cantidad.", "El factor total es 0,90 × 0,75 = 0,675. ¿Qué número multiplicado por 0,675 da 810?"],
-              "explanation": "De la masa inicial queda 0,90 × 0,75 = 0,675, o sea, el 67,5 %. Por eso se necesitan 810 ÷ 0,675 = 1200 g de fruta entera. Comprobación: 1200 × 0,9 = 1080 g limpios y 1080 × 0,75 = 810 g cocidos."
+              "hints": ["Tras limpiar queda el 90 %. Tras cocinar queda el 75 % de esa cantidad.", "El factor total es \\(0{,}90\\cdot0{,}75\\). ¿Qué masa inicial, multiplicada por ese factor, da los 810 g pedidos?"],
+              "explanation": "Sea \\(m\\) la masa de fruta entera. La limpieza conserva el 90 % y la cocción el 75 % de lo que quedó:\\[m\\cdot0{,}90\\cdot0{,}75=810\\]Se conserva el \\(0{,}90\\cdot0{,}75=0{,}675\\), es decir, el 67,5 %. Despejamos:\\[m=\\frac{810}{0{,}675}=1200\\ \\mathrm{g}\\]Comprobamos las dos etapas:\\[1200\\cdot0{,}90=1080\\ \\mathrm{g}\\]\\[1080\\cdot0{,}75=810\\ \\mathrm{g}\\]"
             },
             {
               "id": "a-porcentaje-3",
               "errorFeedback": {
-                "a": {"reason": "La masa elegida no alcanza después de las dos pérdidas. La comprobación permite revisar tu planteo sin adivinar cómo llegaste a ese número.", "calculation": "650 × 0,75 × 0,9 = 438,75 g cocidos, por debajo de los 540 g pedidos.", "question": "¿Tu cálculo recupera tanto la pérdida de limpieza como la de cocción? ¿Qué operación deshace una multiplicación por un factor menor que uno?"},
-                "b": {"reason": "Esta elección coincide con recuperar únicamente la pérdida de limpieza y dejar sin deshacer la cocción.", "calculation": "540 ÷ 0,75 = 720. Pero 720 × 0,75 × 0,9 = 486 g al final.", "question": "¿En qué orden podrías recorrer hacia atrás las dos etapas? ¿Deshacer una de ellas basta para llegar a las verduras compradas?"},
-                "d": {"reason": "La elección produciría más verduras cocidas que las necesarias. Tal vez hayas usado un porcentaje conservado distinto del indicado.", "calculation": "900 × 0,75 × 0,9 = 607,5 g; el objetivo es 540 g.", "question": "¿Conservás el 75 % y luego el 90 %, o calculaste ambas pérdidas sobre la misma cantidad? ¿Cómo comprobarías la masa elegida?"}
+                "a": {"reason": "La masa elegida no alcanza después de las dos pérdidas. La comprobación permite revisar tu planteo sin adivinar cómo llegaste a ese número.", "calculation": "\\[650\\cdot0{,}75\\cdot0{,}9=438{,}75\\ \\mathrm{g}\\]Queda por debajo de los 540 g pedidos.", "question": "¿Tu cálculo recupera tanto la pérdida de limpieza como la de cocción? ¿Qué operación deshace una multiplicación por un factor menor que uno?"},
+                "b": {"reason": "Esta elección coincide con recuperar únicamente la pérdida de limpieza y dejar sin deshacer la cocción.", "calculation": "\\[\\frac{540}{0{,}75}=720\\]Pero la comprobación de ambas etapas da:\\[720\\cdot0{,}75\\cdot0{,}9=486\\ \\mathrm{g}\\]", "question": "¿En qué orden podrías recorrer hacia atrás las dos etapas? ¿Deshacer una de ellas basta para llegar a las verduras compradas?"},
+                "d": {"reason": "La elección produciría más verduras cocidas que las necesarias. Tal vez hayas usado un porcentaje conservado distinto del indicado.", "calculation": "\\[900\\cdot0{,}75\\cdot0{,}9=607{,}5\\ \\mathrm{g}\\]El objetivo es 540 g.", "question": "¿Conservás el 75 % y luego el 90 %, o calculaste ambas pérdidas sobre la misma cantidad? ¿Cómo comprobarías la masa elegida?"}
               },
               "type": "choice",
               "title": "Verduras para una sopa",
               "prompt": ["Se necesitan 540 g de verduras cocidas. La limpieza elimina el 25 % de la masa de las verduras compradas. Luego la cocción reduce un 10 % la masa de las verduras limpias.", "¿Qué masa de verduras debe comprarse?"],
               "options": [{"id": "a", "label": "650 g"}, {"id": "b", "label": "720 g"}, {"id": "c", "label": "800 g"}, {"id": "d", "label": "900 g"}],
               "answer": "c",
-              "hints": ["Conservar el 75 % y luego el 90 % no es lo mismo que conservar el 65 %.", "Planteá m × 0,75 × 0,90 = 540 y despejá m."],
-              "explanation": "El factor que se conserva es 0,75 × 0,90 = 0,675. La masa inicial debe ser 540 ÷ 0,675 = 800 g. Después de limpiar quedan 600 g y después de cocinar quedan 540 g."
+              "hints": ["Conservar el 75 % y luego el 90 % no es lo mismo que conservar el 65 %.", "Planteá \\(m\\cdot0{,}75\\cdot0{,}90=540\\). ¿Qué operación permite recuperar \\(m\\)?"],
+              "explanation": "La limpieza conserva el 75 % y la cocción el 90 % de la masa limpia. Si \\(m\\) es la masa comprada:\\[m\\cdot0{,}75\\cdot0{,}90=540\\]El factor conservado es \\(0{,}675\\). Por lo tanto:\\[m=\\frac{540}{0{,}675}=800\\ \\mathrm{g}\\]Verificación: \\(800\\cdot0{,}75=600\\) g limpios y \\(600\\cdot0{,}90=540\\) g cocidos."
             }
           ]
         },
@@ -163,8 +163,8 @@
             {
               "id": "a-area-1",
               "errorFeedback": {
-                "a": {"reason": "El 18 % puede aparecer al contar solo dos de las tres partes: base, paredes y techo. Cada una ocupa superficie de cartón.", "calculation": "Por ejemplo, contar solo base y paredes da 24² + 4 × 24 × 6 = 1152 cm²; 1152 ÷ 6400 × 100 = 18 %.", "question": "¿Qué caras de la plantilla no están incluidas en esa suma? ¿El techo necesita cartón además de la base y las paredes?"},
-                "c": {"reason": "Esta elección puede salir al calcular cada triángulo como un rectángulo, sin dividir su área entre dos.", "calculation": "El planteo 24² + 4 × 24 × 6 + 4 × 24 × 12 cuenta los triángulos como rectángulos y lleva al 36 %.", "question": "¿Un triángulo ocupa todo el rectángulo de igual base y altura? ¿Qué factor falta en el área de cada cara del techo?"},
+                "a": {"reason": "El 18 % puede aparecer al contar solo dos de las tres partes: base, paredes y techo. Cada una ocupa superficie de cartón.", "calculation": "Por ejemplo, contar solo base y paredes da:\\[24^2+4\\cdot24\\cdot6=1152\\ \\mathrm{cm}^2\\]\\[\\frac{1152}{6400}\\cdot100=18\\%\\]", "question": "¿Qué caras de la plantilla no están incluidas en esa suma? ¿El techo necesita cartón además de la base y las paredes?"},
+                "c": {"reason": "Esta elección puede salir al calcular cada triángulo como un rectángulo, sin dividir su área entre dos.", "calculation": "Este planteo cuenta los triángulos como rectángulos:\\[\\begin{aligned}A&=24^2+4\\cdot24\\cdot6\\\\&\\quad+4\\cdot24\\cdot12\\end{aligned}\\]Lleva al 36 %, pero no representa las piezas triangulares.", "question": "¿Un triángulo ocupa todo el rectángulo de igual base y altura? ¿Qué factor falta en el área de cada cara del techo?"},
                 "d": {"reason": "El porcentaje elegido duplica el área necesaria. Revisá si contaste ambas caras del cartón como si fueran piezas diferentes.", "calculation": "Contar dos veces cada pieza duplica también el porcentaje de la lámina.", "question": "¿El desarrollo representa una sola capa de cartón? ¿Cuántas veces debe contarse cada pieza recortada?"}
               },
               "type": "choice",
@@ -173,15 +173,15 @@
               "visual": {"kind": "net", "base": 24, "wall": 6, "height": 12, "symbols": ["○", "●", "+", "≋"], "dimensions": true},
               "options": [{"id": "a", "label": "18 %"}, {"id": "b", "label": "27 %"}, {"id": "c", "label": "36 %"}, {"id": "d", "label": "54 %"}],
               "answer": "b",
-              "hints": ["Sumá el área del cuadrado, los cuatro rectángulos y los cuatro triángulos.", "Área del desarrollo: 24² + 4 × 24 × 6 + 4 × (24 × 12 ÷ 2). Luego dividí entre 80² y multiplicá por 100."],
-              "explanation": "La base ocupa 576 cm², las paredes 576 cm² y el techo 576 cm². Total: 1728 cm². La lámina tiene 80 × 80 = 6400 cm². El porcentaje es 1728 ÷ 6400 × 100 = 27 %. No se usa el rectángulo que rodea el dibujo, sino la suma de las piezas."
+              "hints": ["Sumá el área del cuadrado, los cuatro rectángulos y los cuatro triángulos.", "Para cada triángulo usá \\(A=\\frac{b\\cdot h}{2}\\). ¿Qué área representa el 100 %: la lámina o el desarrollo?"],
+              "explanation": "Sumamos las piezas reales, no el rectángulo que rodea el dibujo. Base, paredes y techo:\\[A_b=24^2=576\\ \\mathrm{cm}^2\\]\\[A_p=4\\cdot24\\cdot6=576\\ \\mathrm{cm}^2\\]\\[A_t=4\\cdot\\frac{24\\cdot12}{2}=576\\ \\mathrm{cm}^2\\]El desarrollo ocupa \\(A_d=1728\\ \\mathrm{cm}^2\\) y la lámina, \\(A_l=80^2=6400\\ \\mathrm{cm}^2\\). Calculamos la proporción:\\[P=\\frac{A_d}{A_l}\\cdot100\\]\\[P=\\frac{1728}{6400}\\cdot100=27\\%\\]"
             },
             {
               "id": "a-area-2",
               "errorFeedback": {
-                "a": {"reason": "El 11 % aproxima el aporte de la base sola. Una caja también necesita sus paredes y su techo.", "calculation": "20 × 20 ÷ (60 × 60) × 100 ≈ 11 %.", "question": "¿Qué otras superficies del desarrollo consumen cartón? ¿Tu suma incluye todos los rectángulos y los triángulos?"},
-                "b": {"reason": "Este porcentaje puede corresponder a contar solo dos grupos de piezas y omitir el tercero.", "calculation": "Base y paredes solas: (20² + 4 × 20 × 5) ÷ 3600 × 100 ≈ 22 %.", "question": "¿Ya sumaste las cuatro caras triangulares? ¿Podrías marcar en la plantilla cada pieza a medida que la contás?"},
-                "d": {"reason": "La mitad de la lámina no se justifica con las piezas indicadas. Puede que hayas estimado con el espacio alrededor del dibujo, que no está a escala.", "calculation": "Un 50 % de 60 × 60 cm equivale a 1800 cm². Ese es el área que afirma tu elección.", "question": "¿Coincide esa área con la suma de las piezas reales? ¿Debés medir el dibujo o usar las medidas escritas?"}
+                "a": {"reason": "El 11 % aproxima el aporte de la base sola. Una caja también necesita sus paredes y su techo.", "calculation": "\\[\\frac{20\\cdot20}{60\\cdot60}\\cdot100\\approx11\\%\\]", "question": "¿Qué otras superficies del desarrollo consumen cartón? ¿Tu suma incluye todos los rectángulos y los triángulos?"},
+                "b": {"reason": "Este porcentaje puede corresponder a contar solo dos grupos de piezas y omitir el tercero.", "calculation": "Base y paredes solas:\\[\\frac{20^2+4\\cdot20\\cdot5}{3600}\\cdot100\\approx22\\%\\]", "question": "¿Ya sumaste las cuatro caras triangulares? ¿Podrías marcar en la plantilla cada pieza a medida que la contás?"},
+                "d": {"reason": "La mitad de la lámina no se justifica con las piezas indicadas. Puede que hayas estimado con el espacio alrededor del dibujo, que no está a escala.", "calculation": "Tu elección supone usar esta superficie:\\[0{,}50\\cdot60\\cdot60=1800\\ \\mathrm{cm}^2\\]", "question": "¿Coincide esa área con la suma de las piezas reales? ¿Debés medir el dibujo o usar las medidas escritas?"}
               },
               "type": "choice",
               "title": "Un envase más pequeño",
@@ -189,15 +189,15 @@
               "visual": {"kind": "net", "base": 20, "wall": 5, "height": 10, "symbols": ["A", "B", "C", "D"], "dimensions": true},
               "options": [{"id": "a", "label": "11 %"}, {"id": "b", "label": "22 %"}, {"id": "c", "label": "33 %"}, {"id": "d", "label": "50 %"}],
               "answer": "c",
-              "hints": ["Cada triángulo tiene la mitad del área de un rectángulo de igual base y altura.", "La base ocupa 400 cm². Calculá las paredes y el techo, y compará el total con 3600 cm²."],
-              "explanation": "Área total: 20² + 4 × 20 × 5 + 4 × (20 × 10 ÷ 2) = 400 + 400 + 400 = 1200 cm². La lámina ocupa 3600 cm². Porcentaje: 1200 ÷ 3600 × 100 = 33,33… %, aproximadamente 33 %."
+              "hints": ["Cada triángulo tiene la mitad del área de un rectángulo de igual base y altura.", "La base ocupa \\(20^2\\). ¿Qué áreas faltan y cómo comparás el total con la lámina de \\(60^2\\)?"],
+              "explanation": "Calculamos la base, las cuatro paredes y los cuatro triángulos:\\[A_b=20^2=400\\ \\mathrm{cm}^2\\]\\[A_p=4\\cdot20\\cdot5=400\\ \\mathrm{cm}^2\\]\\[A_t=4\\cdot\\frac{20\\cdot10}{2}=400\\ \\mathrm{cm}^2\\]Por lo tanto, \\(A_d=400+400+400=1200\\ \\mathrm{cm}^2\\). La lámina ocupa \\(A_l=60^2=3600\\ \\mathrm{cm}^2\\).\\[P=\\frac{1200}{3600}\\cdot100\\approx33{,}33\\%\\]La opción más cercana es 33 %."
             },
             {
               "id": "a-area-3",
               "errorFeedback": {
-                "a": {"reason": "El 26 % se aproxima al aporte de paredes y techo sin incluir la base. Revisá si olvidaste el cuadrado central.", "calculation": "(4 × 30 × 7 + 4 × 30 × 14 ÷ 2) ÷ 6400 × 100 = 26,25 %.", "question": "¿La base cuadrada está en tu inventario de piezas? ¿Qué área ocupa además de las paredes y el techo?"},
-                "c": {"reason": "La opción supone un área mayor que la que corresponde al desarrollo. Revisá especialmente cómo calculaste las caras triangulares.", "calculation": "Un 52 % de la lámina equivale a 0,52 × 6400 = 3328 cm².", "question": "¿Usaste base por altura o base por altura dividido entre dos en cada triángulo? ¿Contaste exactamente cuatro paredes y cuatro triángulos?"},
-                "d": {"reason": "La superficie sugerida por esta opción es demasiado grande para las piezas indicadas. Tal vez hayas contado zonas del contorno que se descartan.", "calculation": "Un 65 % de la lámina equivale a 0,65 × 6400 = 4160 cm².", "question": "¿Se aprovecha todo el cuadrado que rodea el desarrollo o solo sus piezas? ¿Qué regiones se recortan y sobran?"}
+                "a": {"reason": "El 26 % se aproxima al aporte de paredes y techo sin incluir la base. Revisá si olvidaste el cuadrado central.", "calculation": "Contando solo paredes y techo:\\[\\frac{4\\cdot30\\cdot7+4\\cdot\\frac{30\\cdot14}{2}}{6400}\\cdot100=26{,}25\\%\\]", "question": "¿La base cuadrada está en tu inventario de piezas? ¿Qué área ocupa además de las paredes y el techo?"},
+                "c": {"reason": "La opción supone un área mayor que la que corresponde al desarrollo. Revisá especialmente cómo calculaste las caras triangulares.", "calculation": "La superficie que supone tu elección es:\\[0{,}52\\cdot6400=3328\\ \\mathrm{cm}^2\\]", "question": "¿Usaste base por altura o base por altura dividido entre dos en cada triángulo? ¿Contaste exactamente cuatro paredes y cuatro triángulos?"},
+                "d": {"reason": "La superficie sugerida por esta opción es demasiado grande para las piezas indicadas. Tal vez hayas contado zonas del contorno que se descartan.", "calculation": "La superficie que supone tu elección es:\\[0{,}65\\cdot6400=4160\\ \\mathrm{cm}^2\\]", "question": "¿Se aprovecha todo el cuadrado que rodea el desarrollo o solo sus piezas? ¿Qué regiones se recortan y sobran?"}
               },
               "type": "choice",
               "title": "Planificar el material",
@@ -205,8 +205,8 @@
               "visual": {"kind": "net", "base": 30, "wall": 7, "height": 14, "symbols": ["P", "Q", "R", "S"], "dimensions": true},
               "options": [{"id": "a", "label": "26 %"}, {"id": "b", "label": "40 %"}, {"id": "c", "label": "52 %"}, {"id": "d", "label": "65 %"}],
               "answer": "b",
-              "hints": ["La fórmula del área del desarrollo es b² + 4bw + 2bh, donde b es el lado, w la altura de pared y h la altura de triángulo.", "Sumá 900 + 840 + 840 y dividí entre el área de la lámina, no entre la longitud de su lado."],
-              "explanation": "Base: 900 cm². Cuatro paredes: 4 × 30 × 7 = 840 cm². Cuatro triángulos: 4 × 30 × 14 ÷ 2 = 840 cm². Total: 2580 cm². Porcentaje: 2580 ÷ 6400 × 100 = 40,3125 %, aproximadamente 40 %."
+              "hints": ["Separá las piezas en un cuadrado, cuatro rectángulos y cuatro triángulos. ¿Qué fórmula de área corresponde a cada una?", "¿Tu denominador representa el área de la lámina, \\(80^2\\), o solamente la longitud de su lado?"],
+              "explanation": "Sumamos las áreas de las piezas:\\[A_b=30^2=900\\ \\mathrm{cm}^2\\]\\[A_p=4\\cdot30\\cdot7=840\\ \\mathrm{cm}^2\\]\\[A_t=4\\cdot\\frac{30\\cdot14}{2}=840\\ \\mathrm{cm}^2\\]El total es \\(A_d=900+840+840=2580\\ \\mathrm{cm}^2\\). La lámina tiene \\(A_l=80^2=6400\\ \\mathrm{cm}^2\\).\\[P=\\frac{2580}{6400}\\cdot100=40{,}3125\\%\\]Redondeando, se aprovecha aproximadamente el 40 %."
             }
           ]
         },
@@ -216,9 +216,9 @@
             {
               "id": "a-modelo-1",
               "errorFeedback": {
-                "a": {"reason": "El año elegido todavía no alcanza la meta. Tal vez hayas redondeado hacia abajo los años transcurridos sin verificar la desigualdad.", "calculation": "En 2036, x = 2036 − 2024 = 12 y el modelo da 12 × 12 + 250 = 394 préstamos.", "question": "¿394 supera los 400? Si la pregunta pide el primer año entero que supera la meta, ¿cómo debés tratar un resultado no entero?"},
-                "c": {"reason": "Este año supera la meta, pero eso no basta: la consigna pide el primero. Puede que hayas añadido un año de más al redondear.", "calculation": "En 2038, x = 14 y el modelo da 12 × 14 + 250 = 418 préstamos.", "question": "¿Comprobaste el año inmediatamente anterior a tu elección? ¿También supera la meta o todavía no?"},
-                "d": {"reason": "El año elegido cumple con superar la meta, pero puede no ser el primero. Una estimación demasiado amplia omite revisar los años anteriores.", "calculation": "En 2040, x = 16 y el modelo da 12 × 16 + 250 = 442 préstamos.", "question": "¿Cómo encontrarías el menor entero que cumple la desigualdad, en vez de elegir cualquier año que la cumpla?"}
+                "a": {"reason": "El año elegido todavía no alcanza la meta. Tal vez hayas redondeado hacia abajo los años transcurridos sin verificar la desigualdad.", "calculation": "En 2036, \\(x=2036-2024=12\\):\\[12\\cdot12+250=394\\]El modelo da 394 préstamos.", "question": "¿394 supera los 400? Si la pregunta pide el primer año entero que supera la meta, ¿cómo debés tratar un resultado no entero?"},
+                "c": {"reason": "Este año supera la meta, pero eso no basta: la consigna pide el primero. Puede que hayas añadido un año de más al redondear.", "calculation": "En 2038, \\(x=14\\):\\[12\\cdot14+250=418\\]El modelo da 418 préstamos.", "question": "¿Comprobaste el año inmediatamente anterior a tu elección? ¿También supera la meta o todavía no?"},
+                "d": {"reason": "El año elegido cumple con superar la meta, pero puede no ser el primero. Una estimación demasiado amplia omite revisar los años anteriores.", "calculation": "En 2040, \\(x=16\\):\\[12\\cdot16+250=442\\]El modelo da 442 préstamos.", "question": "¿Cómo encontrarías el menor entero que cumple la desigualdad, en vez de elegir cualquier año que la cumpla?"}
               },
               "type": "choice",
               "title": "Una meta para la biblioteca",
@@ -226,15 +226,15 @@
               "visual": {"kind": "chart", "baseYear": 2024, "unit": "Préstamos mensuales", "series": [{"label": "Libros", "slope": 12, "intercept": 250}, {"label": "Revistas", "slope": 5, "intercept": 100}]},
               "options": [{"id": "a", "label": "2036"}, {"id": "b", "label": "2037"}, {"id": "c", "label": "2038"}, {"id": "d", "label": "2040"}],
               "answer": "b",
-              "hints": ["Usá la ecuación de libros: y = 12x + 250. Superar 400 significa y > 400.", "Resolvé 12x > 150. Elegí el primer entero que cumple y sumalo a 2024."],
-              "explanation": "12x + 250 > 400 implica x > 12,5. El primer entero es x = 13, correspondiente a 2024 + 13 = 2037. En 2036 hay 394 préstamos y en 2037 hay 406."
+              "hints": ["Usá la ecuación de libros: \\(y=12x+250\\). Superar 400 significa \\(y>400\\).", "¿Cuál es el menor entero que satisface la desigualdad? Recordá sumar los años transcurridos al año de origen."],
+              "explanation": "Usamos la ecuación de libros y expresamos «superar» con una desigualdad estricta:\\[12x+250>400\\]\\[12x>150\\quad\\Rightarrow\\quad x>\\frac{150}{12}=12{,}5\\]El primer entero que cumple es \\(x=13\\). Como contamos desde 2024:\\[2024+13=2037\\]Comprobación: para \\(x=12\\) hay 394 préstamos; para \\(x=13\\), \\(12\\cdot13+250=406>400\\). El primer año es 2037."
             },
             {
               "id": "a-modelo-2",
               "errorFeedback": {
-                "a": {"reason": "El modelo todavía queda por debajo de la meta en ese año. Revisá si confundiste el año de calendario con x.", "calculation": "En 2039, x = 2039 − 2025 = 14; 8 × 14 + 180 = 292 plantas.", "question": "¿Qué cuenta x y desde qué año? ¿El valor de ventas que obtenés con tu elección cumple realmente la condición?"},
-                "b": {"reason": "En ese año se iguala la meta, pero no se la supera. La palabra «superar» exige una desigualdad estricta.", "calculation": "En 2040, x = 15; 8 × 15 + 180 = 300 plantas.", "question": "¿Llegar exactamente a 300 es lo mismo que vender más de 300? ¿Qué condición debe cumplir el siguiente valor entero de x?"},
-                "d": {"reason": "La elección supera la meta, pero no garantiza que sea el primer año. Tal vez hayas avanzado un año adicional sin comprobar el anterior.", "calculation": "En 2042, x = 17; 8 × 17 + 180 = 316 plantas.", "question": "¿Qué pasa en el año inmediatamente anterior? ¿Cómo verificarías que tu elección es mínima y no solo válida?"}
+                "a": {"reason": "El modelo todavía queda por debajo de la meta en ese año. Revisá si confundiste el año de calendario con x.", "calculation": "En 2039, \\(x=2039-2025=14\\):\\[8\\cdot14+180=292\\]El modelo da 292 plantas.", "question": "¿Qué cuenta x y desde qué año? ¿El valor de ventas que obtenés con tu elección cumple realmente la condición?"},
+                "b": {"reason": "En ese año se iguala la meta, pero no se la supera. La palabra «superar» exige una desigualdad estricta.", "calculation": "En 2040, \\(x=15\\):\\[8\\cdot15+180=300\\]Se llega exactamente a 300 plantas.", "question": "¿Llegar exactamente a 300 es lo mismo que vender más de 300? ¿Qué condición debe cumplir el siguiente valor entero de x?"},
+                "d": {"reason": "La elección supera la meta, pero no garantiza que sea el primer año. Tal vez hayas avanzado un año adicional sin comprobar el anterior.", "calculation": "En 2042, \\(x=17\\):\\[8\\cdot17+180=316\\]El modelo da 316 plantas.", "question": "¿Qué pasa en el año inmediatamente anterior? ¿Cómo verificarías que tu elección es mínima y no solo válida?"}
               },
               "type": "choice",
               "title": "El crecimiento de un vivero",
@@ -242,15 +242,15 @@
               "visual": {"kind": "chart", "baseYear": 2025, "unit": "Unidades mensuales", "series": [{"label": "Plantas", "slope": 8, "intercept": 180}, {"label": "Macetas", "slope": 3, "intercept": 70}]},
               "options": [{"id": "a", "label": "2039"}, {"id": "b", "label": "2040"}, {"id": "c", "label": "2041"}, {"id": "d", "label": "2042"}],
               "answer": "c",
-              "hints": ["La ecuación de plantas es y = 8x + 180.", "En x = 15 el modelo da exactamente 300. La pregunta pide superar esa cantidad, no igualarla."],
-              "explanation": "8x + 180 > 300 lleva a x > 15. El primer entero que cumple es 16. Por lo tanto, el año es 2025 + 16 = 2041. En 2040 la venta estimada es exactamente 300, lo que todavía no supera la meta."
+              "hints": ["La ecuación de plantas es \\(y=8x+180\\).", "¿Alcanzar exactamente la meta es lo mismo que superarla? Comprobá el signo de la desigualdad y el primer entero que la cumple."],
+              "explanation": "La condición es vender más de 300 plantas:\\[8x+180>300\\]\\[8x>120\\quad\\Rightarrow\\quad x>15\\]El menor entero que cumple es \\(x=16\\). Pasamos al año de calendario:\\[2025+16=2041\\]En 2040, \\(8\\cdot15+180=300\\): se iguala la meta, pero no se supera. En 2041, \\(8\\cdot16+180=308>300\\)."
             },
             {
               "id": "a-modelo-3",
               "errorFeedback": {
-                "a": {"reason": "El año elegido llega exactamente al valor de referencia. Es posible que hayas resuelto una igualdad cuando se pide superar.", "calculation": "En 2033, x = 2033 − 2023 = 10; 15 × 10 + 200 = 350 viajes.", "question": "¿La consigna dice alcanzar 350 o superar 350? ¿Cómo cambia eso el primer entero que puede servir?"},
-                "c": {"reason": "El año elegido supera la meta, pero puede haber otro anterior que también la supere. Revisá la condición «primer año».", "calculation": "En 2035, x = 12; 15 × 12 + 200 = 380 viajes.", "question": "¿Comprobaste el año previo? ¿Qué dos comprobaciones permiten asegurar que encontraste el primer año válido?"},
-                "d": {"reason": "Este año da una cantidad suficiente, pero parece una estimación posterior al cruce. No alcanza con encontrar un valor grande.", "calculation": "En 2036, x = 13; 15 × 13 + 200 = 395 viajes.", "question": "¿Cómo usarías la desigualdad para elegir el menor entero posible? ¿La respuesta cambia si revisás los años anteriores uno por uno?"}
+                "a": {"reason": "El año elegido llega exactamente al valor de referencia. Es posible que hayas resuelto una igualdad cuando se pide superar.", "calculation": "En 2033, \\(x=2033-2023=10\\):\\[15\\cdot10+200=350\\]Se llega exactamente a 350 viajes.", "question": "¿La consigna dice alcanzar 350 o superar 350? ¿Cómo cambia eso el primer entero que puede servir?"},
+                "c": {"reason": "El año elegido supera la meta, pero puede haber otro anterior que también la supere. Revisá la condición «primer año».", "calculation": "En 2035, \\(x=12\\):\\[15\\cdot12+200=380\\]El modelo da 380 viajes.", "question": "¿Comprobaste el año previo? ¿Qué dos comprobaciones permiten asegurar que encontraste el primer año válido?"},
+                "d": {"reason": "Este año da una cantidad suficiente, pero parece una estimación posterior al cruce. No alcanza con encontrar un valor grande.", "calculation": "En 2036, \\(x=13\\):\\[15\\cdot13+200=395\\]El modelo da 395 viajes.", "question": "¿Cómo usarías la desigualdad para elegir el menor entero posible? ¿La respuesta cambia si revisás los años anteriores uno por uno?"}
               },
               "type": "choice",
               "title": "Más viajes en bicicleta",
@@ -258,8 +258,8 @@
               "visual": {"kind": "chart", "baseYear": 2023, "unit": "Viajes diarios", "series": [{"label": "Bicicleta", "slope": 15, "intercept": 200}, {"label": "Monopatín", "slope": 6, "intercept": 80}]},
               "options": [{"id": "a", "label": "2033"}, {"id": "b", "label": "2034"}, {"id": "c", "label": "2035"}, {"id": "d", "label": "2036"}],
               "answer": "b",
-              "hints": ["Planteá 15x + 200 > 350.", "Con x = 10 se llega a 350. Buscá el siguiente año entero y sumalo al año de origen."],
-              "explanation": "15x + 200 > 350 implica x > 10. El primer entero posible es 11, así que el año es 2023 + 11 = 2034. En 2033 se iguala la meta; en 2034 se alcanzan 365 viajes."
+              "hints": ["Planteá \\(15x+200>350\\).", "¿Qué valor de \\(x\\) iguala la meta? ¿Ese valor sirve si se pide superarla? Después convertí los años transcurridos al año de calendario."],
+              "explanation": "La ecuación de bicicletas debe superar la meta:\\[15x+200>350\\]\\[15x>150\\quad\\Rightarrow\\quad x>10\\]El primer entero es \\(x=11\\), de modo que:\\[2023+11=2034\\]En 2033, \\(15\\cdot10+200=350\\): solo se iguala la meta. En 2034, \\(15\\cdot11+200=365>350\\)."
             }
           ]
         },
@@ -274,8 +274,8 @@
               "prompt": ["La biblioteca estima los préstamos mensuales de libros con L(x) = 12x + 250 y de revistas con R(x) = 5x + 100. x son los años desde 2024.", "Para x ≥ 0, ¿podrían los préstamos de revistas superar a los de libros si se mantienen estas tendencias? Justificá usando los valores iniciales y las pendientes, o la diferencia entre las funciones."],
               "visual": {"kind": "chart", "baseYear": 2024, "unit": "Préstamos mensuales", "series": [{"label": "Libros", "slope": 12, "intercept": 250}, {"label": "Revistas", "slope": 5, "intercept": 100}]},
               "hints": ["Compará cuánto vale cada modelo en x = 0 y cuánto crece por año.", "Calculá L(x) − R(x). Si la diferencia es siempre positiva para x ≥ 0, las revistas no superan a los libros."],
-              "explanation": "La diferencia L(x) − R(x) = 7x + 150 es positiva para todo x ≥ 0. Por eso los libros siempre quedan por encima de las revistas en el período considerado. No alcanza con decir que ambas cantidades crecen: importa cuál crece más y desde qué valor.",
-              "modelAnswer": "No. Los libros empiezan en 250 y las revistas en 100. Además, los libros crecen 12 por año y las revistas 5. La diferencia es (12x + 250) − (5x + 100) = 7x + 150, positiva para x ≥ 0; por lo tanto, la distancia aumenta y las revistas no los superan.",
+              "explanation": "Comparamos las funciones mediante su diferencia:\\[L(x)-R(x)=(12x+250)-(5x+100)\\]\\[L(x)-R(x)=7x+150\\]Para \\(x\\ge0\\), esta diferencia siempre es positiva. Los libros parten de un valor mayor y también crecen más rápido. No alcanza con afirmar que ambas cantidades crecen: importan los valores iniciales y las pendientes.",
+              "modelAnswer": "No. Los libros empiezan en 250 y las revistas en 100. Además, los libros crecen 12 por año y las revistas 5. Como \\(L(x)-R(x)=7x+150>0\\) para \\(x\\ge0\\), la distancia aumenta y las revistas no los superan.",
               "rubric": ["Respondí que las revistas no superarán a los libros para x ≥ 0.", "Comparé los valores iniciales (250 y 100) y las pendientes (12 y 5), o mostré que 7x + 150 es positiva.", "Relacioné los cálculos con la conclusión, no solo con el aspecto del gráfico."]
             },
             {
@@ -286,8 +286,8 @@
               "prompt": ["Un centro deportivo modela la cantidad de personas que eligen natación con N(x) = 10x + 200 y yoga con Y(x) = 20x + 100. x son los años desde 2025.", "¿Puede yoga superar a natación? Explicá cuándo se igualan y cuál es el primer año entero en que yoga queda por encima, suponiendo que los modelos se mantienen."],
               "visual": {"kind": "chart", "baseYear": 2025, "unit": "Personas inscritas", "series": [{"label": "Natación", "slope": 10, "intercept": 200}, {"label": "Yoga", "slope": 20, "intercept": 100}]},
               "hints": ["Yoga empieza con menos personas, pero su pendiente es mayor. Igualá las dos expresiones.", "20x + 100 = 10x + 200 da x = 10. Para superar debe cumplirse x > 10."],
-              "explanation": "Yoga crece 20 personas por año y natación 10. Aunque yoga empieza 100 por debajo, la diferencia Y(x) − N(x) = 10x − 100 pasa a ser positiva cuando x > 10.",
-              "modelAnswer": "Sí. Yoga crece más rápido. Se igualan cuando 20x + 100 = 10x + 200, es decir, x = 10: año 2035, con 300 personas cada una. Yoga supera a natación para x > 10. El primer año entero es 2025 + 11 = 2036.",
+              "explanation": "Yoga empieza con menos personas, pero su pendiente es mayor. Para encontrar la igualdad:\\[20x+100=10x+200\\]\\[10x=100\\quad\\Rightarrow\\quad x=10\\]Es el año \\(2025+10=2035\\), con 300 personas en cada actividad. Para superar, usamos la diferencia:\\[Y(x)-N(x)=10x-100>0\\]\\[x>10\\]El primer entero que cumple es \\(x=11\\).",
+              "modelAnswer": "Sí. Yoga crece más rápido. Las cantidades se igualan en \\(x=10\\), año 2035, con 300 personas cada una. Yoga queda por encima para \\(x>10\\). El primer año entero es \\(2025+11=2036\\).",
               "rubric": ["Expliqué que yoga sí puede superar a natación porque su pendiente es mayor.", "Encontré la igualdad en x = 10, año 2035, con 300 personas.", "Distinguí igualar de superar e indiqué 2036 como primer año entero por encima."]
             },
             {
@@ -298,8 +298,8 @@
               "prompt": ["Una cooperativa estima sus entregas semanales con A(x) = 9x + 160 para el servicio A y B(x) = 9x + 90 para el servicio B. x cuenta los años desde 2026.", "¿Podrá B alcanzar o superar a A para x ≥ 0 si se mantienen los modelos? Justificá con las ecuaciones."],
               "visual": {"kind": "chart", "baseYear": 2026, "unit": "Entregas semanales", "series": [{"label": "Servicio A", "slope": 9, "intercept": 160}, {"label": "Servicio B", "slope": 9, "intercept": 90}]},
               "hints": ["Las dos pendientes son iguales. ¿Qué implica eso para la diferencia entre las cantidades?", "Restá B(x) de A(x): los términos con x se cancelan."],
-              "explanation": "A(x) − B(x) = (9x + 160) − (9x + 90) = 70. La diferencia es constante y positiva: las rectas son paralelas y B no alcanza a A.",
-              "modelAnswer": "No. Ambos servicios aumentan 9 entregas semanales por cada año transcurrido. A empieza con 160 y B con 90. Como A(x) − B(x) = 70 para cualquier x, B siempre queda 70 entregas por debajo de A y no lo alcanza ni lo supera.",
+              "explanation": "Las pendientes coinciden. Restamos las funciones para comprobar si cambia la separación:\\[A(x)-B(x)=(9x+160)-(9x+90)\\]\\[A(x)-B(x)=70\\]La diferencia es constante y positiva: las rectas son paralelas y B no alcanza a A.",
+              "modelAnswer": "No. Ambos servicios aumentan 9 entregas semanales por cada año transcurrido. A empieza con 160 y B con 90. Como \\(A(x)-B(x)=70\\) para cualquier \\(x\\), B siempre queda 70 entregas por debajo de A y no lo alcanza ni lo supera.",
               "rubric": ["Respondí que B no alcanza ni supera a A.", "Identifiqué que las pendientes son iguales: ambas valen 9.", "Justifiqué que la diferencia se mantiene en 70 entregas usando las ecuaciones."]
             }
           ]

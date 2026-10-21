@@ -99,7 +99,8 @@ test("se comprueban las 45 parejas incorrectas de precios usando solo las elecci
         q.verification.forEach((v, i) => {
           const total = v.quantities[0] * Number(oa.id) + v.quantities[1] * Number(ob.id);
           const format = n => new Intl.NumberFormat("es-UY", { maximumFractionDigits: 2 }).format(n);
-          assert.ok(lines[i].includes(`${v.quantities[0]} × ${oa.id} + ${v.quantities[1]} × ${ob.id} = $${format(total)}`));
+          assert.ok(lines[i].includes(`${v.quantities[0]} \\times ${oa.id} + ${v.quantities[1]} \\times ${ob.id} = ${total}`));
+          assert.ok(lines[i].includes(`El enunciado indica $${format(v.total)}`));
           assert.ok(lines[i].endsWith(total === v.total ? ": coincide." : ": no coincide."));
         });
         assert.ok(lines.some(line => line.endsWith(": no coincide.")));

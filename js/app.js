@@ -1,5 +1,6 @@
 import { STORAGE_KEY, validateBank, createAttempt, questionsFor, isAnswered, grade, errorGuidance, summarize, restoreAttempt } from "./core.js";
 import { escapeHTML as e, visualHTML, boxSVG } from "./visuals.js";
+import { initializeMath, reasoningHTML as math } from "./math.js";
 
 const root = document.querySelector("#app");
 const notice = document.querySelector("#notice");
@@ -95,20 +96,20 @@ function feedbackHTML(q) {
   if (status === "incorrect") {
     const guidance = errorGuidance(q, attempt.answers[q.id]);
     const index = questionsFor(bank, attempt).findIndex(item => item.id === q.id);
-    content = `<p>${e(guidance.reason)}</p>
-      ${guidance.calculation ? `<h4>Para revisar el cálculo</h4><p class="calculation">${e(guidance.calculation)}</p>` : ""}
-      <h4>La pregunta para hacerte</h4><blockquote class="reflection-question">${e(guidance.question)}</blockquote>
+    content = `<p>${math(guidance.reason)}</p>
+      ${guidance.calculation ? `<h4>Para revisar el cálculo</h4><p class="calculation">${math(guidance.calculation)}</p>` : ""}
+      <h4>La pregunta para hacerte</h4><blockquote class="reflection-question">${math(guidance.question)}</blockquote>
       <p class="field-note">La orientación parte de tu elección: no permite saber con certeza qué procedimiento hiciste. No mostramos la solución para que puedas revisar tu estrategia.</p>
       ${button("retry", "Volver a intentarlo", "", `data-index="${index}"`)}`;
   } else if (status === "manual") {
     content = `<p>Tu texto necesita una revisión personal: no podemos afirmar automáticamente si está bien o mal. Antes de mirar una solución, preguntate:</p>
-      <ul>${q.reflectionQuestions.map(question => `<li>${e(question)}</li>`).join("")}</ul>
+      <ul>${q.reflectionQuestions.map(question => `<li>${math(question)}</li>`).join("")}</ul>
       <details class="model-answer"><summary>Comparar con un modelo (muestra una posible solución)</summary>
-        <p>${e(q.explanation)}</p><h4>Una respuesta posible</h4><p>${e(q.modelAnswer)}</p>${rubricHTML(q)}
+        <p>${math(q.explanation)}</p><h4>Una respuesta posible</h4><p>${math(q.modelAnswer)}</p>${rubricHTML(q)}
       </details>`;
   } else if (status === "correct") {
     content = `<p>Respuesta verificada: <strong>${e(expectedAnswer(q))}</strong></p>
-      <h4>Planteo y resolución completa</h4><p>${e(q.explanation)}</p>`;
+      <h4>Planteo y resolución completa</h4><p class="worked-solution">${math(q.explanation)}</p>`;
   } else {
     throw new Error("No se puede mostrar una devolución sin una respuesta completa.");
   }
@@ -120,7 +121,7 @@ function feedbackHTML(q) {
 
 function rubricHTML(q) {
   const checks = attempt.selfChecks[q.id] ?? q.rubric.map(() => false);
-  return `<fieldset class="rubric"><legend>Autoevaluación personal (no suma al puntaje automático)</legend>${q.rubric.map((r, i) => `<label><input type="checkbox" data-rubric="${i}" data-question="${e(q.id)}" ${checks[i] ? "checked" : ""}>${e(r)}</label>`).join("")}</fieldset>`;
+  return `<fieldset class="rubric"><legend>Autoevaluación personal (no suma al puntaje automático)</legend>${q.rubric.map((r, i) => `<label><input type="checkbox" data-rubric="${i}" data-question="${e(q.id)}" ${checks[i] ? "checked" : ""}><span>${math(r)}</span></label>`).join("")}</fieldset>`;
 }
 
 function exerciseHTML() {
@@ -145,7 +146,7 @@ function exerciseHTML() {
   </div>
   <aside class="sidebar"><section class="side-card"><p class="eyebrow">Una ayuda, no la solución</p><h2>¿Necesitás una pista?</h2><p>Intentá resolverlo primero. Si te trabás, vamos paso a paso.</p>
     ${button("hint", count === q.hints.length ? "Ya viste todas las pistas" : `Ver pista ${count + 1} de ${q.hints.length}`, "", count === q.hints.length ? "disabled" : "")}
-    <div aria-live="polite">${count ? `<ol>${q.hints.slice(0, count).map(h => `<li>${e(h)}</li>`).join("")}</ol>` : ""}</div>
+    <div aria-live="polite">${count ? `<ol>${q.hints.slice(0, count).map(h => `<li>${math(h)}</li>`).join("")}</ol>` : ""}</div>
   </section><section class="side-card neutral"><h2>Tomate tu tiempo</h2><p>No hay cronómetro. Usá papel y calculadora. Podés cambiar tu respuesta antes de finalizar.</p><p>Las pistas no descuentan puntos. El objetivo es aprender.</p></section></aside></div>`;
 }
 
@@ -282,6 +283,7 @@ async function start() {
     const response = await fetch(new URL("../data/activities.json", import.meta.url));
     if (!response.ok) throw new Error(`No se pudo cargar el banco (HTTP ${response.status}).`);
     bank = validateBank(await response.json());
+    await initializeMath(warn);
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) attempt = restoreAttempt(bank, JSON.parse(saved));

@@ -12,6 +12,8 @@
           "questions": [
             {
               "id": "a-precios-1",
+              "verification": [{"quantities": [4, 6], "total": 360}, {"quantities": [2, 4], "total": 200}],
+              "errorFeedback": {"reason": "Los precios elegidos no verifican las dos compras a la vez. Es posible que hayas ajustado un precio sin comprobar la otra compra. Estos son los cálculos que resultan al sustituir tus dos elecciones; no sabemos qué procedimiento usaste.", "question": "¿Tus dos precios reproducen ambos totales? Si duplicás la segunda compra, ¿qué cantidades quedan iguales y qué podrías restar para aislar un producto?"},
               "type": "select",
               "title": "Las compras para la merienda",
               "prompt": ["En una panadería, Lucía compra 4 panes y 6 galletas por $360. En otra compra, paga $200 por 2 panes y 4 galletas. Los precios no cambian entre las dos compras.", "¿Cuánto cuesta cada producto? Completá ambos precios."],
@@ -24,6 +26,8 @@
             },
             {
               "id": "a-precios-2",
+              "verification": [{"quantities": [3, 2], "total": 290}, {"quantities": [2, 4], "total": 220}],
+              "errorFeedback": {"reason": "La pareja elegida no satisface las dos condiciones. Puede que hayas repartido el total entre productos de distinto precio o que solo hayas revisado una compra. Comprobamos tus elecciones por sustitución, sin suponer qué cálculo hiciste.", "question": "¿Se cumplen las dos compras con los mismos precios? ¿Por cuánto podrías multiplicar una compra para igualar la cantidad de lápices y después comparar?"},
               "type": "select",
               "title": "Una compra en la papelería",
               "prompt": ["Para un taller, Mateo compra 3 cuadernos y 2 lápices por $290. Otro día compra 2 cuadernos y 4 lápices por $220. Cada producto mantiene el mismo precio.", "Determiná el precio unitario de los dos productos."],
@@ -36,6 +40,8 @@
             },
             {
               "id": "a-precios-3",
+              "verification": [{"quantities": [2, 3], "total": 940}, {"quantities": [4, 2], "total": 1160}],
+              "errorFeedback": {"reason": "Los precios seleccionados no explican ambos pagos. Tal vez hayas intercambiado los tipos de entrada o usado un único promedio para entradas diferentes. Lo que sí podemos comprobar es cuánto pagarían los grupos con tus elecciones.", "question": "¿Cada precio quedó asociado al tipo de entrada correcto? Si duplicás el primer grupo, ¿qué cantidad coincide con la del segundo y cómo te ayuda a comparar?"},
               "type": "select",
               "title": "Entradas para una función",
               "prompt": ["Un grupo paga $940 por 2 entradas de adulto y 3 infantiles. Otro grupo paga $1160 por 4 entradas de adulto y 2 infantiles. No hay descuentos especiales.", "¿Cuál es el precio de cada tipo de entrada?"],
@@ -53,6 +59,11 @@
           "questions": [
             {
               "id": "a-porcentaje-1",
+              "errorFeedback": {
+                "a": {"reason": "Esta elección puede aparecer al deshacer una sola pérdida del 20 %, dejando pendiente la otra etapa.", "calculation": "480 ÷ 0,8 = 600. Pero al comprobar esa elección en las dos etapas: 600 × 0,8 × 0,8 = 384 g, no los 480 g pedidos.", "question": "¿Cuántas etapas de pérdida atraviesa el zapallo? ¿Qué parte se conserva en cada una?"},
+                "b": {"reason": "Esta opción coincide con aumentar la masa final en un 40 %. Recuperar dos pérdidas no equivale a sumar esos porcentajes a la masa final.", "calculation": "480 × 1,4 = 672. Con esa masa inicial, 672 × 0,8 × 0,8 = 430,08 g.", "question": "¿Sobre qué masa se calcula cada pérdida? ¿Agregar un porcentaje al final deshace una reducción del mismo porcentaje?"},
+                "d": {"reason": "Esta elección es compatible con sumar las pérdidas como un 40 % de una única masa inicial. En realidad, la segunda reducción se aplica a lo que queda.", "calculation": "480 ÷ 0,6 = 800. Eso supone conservar el 60 % en una sola etapa.", "question": "Después de pelar, ¿sobre qué cantidad se calcula el siguiente 20 %? ¿Debés sumar los porcentajes o encadenar los factores que se conservan?"}
+              },
               "type": "choice",
               "title": "Del zapallo al puré",
               "prompt": ["Una receta necesita 480 g de puré de zapallo cocido. Al pelar el zapallo se pierde el 20 % de su masa. Durante la cocción se pierde el 20 % de la masa que quedó después de pelarlo.", "¿Qué masa de zapallo con cáscara hay que cortar al principio?"],
@@ -63,6 +74,11 @@
             },
             {
               "id": "a-porcentaje-2",
+              "errorFeedback": {
+                "a": {"reason": "Esta elección puede salir al deshacer solo la pérdida del 25 % de la cocción, sin recuperar lo eliminado en la limpieza.", "calculation": "810 ÷ 0,75 = 1080. Si esos fueran los gramos de fruta entera, 1080 × 0,9 × 0,75 = 729 g cocidos.", "question": "¿Los gramos que obtuviste corresponden a fruta entera o ya limpia? ¿Qué transformación anterior todavía falta deshacer?"},
+                "c": {"reason": "Este valor aproxima el resultado de sumar 10 % y 25 % como si ambas pérdidas se calcularan sobre la misma masa.", "calculation": "810 ÷ (1 − 0,10 − 0,25) ≈ 1246 g. En ese planteo se usa la misma base para las dos pérdidas.", "question": "¿El 25 % se calcula sobre la fruta entera o sobre la fruta que quedó limpia? ¿Cómo representarías las etapas por separado?"},
+                "d": {"reason": "Con esta elección la preparación termina con más fruta de la solicitada. Revisá los factores y la masa sobre la que aplicaste cada porcentaje.", "calculation": "Al comprobar tu elección: 1350 × 0,9 × 0,75 = 911,25 g, no 810 g.", "question": "¿Qué porcentaje queda después de cada etapa? Si aplicás ambos factores a tu masa inicial, ¿obtenés exactamente la masa de la receta?"}
+              },
               "type": "choice",
               "title": "Preparar fruta para una conserva",
               "prompt": ["Para una conserva se necesitan 810 g de fruta cocida. Al retirar cáscaras y semillas se pierde el 10 % de la masa inicial. Al cocinar se pierde el 25 % de la masa de fruta ya limpia.", "¿Cuánta fruta entera se necesita?"],
@@ -73,6 +89,11 @@
             },
             {
               "id": "a-porcentaje-3",
+              "errorFeedback": {
+                "a": {"reason": "La masa elegida no alcanza después de las dos pérdidas. La comprobación permite revisar tu planteo sin adivinar cómo llegaste a ese número.", "calculation": "650 × 0,75 × 0,9 = 438,75 g cocidos, por debajo de los 540 g pedidos.", "question": "¿Tu cálculo recupera tanto la pérdida de limpieza como la de cocción? ¿Qué operación deshace una multiplicación por un factor menor que uno?"},
+                "b": {"reason": "Esta elección coincide con recuperar únicamente la pérdida de limpieza y dejar sin deshacer la cocción.", "calculation": "540 ÷ 0,75 = 720. Pero 720 × 0,75 × 0,9 = 486 g al final.", "question": "¿En qué orden podrías recorrer hacia atrás las dos etapas? ¿Deshacer una de ellas basta para llegar a las verduras compradas?"},
+                "d": {"reason": "La elección produciría más verduras cocidas que las necesarias. Tal vez hayas usado un porcentaje conservado distinto del indicado.", "calculation": "900 × 0,75 × 0,9 = 607,5 g; el objetivo es 540 g.", "question": "¿Conservás el 75 % y luego el 90 %, o calculaste ambas pérdidas sobre la misma cantidad? ¿Cómo comprobarías la masa elegida?"}
+              },
               "type": "choice",
               "title": "Verduras para una sopa",
               "prompt": ["Se necesitan 540 g de verduras cocidas. La limpieza elimina el 25 % de la masa de las verduras compradas. Luego la cocción reduce un 10 % la masa de las verduras limpias.", "¿Qué masa de verduras debe comprarse?"],
@@ -88,6 +109,11 @@
           "questions": [
             {
               "id": "a-espacio-1",
+              "errorFeedback": {
+                "a": {"reason": "El círculo vacío y el signo más están en extremos opuestos del desarrollo. Cercanía en el dibujo de una opción no garantiza vecindad al plegar.", "question": "Si seguís los triángulos alrededor del centro, ¿cuántas caras hay entre esas dos? ¿Pueden encontrarse en una arista del techo?"},
+                "b": {"reason": "El círculo lleno y las líneas están a derecha e izquierda del centro: no son caras consecutivas del recorrido.", "question": "¿Qué ocurre con las caras enfrentadas al levantar las paredes y cerrar el techo? ¿Comparten una arista o quedan separadas?"},
+                "d": {"reason": "La vista elegida repite el signo más en dos caras, pero el desarrollo solo contiene una cara con ese símbolo.", "question": "¿Cuántas veces aparece cada marca en la plantilla? ¿Plegar una cara permite duplicarla?"}
+              },
               "type": "choice",
               "title": "Imaginá el envase armado",
               "prompt": ["Este desarrollo forma una caja de base cuadrada con un techo de cuatro caras triangulares. Cada cara del techo tiene un símbolo. Al armarla, dos caras del techo que comparten una arista eran vecinas alrededor del cuadrado central.", "¿Qué opción muestra dos caras del techo que pueden verse juntas compartiendo una arista? No se permite cambiar los símbolos de lugar."],
@@ -99,6 +125,11 @@
             },
             {
               "id": "a-espacio-2",
+              "errorFeedback": {
+                "a": {"reason": "B y D ocupan lados opuestos del cuadrado central. Puede que hayas confundido caras enfrentadas con caras vecinas.", "question": "Al recorrer A, B, C y D alrededor del centro, ¿B y D son consecutivas? ¿Qué significa eso al cerrar el techo?"},
+                "c": {"reason": "A y C están enfrentadas en la plantilla. Una vista armada debe respetar esa relación, aunque rote la caja.", "question": "¿Rotar la caja cambia qué caras comparten arista? ¿Cómo reconocerías una pareja vecina en el desarrollo?"},
+                "d": {"reason": "Solo hay una cara A. El plegado conserva las caras y sus marcas: no genera otra cara con la misma letra.", "question": "¿Podés asignar cada cara de la opción a una cara distinta de la plantilla, sin usar ninguna dos veces?"}
+              },
               "type": "choice",
               "title": "Un techo con otras marcas",
               "prompt": ["La caja tiene base cuadrada, paredes rectangulares y un techo de cuatro triángulos. En el desarrollo se marcaron los triángulos con letras.", "¿Cuál de estas vistas muestra dos caras del techo que pueden compartir una arista al armar la caja?"],
@@ -110,13 +141,18 @@
             },
             {
               "id": "a-espacio-3",
+              "errorFeedback": {
+                "b": {"reason": "P y R quedan enfrentadas. La opción las muestra juntas, pero su ubicación en el desarrollo no permite esa arista compartida.", "question": "¿Qué caras aparecen entre P y R al recorrer el borde? ¿Ser consecutivas en ese recorrido es lo mismo que estar enfrentadas?"},
+                "c": {"reason": "Q y S están a lados opuestos del centro. Es una relación distinta de la que deben tener las dos caras visibles del techo.", "question": "¿Dónde quedan Q y S cuando levantás mentalmente las paredes? ¿Llegan a compartir una arista del techo?"},
+                "d": {"reason": "La opción usa dos caras R y el desarrollo solo tiene una. No es un problema de orientación, sino de conservar las marcas.", "question": "¿Hay dos triángulos con R en la plantilla? ¿Podría una rotación crear una segunda marca igual?"}
+              },
               "type": "choice",
               "title": "Las caras vecinas",
               "prompt": ["Un envase con techo piramidal tiene este desarrollo. Las letras identifican las caras triangulares; las líneas discontinuas indican los pliegues.", "Elegí la vista en la que las dos caras del techo sí pueden quedar una al lado de la otra, compartiendo una arista."],
               "visual": {"kind": "net", "base": 30, "wall": 7, "height": 14, "symbols": ["P", "Q", "R", "S"], "dimensions": false},
               "options": [{"id": "a", "label": "Caras P y S", "faces": ["P", "S"]}, {"id": "b", "label": "Caras P y R", "faces": ["P", "R"]}, {"id": "c", "label": "Caras Q y S", "faces": ["Q", "S"]}, {"id": "d", "label": "Dos caras R", "faces": ["R", "R"]}],
               "answer": "a",
-              "hints": ["La última y la primera cara del recorrido circular también son vecinas.", "P está arriba y S a la izquierda. ¿Quedan separadas por otra cara o se encuentran al plegar?"],
+              "hints": ["La última y la primera cara del recorrido circular también son vecinas.", "Revisá las opciones: ¿hay parejas enfrentadas o una letra usada en dos caras distintas? ¿Qué relación debe conservar una vista válida?"],
               "explanation": "El orden alrededor del desarrollo es P, Q, R, S y vuelve a P. Por eso P y S son vecinas y pueden compartir una arista del techo. P con R y Q con S son parejas opuestas; además, solo existe una cara R, que no puede repetirse en dos caras distintas."
             }
           ]
@@ -126,6 +162,11 @@
           "questions": [
             {
               "id": "a-area-1",
+              "errorFeedback": {
+                "a": {"reason": "El 18 % puede aparecer al contar solo dos de las tres partes: base, paredes y techo. Cada una ocupa superficie de cartón.", "calculation": "Por ejemplo, contar solo base y paredes da 24² + 4 × 24 × 6 = 1152 cm²; 1152 ÷ 6400 × 100 = 18 %.", "question": "¿Qué caras de la plantilla no están incluidas en esa suma? ¿El techo necesita cartón además de la base y las paredes?"},
+                "c": {"reason": "Esta elección puede salir al calcular cada triángulo como un rectángulo, sin dividir su área entre dos.", "calculation": "El planteo 24² + 4 × 24 × 6 + 4 × 24 × 12 cuenta los triángulos como rectángulos y lleva al 36 %.", "question": "¿Un triángulo ocupa todo el rectángulo de igual base y altura? ¿Qué factor falta en el área de cada cara del techo?"},
+                "d": {"reason": "El porcentaje elegido duplica el área necesaria. Revisá si contaste ambas caras del cartón como si fueran piezas diferentes.", "calculation": "Contar dos veces cada pieza duplica también el porcentaje de la lámina.", "question": "¿El desarrollo representa una sola capa de cartón? ¿Cuántas veces debe contarse cada pieza recortada?"}
+              },
               "type": "choice",
               "title": "¿Cuánto cartón se aprovecha?",
               "prompt": ["Se recorta una caja de una lámina cuadrada de 80 cm de lado. El desarrollo tiene una base cuadrada de 24 cm de lado, cuatro paredes rectangulares de 24 × 6 cm y cuatro triángulos de base 24 cm y altura 12 cm.", "No hay pestañas ni superposiciones. El sobrante no se reutiliza. Aproximadamente, ¿qué porcentaje de la lámina ocupa el desarrollo?"],
@@ -137,6 +178,11 @@
             },
             {
               "id": "a-area-2",
+              "errorFeedback": {
+                "a": {"reason": "El 11 % aproxima el aporte de la base sola. Una caja también necesita sus paredes y su techo.", "calculation": "20 × 20 ÷ (60 × 60) × 100 ≈ 11 %.", "question": "¿Qué otras superficies del desarrollo consumen cartón? ¿Tu suma incluye todos los rectángulos y los triángulos?"},
+                "b": {"reason": "Este porcentaje puede corresponder a contar solo dos grupos de piezas y omitir el tercero.", "calculation": "Base y paredes solas: (20² + 4 × 20 × 5) ÷ 3600 × 100 ≈ 22 %.", "question": "¿Ya sumaste las cuatro caras triangulares? ¿Podrías marcar en la plantilla cada pieza a medida que la contás?"},
+                "d": {"reason": "La mitad de la lámina no se justifica con las piezas indicadas. Puede que hayas estimado con el espacio alrededor del dibujo, que no está a escala.", "calculation": "Un 50 % de 60 × 60 cm equivale a 1800 cm². Ese es el área que afirma tu elección.", "question": "¿Coincide esa área con la suma de las piezas reales? ¿Debés medir el dibujo o usar las medidas escritas?"}
+              },
               "type": "choice",
               "title": "Un envase más pequeño",
               "prompt": ["Una lámina de cartón mide 60 × 60 cm. Para hacer una caja se recorta una base de 20 × 20 cm, cuatro paredes de 20 × 5 cm y cuatro triángulos de base 20 cm y altura 10 cm.", "Sin contar pestañas y sin reutilizar el sobrante, ¿qué porcentaje aproximado de la lámina se usa?"],
@@ -148,6 +194,11 @@
             },
             {
               "id": "a-area-3",
+              "errorFeedback": {
+                "a": {"reason": "El 26 % se aproxima al aporte de paredes y techo sin incluir la base. Revisá si olvidaste el cuadrado central.", "calculation": "(4 × 30 × 7 + 4 × 30 × 14 ÷ 2) ÷ 6400 × 100 = 26,25 %.", "question": "¿La base cuadrada está en tu inventario de piezas? ¿Qué área ocupa además de las paredes y el techo?"},
+                "c": {"reason": "La opción supone un área mayor que la que corresponde al desarrollo. Revisá especialmente cómo calculaste las caras triangulares.", "calculation": "Un 52 % de la lámina equivale a 0,52 × 6400 = 3328 cm².", "question": "¿Usaste base por altura o base por altura dividido entre dos en cada triángulo? ¿Contaste exactamente cuatro paredes y cuatro triángulos?"},
+                "d": {"reason": "La superficie sugerida por esta opción es demasiado grande para las piezas indicadas. Tal vez hayas contado zonas del contorno que se descartan.", "calculation": "Un 65 % de la lámina equivale a 0,65 × 6400 = 4160 cm².", "question": "¿Se aprovecha todo el cuadrado que rodea el desarrollo o solo sus piezas? ¿Qué regiones se recortan y sobran?"}
+              },
               "type": "choice",
               "title": "Planificar el material",
               "prompt": ["De una lámina de 80 × 80 cm se corta una caja con base cuadrada de 30 cm de lado, cuatro paredes de 30 × 7 cm y cuatro caras triangulares de base 30 cm y altura 14 cm.", "Se ignoran las pestañas. ¿Qué porcentaje aproximado del área de la lámina se utiliza?"],
@@ -164,6 +215,11 @@
           "questions": [
             {
               "id": "a-modelo-1",
+              "errorFeedback": {
+                "a": {"reason": "El año elegido todavía no alcanza la meta. Tal vez hayas redondeado hacia abajo los años transcurridos sin verificar la desigualdad.", "calculation": "En 2036, x = 2036 − 2024 = 12 y el modelo da 12 × 12 + 250 = 394 préstamos.", "question": "¿394 supera los 400? Si la pregunta pide el primer año entero que supera la meta, ¿cómo debés tratar un resultado no entero?"},
+                "c": {"reason": "Este año supera la meta, pero eso no basta: la consigna pide el primero. Puede que hayas añadido un año de más al redondear.", "calculation": "En 2038, x = 14 y el modelo da 12 × 14 + 250 = 418 préstamos.", "question": "¿Comprobaste el año inmediatamente anterior a tu elección? ¿También supera la meta o todavía no?"},
+                "d": {"reason": "El año elegido cumple con superar la meta, pero puede no ser el primero. Una estimación demasiado amplia omite revisar los años anteriores.", "calculation": "En 2040, x = 16 y el modelo da 12 × 16 + 250 = 442 préstamos.", "question": "¿Cómo encontrarías el menor entero que cumple la desigualdad, en vez de elegir cualquier año que la cumpla?"}
+              },
               "type": "choice",
               "title": "Una meta para la biblioteca",
               "prompt": ["Una biblioteca modela sus préstamos mensuales con las rectas del gráfico. x representa los años transcurridos desde 2024 y se consideran valores enteros de x. La línea verde corresponde a libros y la naranja a revistas.", "Si se mantiene el modelo, ¿cuál será el primer año en el que los préstamos mensuales de libros superen los 400?"],
@@ -175,6 +231,11 @@
             },
             {
               "id": "a-modelo-2",
+              "errorFeedback": {
+                "a": {"reason": "El modelo todavía queda por debajo de la meta en ese año. Revisá si confundiste el año de calendario con x.", "calculation": "En 2039, x = 2039 − 2025 = 14; 8 × 14 + 180 = 292 plantas.", "question": "¿Qué cuenta x y desde qué año? ¿El valor de ventas que obtenés con tu elección cumple realmente la condición?"},
+                "b": {"reason": "En ese año se iguala la meta, pero no se la supera. La palabra «superar» exige una desigualdad estricta.", "calculation": "En 2040, x = 15; 8 × 15 + 180 = 300 plantas.", "question": "¿Llegar exactamente a 300 es lo mismo que vender más de 300? ¿Qué condición debe cumplir el siguiente valor entero de x?"},
+                "d": {"reason": "La elección supera la meta, pero no garantiza que sea el primer año. Tal vez hayas avanzado un año adicional sin comprobar el anterior.", "calculation": "En 2042, x = 17; 8 × 17 + 180 = 316 plantas.", "question": "¿Qué pasa en el año inmediatamente anterior? ¿Cómo verificarías que tu elección es mínima y no solo válida?"}
+              },
               "type": "choice",
               "title": "El crecimiento de un vivero",
               "prompt": ["Un vivero usa dos modelos para estimar sus ventas mensuales. x cuenta los años desde 2025. Se consideran años enteros. La línea verde representa plantas y la naranja macetas.", "¿En qué primer año las ventas mensuales de plantas superarán las 300 unidades, si sigue la tendencia?"],
@@ -186,6 +247,11 @@
             },
             {
               "id": "a-modelo-3",
+              "errorFeedback": {
+                "a": {"reason": "El año elegido llega exactamente al valor de referencia. Es posible que hayas resuelto una igualdad cuando se pide superar.", "calculation": "En 2033, x = 2033 − 2023 = 10; 15 × 10 + 200 = 350 viajes.", "question": "¿La consigna dice alcanzar 350 o superar 350? ¿Cómo cambia eso el primer entero que puede servir?"},
+                "c": {"reason": "El año elegido supera la meta, pero puede haber otro anterior que también la supere. Revisá la condición «primer año».", "calculation": "En 2035, x = 12; 15 × 12 + 200 = 380 viajes.", "question": "¿Comprobaste el año previo? ¿Qué dos comprobaciones permiten asegurar que encontraste el primer año válido?"},
+                "d": {"reason": "Este año da una cantidad suficiente, pero parece una estimación posterior al cruce. No alcanza con encontrar un valor grande.", "calculation": "En 2036, x = 13; 15 × 13 + 200 = 395 viajes.", "question": "¿Cómo usarías la desigualdad para elegir el menor entero posible? ¿La respuesta cambia si revisás los años anteriores uno por uno?"}
+              },
               "type": "choice",
               "title": "Más viajes en bicicleta",
               "prompt": ["Un barrio estima el promedio diario de viajes en bicicleta y en monopatín con estas rectas. x representa años desde 2023. Se evalúan los años enteros.", "¿Cuál es el primer año en que los viajes diarios en bicicleta superarán los 350?"],
@@ -202,6 +268,7 @@
           "questions": [
             {
               "id": "a-argumento-1",
+              "reflectionQuestions": ["¿Cuál de las dos cantidades parte de un valor mayor?", "¿Qué pendiente es mayor y qué implica para la separación entre las rectas?", "¿Qué signo tiene la diferencia entre las funciones para x ≥ 0 y cómo justifica tu conclusión?"],
               "type": "open",
               "title": "¿Se cruzarán las tendencias?",
               "prompt": ["La biblioteca estima los préstamos mensuales de libros con L(x) = 12x + 250 y de revistas con R(x) = 5x + 100. x son los años desde 2024.", "Para x ≥ 0, ¿podrían los préstamos de revistas superar a los de libros si se mantienen estas tendencias? Justificá usando los valores iniciales y las pendientes, o la diferencia entre las funciones."],
@@ -213,6 +280,7 @@
             },
             {
               "id": "a-argumento-2",
+              "reflectionQuestions": ["¿Empezar con menos personas impide crecer más rápido?", "¿Qué ecuación representa el momento en que se igualan las cantidades?", "¿Distinguís entre el año en que se igualan y el primer año entero en que una supera a la otra?"],
               "type": "open",
               "title": "Una tendencia que alcanza a otra",
               "prompt": ["Un centro deportivo modela la cantidad de personas que eligen natación con N(x) = 10x + 200 y yoga con Y(x) = 20x + 100. x son los años desde 2025.", "¿Puede yoga superar a natación? Explicá cuándo se igualan y cuál es el primer año entero en que yoga queda por encima, suponiendo que los modelos se mantienen."],
@@ -224,6 +292,7 @@
             },
             {
               "id": "a-argumento-3",
+              "reflectionQuestions": ["¿Qué tienen en común las pendientes de los dos modelos?", "¿Qué ocurre con los términos con x al restar las funciones?", "¿La diferencia permanece fija o cambia? ¿Cómo se relaciona eso con alcanzar o superar al otro servicio?"],
               "type": "open",
               "title": "Dos servicios de reparto",
               "prompt": ["Una cooperativa estima sus entregas semanales con A(x) = 9x + 160 para el servicio A y B(x) = 9x + 90 para el servicio B. x cuenta los años desde 2026.", "¿Podrá B alcanzar o superar a A para x ≥ 0 si se mantienen los modelos? Justificá con las ecuaciones."],

@@ -30,7 +30,7 @@ h3 { font-size: 18px; line-height: 1.4; margin-bottom: 12px; }
 .hero { display: grid; grid-template-columns: 1.25fr 1fr; gap: 60px; align-items: center; padding: 16px 0 42px; }
 .hero-description { color: var(--muted); max-width: 510px; font-size: 16px; }
 .hero-pills { display: flex; gap: 19px; flex-wrap: wrap; margin-top: 26px; font-size: 12px; color: var(--muted); }
-.hero-pills span::before { content: "✓"; color: var(--green); margin-right: 7px; font-weight: bold; }
+.hero-pills span::before { content: "\2713"; color: var(--green); margin-right: 7px; font-weight: bold; }
 .notebook { background: #e5ecdf; border-radius: 16px; padding: 26px; transform: rotate(2deg); position: relative; }
 .notebook-sheet { background: var(--paper); border: 1px solid #dde0d3; padding: 26px 30px; box-shadow: 0 8px 14px #233b330a; transform: rotate(-4deg); border-radius: 3px; background-image: repeating-linear-gradient(transparent, transparent 32px, #d8e3d840 33px, transparent 34px); }
 .notebook-sheet .scribble { font: italic 27px Georgia, serif; color: var(--green); margin: 20px 0; }
@@ -101,6 +101,19 @@ textarea { width: 100%; min-height: 160px; resize: vertical; padding: 14px; colo
 .feedback.correct { background: #eaf3e7; border-color: var(--green); }
 .feedback p:last-child { margin-bottom: 0; }
 .feedback h3 { font-size: 16px; }
+.feedback h4 { font-size: 14px; margin: 18px 0 8px; }
+.calculation { white-space: pre-line; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.reflection-question { margin: 0 0 18px; padding: 12px 16px; border-left: 3px solid #b48238; background: #fffaf0; font-weight: 600; }
+.model-answer { margin-top: 20px; border-top: 1px solid #d8cba9; padding-top: 14px; }
+.model-answer summary { cursor: pointer; font-weight: 650; margin-bottom: 12px; }
+.guide-content { max-width: 840px; margin: auto; }
+.guide-section { padding: 26px; margin-top: 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; }
+.guide-section li { margin-bottom: 10px; }
+.guide-section h2 { font-size: 24px; }
+.guide-section a, .source-link { color: var(--green); text-underline-offset: 3px; }
+.topic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.topic-grid p { margin-bottom: 0; font-size: 14px; }
+.topic-grid h3 { margin-bottom: 8px; }
 .review-header { max-width: 680px; margin-bottom: 30px; }
 .review-header h1 { font-size: 39px; }
 .review-header p { color: var(--muted); }
@@ -129,4 +142,5 @@ details.result-card { background: var(--paper); border: 1px solid var(--line); b
 @media (max-width: 850px) { .workspace { grid-template-columns: minmax(0, 1fr); } .sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } .hero { gap: 30px; } .modules { gap: 12px; } .module-card { padding: 20px; } .header-note { letter-spacing: 0; } }
 @media (max-width: 620px) { .site-header { padding: 18px 20px; } .header-note { font-size: 0; } .header-note .tag { font-size: 10px; } main { padding: 30px 18px 45px; } .hero { grid-template-columns: 1fr; padding-top: 0; gap: 30px; } .notebook { max-width: 370px; margin: 0 auto 15px; width: 90%; padding: 18px; } .notebook-sheet { padding: 20px 24px; } .modules { grid-template-columns: 1fr; } .module-top { margin-bottom: 15px; } .module-card { padding: 22px; } .section-heading { align-items: flex-start; flex-direction: column; gap: 6px; } .site-footer { flex-direction: column; padding: 20px; } .exercise-top { flex-wrap: wrap; } .progress-layout { width: 100%; justify-content: space-between; } .steps { gap: 5px; } .steps button { width: 31px; height: 31px; } .question-heading { padding: 22px 20px 0; } .question-heading h1 { font-size: 25px; } .question-body, .answer-area { padding-left: 20px; padding-right: 20px; } .sidebar { grid-template-columns: 1fr; gap: 0; } .select-row { grid-template-columns: 1fr; } .actions-group { width: 100%; } .actions-group button { flex: 1; } .review-item { padding: 17px; gap: 10px; } .review-item button { padding: 8px 12px; font-size: 12px; } .score-panel { padding: 24px; gap: 20px; } .score-number { font-size: 39px; } .visual { padding: 8px; } .intro-note { padding: 20px; } }
 @media (max-width: 380px) { .site-header { flex-wrap: wrap; gap: 10px; } .header-note { margin-left: auto; } .progress-layout { flex-wrap: wrap; gap: 10px; } .review-item { flex-wrap: wrap; } .score-panel { flex-wrap: wrap; } .illustrated-options { grid-template-columns: 1fr; } }
+@media (max-width: 620px) { .intro-note:has(.button) { flex-direction: column; } .topic-grid { grid-template-columns: 1fr; } .guide-section { padding: 20px; } }
 @media (prefers-reduced-motion: no-preference) { button { transition: background .15s, border-color .15s; } }

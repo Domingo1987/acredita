@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { validateBank, createAttempt, questionsFor, grade, isAnswered, summarize, restoreAttempt } from "../js/core.js";
+import { validateBank, createAttempt, questionsFor, grade, errorGuidance, isAnswered, summarize, restoreAttempt } from "../js/core.js";
 import { escapeHTML, visualHTML, boxSVG } from "../js/visuals.js";
 
 const bank = JSON.parse(readFileSync(new URL("../data/activities.json", import.meta.url), "utf8"));
@@ -62,6 +62,90 @@ test("el resumen puntúa sobre cinco, no sobre seis", () => {
     Object.fromEntries(q.fields.map(f => [f.id, f.answer])) : q.type === "open" ? "Justificación." : q.answer]));
   assert.deepEqual(summarize(questions, answers), { correct: 5, incorrect: 0, unanswered: 0, manual: 1, automaticTotal: 5 });
   assert.deepEqual(summarize(questions, {}), { correct: 0, incorrect: 0, unanswered: 6, manual: 0, automaticTotal: 5 });
+});
+
+test("cada distractor tiene orientación y pregunta sin la respuesta correcta ni explicación completa", () => {
+  let errors = 0;
+  for (const q of moduleA.slots.slice(1, 5).flatMap(slot => slot.questions)) {
+    for (const option of q.options.filter(o => o.id !== q.answer)) {
+      const guidance = errorGuidance(q, option.id);
+      assert.equal(guidance, q.errorFeedback[option.id]);
+      assert.ok(guidance.reason.length > 20);
+      assert.match(guidance.question, /¿.+\?/);
+      const text = JSON.stringify(guidance);
+      assert.ok(!text.includes(q.explanation));
+      assert.ok(!text.includes(selectedAnswer(q)), `${q.id}: se filtró la respuesta correcta`);
+      errors++;
+    }
+    assert.throws(() => errorGuidance(q, q.answer), /incorrecta/);
+    assert.throws(() => errorGuidance(q, ""), /incorrecta/);
+  }
+  assert.equal(errors, 36);
+});
+
+test("se comprueban las 45 parejas incorrectas de precios usando solo las elecciones", () => {
+  let errors = 0;
+  for (const q of moduleA.slots[0].questions) {
+    const [a, b] = q.fields;
+    for (const oa of a.options) {
+      for (const ob of b.options) {
+        const answers = { [a.id]: oa.id, [b.id]: ob.id };
+        if (grade(q, answers) === "correct") continue;
+        const guidance = errorGuidance(q, answers);
+        assert.equal(guidance.reason, q.errorFeedback.reason);
+        assert.equal(guidance.question, q.errorFeedback.question);
+        const lines = guidance.calculation.split("\n");
+        assert.equal(lines.length, 2);
+        q.verification.forEach((v, i) => {
+          const total = v.quantities[0] * Number(oa.id) + v.quantities[1] * Number(ob.id);
+          const format = n => new Intl.NumberFormat("es-UY", { maximumFractionDigits: 2 }).format(n);
+          assert.ok(lines[i].includes(`${v.quantities[0]} × ${oa.id} + ${v.quantities[1]} × ${ob.id} = $${format(total)}`));
+          assert.ok(lines[i].endsWith(total === v.total ? ": coincide." : ": no coincide."));
+        });
+        assert.ok(lines.some(line => line.endsWith(": no coincide.")));
+        assert.ok(!guidance.calculation.includes(q.explanation));
+        errors++;
+      }
+    }
+  }
+  assert.equal(errors, 45);
+});
+
+test("el banco exige devoluciones completas y preguntas de reflexión", () => {
+  for (const mutate of [
+    b => { delete b.modules[0].slots[1].questions[0].errorFeedback.a; },
+    b => { b.modules[0].slots[1].questions[0].errorFeedback.c = { reason: "No debe estar.", question: "¿Por qué?" }; },
+    b => { b.modules[0].slots[1].questions[0].errorFeedback.a.question = ""; },
+    b => { b.modules[0].slots[1].questions[0].errorFeedback.a.calculation = 123; },
+    b => { b.modules[0].slots[0].questions[0].verification[0].quantities.pop(); },
+    b => { b.modules[0].slots[0].questions[0].fields[0].options[0].id = "precio-no-numérico"; },
+    b => { b.modules[0].slots[5].questions[0].reflectionQuestions = []; }
+  ]) {
+    const copy = clone(bank);
+    mutate(copy);
+    assert.throws(() => validateBank(copy));
+  }
+});
+
+test("las comprobaciones del banco se cumplen con los precios correctos", () => {
+  for (const q of moduleA.slots[0].questions) {
+    const prices = q.fields.map(f => Number(f.answer));
+    for (const check of q.verification) {
+      assert.equal(check.quantities.reduce((sum, quantity, i) => sum + quantity * prices[i], 0), check.total);
+    }
+  }
+});
+
+test("la orientación no altera la respuesta, su corrección ni el progreso", () => {
+  const attempt = createAttempt(moduleA, () => 0);
+  const q = questionsFor(bank, attempt)[1];
+  attempt.answers[q.id] = q.options.find(o => o.id !== q.answer).id;
+  attempt.checked[q.id] = true;
+  const before = clone(attempt);
+  errorGuidance(q, attempt.answers[q.id]);
+  assert.deepEqual(attempt, before);
+  assert.equal(grade(q, attempt.answers[q.id]), "incorrect");
+  assert.deepEqual(restoreAttempt(bank, attempt), before);
 });
 
 test("se restaura exactamente la combinación, respuestas, pistas y autoevaluación", () => {

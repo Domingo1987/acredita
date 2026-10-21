@@ -12,12 +12,14 @@ Aplicación estática e independiente para practicar resolución de problemas ma
   4. Áreas y aprovechamiento: opción múltiple con desarrollo del envase.
   5. Modelos lineales: gráfica y opción múltiple.
   6. Comparación de tendencias: respuesta escrita con justificación.
-- Dos pistas progresivas por ejercicio, comprobación opcional y explicación.
+- Dos pistas progresivas por ejercicio y comprobación opcional. Ante un error, orientación específica de la opción y una pregunta para revisar, sin mostrar la respuesta correcta. El planteo completo aparece al acertar.
 - Navegación hacia atrás, borrado y revisión antes de finalizar; se puede finalizar con actividades sin responder.
-- Resultado automático sobre **cinco respuestas cerradas**. La respuesta escrita se compara con un modelo y una rúbrica de **autoevaluación**: no se pretende corregir lenguaje natural automáticamente.
+- Resultado automático sobre **cinco respuestas cerradas**. En los resultados, los errores y las actividades vacías tampoco revelan soluciones; permiten reintentar. El puntaje se recalcula con las respuestas actuales al finalizar de nuevo.
+- La respuesta escrita recibe preguntas de reflexión. El modelo y la rúbrica de **autoevaluación** solo se muestran al abrir una comparación explícita: no se pretende corregir lenguaje natural automáticamente.
 - Progreso, combinación sorteada y resultados guardados en `localStorage`, solo en ese navegador y origen. Un nuevo intento reemplaza al anterior, previa confirmación. No hay cuentas, analítica ni envío de respuestas.
 - Diseño adaptable a celulares, navegación por teclado, controles nativos y gráficas SVG propias sin recursos externos.
 - B y C aparecen como pendientes hasta incorporar sus bancos completos.
+- [Página de orientaciones](./orientaciones.html) con síntesis propia de la sección 3 de ANEP y acceso a la fuente oficial completa. No es una transcripción; distingue los contenidos oficiales del alcance parcial de la app.
 
 Las variantes se sortean de manera independiente. Los ejercicios de áreas y de tendencias incluyen todos sus propios datos: no dependen de la variante elegida en otra posición. Un nuevo intento puede repetir ejercicios; no se garantiza una combinación distinta.
 
@@ -47,6 +49,7 @@ No incluyas información privada en el banco: tanto las preguntas como sus soluc
 ## Archivos
 
 - [index.html](./index.html): entrada de la aplicación.
+- [orientaciones.html](./orientaciones.html): preparación y enlace a las orientaciones oficiales.
 - [styles.css](./styles.css): presentación y diseño responsive.
 - [js/app.js](./js/app.js): pantallas, eventos y persistencia.
 - [js/core.js](./js/core.js): validación del banco, sorteo, corrección y restauración.
@@ -78,6 +81,23 @@ Ejemplo de una variante para la segunda posición (`choice`):
     {"id": "d", "label": "550 g"}
   ],
   "answer": "c",
+  "errorFeedback": {
+    "a": {
+      "reason": "Esta elección puede salir al recuperar una sola de las dos pérdidas.",
+      "calculation": "400 × 0,8 × 0,8 = 256 g, no los 320 g pedidos.",
+      "question": "¿Tu planteo deshace ambas etapas o solo una?"
+    },
+    "b": {
+      "reason": "La masa elegida resulta insuficiente al comprobar las dos reducciones.",
+      "calculation": "450 × 0,8 × 0,8 = 288 g.",
+      "question": "¿Qué parte se conserva en cada etapa y cómo se encadenan esas partes?"
+    },
+    "d": {
+      "reason": "La elección produce más cantidad que la solicitada.",
+      "calculation": "550 × 0,8 × 0,8 = 352 g.",
+      "question": "¿Cómo podrías deshacer exactamente las dos transformaciones, en vez de estimar una masa mayor?"
+    }
+  },
   "hints": [
     "Cada etapa conserva el 80 %.",
     "Dividí 320 entre 0,8 × 0,8."
@@ -88,9 +108,11 @@ Ejemplo de una variante para la segunda posición (`choice`):
 
 ### Formatos de respuesta
 
-- `select`, posición 1: `fields` con exactamente dos campos. Cada campo tiene `id`, `label`, `options` y `answer`. Las opciones contienen `id` y `label`; `answer` es el identificador correcto, **siempre una cadena**. Solo se considera respondida cuando ambos campos están completos.
-- `choice`, posiciones 2 a 5: `options` con cuatro opciones de `id` y `label`, y `answer` con el identificador correcto. En la posición espacial, cada opción puede incluir `faces: ["A", "B"]` para dibujar la caja.
-- `open`, posición 6: `modelAnswer` con una respuesta orientativa y `rubric` con una lista de criterios. La persona marca cuáles cumple. No usar palabras clave para simular una corrección fiable de una justificación.
+- `select`, posición 1: `fields` con exactamente dos campos. Cada campo tiene `id`, `label`, `options` y `answer`. Las opciones contienen `id` y `label`; para los precios, los identificadores son **cadenas numéricas**, por ejemplo `"60"`. Solo se considera respondida cuando ambos campos están completos. La actividad necesita `errorFeedback` con `reason` y `question`, y dos comprobaciones en `verification`: por ejemplo, `[{"quantities":[4,6],"total":360},{"quantities":[2,4],"total":200}]`. Las cantidades siguen el mismo orden que `fields`. La devolución sustituye los precios elegidos en ambas compras y señala qué total coincide o no; nunca sustituye los precios correctos.
+- `choice`, posiciones 2 a 5: `options` con cuatro opciones de `id` y `label`, y `answer` con el identificador correcto. `errorFeedback` debe tener exactamente una entrada por cada identificador incorrecto, sin entrada para el correcto. Cada entrada tiene `reason` (posible confusión o revisión verificable), `question` (pregunta para reorientar) y opcionalmente `calculation` (comprobación o cálculo posible, sin revelar la solución). En la posición espacial, cada opción puede incluir `faces: ["A", "B"]` para dibujar la caja.
+- `open`, posición 6: `reflectionQuestions` con preguntas que no revelen la conclusión, `modelAnswer` con una respuesta orientativa y `rubric` con una lista de criterios. El modelo y la rúbrica quedan detrás de una comparación voluntaria. No usar palabras clave para simular una corrección fiable de una justificación.
+
+Las confusiones sugeridas **no son diagnósticos del procedimiento real**: una elección no demuestra qué cálculo hizo la persona. Redactá «esta opción puede aparecer si…» y no «hiciste…». Si incluís un cálculo, verificá sus números. La explicación completa en `explanation` debe contener el planteo, los pasos y una comprobación contextual; solo se muestra automáticamente al acertar. No pongas la solución en `errorFeedback`, en las preguntas de reflexión ni en las pistas.
 
 ### Ilustraciones opcionales
 
@@ -113,7 +135,7 @@ Con Node.js 20 o superior:
 npm test
 ```
 
-Las pruebas verifican las seis posiciones y sus tres variantes, selección independiente, corrección, restauración de progreso, rechazo de datos inválidos, formatos SVG y **cálculos de las soluciones**: sistemas, porcentajes sucesivos, vecindad de caras, áreas, desigualdades estrictas y tendencias.
+Las pruebas verifican las seis posiciones y sus tres variantes, selección independiente, corrección, restauración de progreso, rechazo de datos inválidos, formatos SVG y **cálculos de las soluciones**: sistemas, porcentajes sucesivos, vecindad de caras, áreas, desigualdades estrictas y tendencias. También recorren todos los distractores y las combinaciones de precios para comprobar la cobertura de la orientación sin soluciones.
 
 Después de editar el banco, ejecutá las pruebas y revisá el flujo en el navegador. El validador detecta varios errores de estructura, pero no sustituye la revisión pedagógica ni comprueba automáticamente cualquier ejercicio nuevo.
 

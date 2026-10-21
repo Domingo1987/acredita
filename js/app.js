@@ -1,4 +1,4 @@
-import { STORAGE_KEY, validateBank, createAttempt, questionsFor, isAnswered, grade, summarize, restoreAttempt } from "./core.js";
+import { STORAGE_KEY, validateBank, createAttempt, questionsFor, isAnswered, grade, errorGuidance, summarize, restoreAttempt } from "./core.js";
 import { escapeHTML as e, visualHTML, boxSVG } from "./visuals.js";
 
 const root = document.querySelector("#app");
@@ -68,6 +68,7 @@ function homeHTML() {
     }).join("")}</div>
   </section>
   <aside class="intro-note"><span aria-hidden="true">✎</span><p><strong>Antes de empezar, tené a mano lápiz, papel y calculadora.</strong><br>Elegimos al azar un ejercicio de cada tipo. Podés volver atrás, pedir pistas y revisar tus respuestas antes de terminar. El progreso se guarda solo en este navegador.</p></aside>
+  <aside class="intro-note"><p><strong>¿Qué se evalúa y cómo prepararse?</strong><br>Consultá nuestra síntesis de las orientaciones de ANEP y accedé al documento oficial completo.</p><a class="button" href="./orientaciones.html">Ver orientaciones →</a></aside>
   <p class="field-note">Material original de práctica inspirado en la dinámica de los ejemplos de Acredita EMS. No reproduce una prueba oficial ni predice su resultado.</p>`;
 }
 
@@ -90,11 +91,30 @@ function answerHTML(q) {
 
 function feedbackHTML(q) {
   const status = grade(q, attempt.answers[q.id]);
+  let content;
+  if (status === "incorrect") {
+    const guidance = errorGuidance(q, attempt.answers[q.id]);
+    const index = questionsFor(bank, attempt).findIndex(item => item.id === q.id);
+    content = `<p>${e(guidance.reason)}</p>
+      ${guidance.calculation ? `<h4>Para revisar el cálculo</h4><p class="calculation">${e(guidance.calculation)}</p>` : ""}
+      <h4>La pregunta para hacerte</h4><blockquote class="reflection-question">${e(guidance.question)}</blockquote>
+      <p class="field-note">La orientación parte de tu elección: no permite saber con certeza qué procedimiento hiciste. No mostramos la solución para que puedas revisar tu estrategia.</p>
+      ${button("retry", "Volver a intentarlo", "", `data-index="${index}"`)}`;
+  } else if (status === "manual") {
+    content = `<p>Tu texto necesita una revisión personal: no podemos afirmar automáticamente si está bien o mal. Antes de mirar una solución, preguntate:</p>
+      <ul>${q.reflectionQuestions.map(question => `<li>${e(question)}</li>`).join("")}</ul>
+      <details class="model-answer"><summary>Comparar con un modelo (muestra una posible solución)</summary>
+        <p>${e(q.explanation)}</p><h4>Una respuesta posible</h4><p>${e(q.modelAnswer)}</p>${rubricHTML(q)}
+      </details>`;
+  } else if (status === "correct") {
+    content = `<p>Respuesta verificada: <strong>${e(expectedAnswer(q))}</strong></p>
+      <h4>Planteo y resolución completa</h4><p>${e(q.explanation)}</p>`;
+  } else {
+    throw new Error("No se puede mostrar una devolución sin una respuesta completa.");
+  }
   return `<section class="feedback ${status === "correct" ? "correct" : ""}" tabindex="-1" aria-label="Devolución">
-    <h3>${status === "correct" ? "¡Bien resuelto!" : status === "manual" ? "Compará y autoevaluá tu explicación" : "Hay algo para revisar"}</h3>
-    ${status === "incorrect" ? `<p>Respuesta esperada: <strong>${e(expectedAnswer(q))}</strong></p>` : ""}
-    <p>${e(q.explanation)}</p>
-    ${q.type === "open" ? `<p><strong>Una respuesta posible</strong></p><p>${e(q.modelAnswer)}</p>${rubricHTML(q)}` : ""}
+    <h3>${status === "correct" ? "¡Bien resuelto!" : status === "manual" ? "Revisá tu argumento" : "Hay algo para mejorar"}</h3>
+    ${content}
   </section>`;
 }
 
@@ -145,7 +165,7 @@ function expectedAnswer(q) {
 function reviewHTML() {
   const questions = questionsFor(bank, attempt);
   const missing = questions.filter(q => !isAnswered(q, attempt.answers[q.id])).length;
-  return `<header class="review-header"><p class="eyebrow">Módulo ${e(attempt.moduleId)} · Antes de terminar</p><h1>Una última mirada.</h1><p>Todavía podés volver a una actividad y cambiar tu respuesta. Al finalizar vas a ver las soluciones y la devolución completa.</p></header>
+  return `<header class="review-header"><p class="eyebrow">Módulo ${e(attempt.moduleId)} · Antes de terminar</p><h1>Una última mirada.</h1><p>Todavía podés volver a una actividad y cambiar tu respuesta. Al finalizar verás el desarrollo de los aciertos y preguntas para seguir pensando los errores, sin revelar sus soluciones.</p></header>
     ${missing ? `<aside class="intro-note" role="status"><p><strong>${missing} ${missing === 1 ? "actividad sin completar" : "actividades sin completar"}.</strong> Podés volver a responder o finalizar igualmente; las respuestas vacías quedarán como «Sin responder».</p></aside>` : ""}
     <div class="review-list">${questions.map((q, i) => `<article class="review-item"><div><h3>${i + 1}. ${e(q.title)}</h3><p>${e(q.type === "open" && isAnswered(q, attempt.answers[q.id]) ? "Respuesta escrita guardada" : answerText(q))}</p></div>${button("goto", "Revisar", "", `data-index="${i}"`)}</article>`).join("")}</div>
     <div class="actions">${button("goto", "← Volver a la práctica", "", 'data-index="5"')}${button("finalize", "Finalizar y ver resultados →", "primary")}</div>`;
@@ -156,11 +176,10 @@ function resultsHTML() {
   const summary = summarize(questions, attempt.answers);
   return `<header class="review-header"><p class="eyebrow">Módulo ${e(attempt.moduleId)} · Práctica finalizada</p><h1>Cada intento te enseña algo.</h1><p>Revisá qué resolviste bien y qué podés seguir practicando. Este resultado es orientativo: no es una calificación oficial.</p></header>
     <section class="score-panel" aria-label="Resultado automático"><div class="score-number">${summary.correct}<span style="font-size:24px"> / ${summary.automaticTotal}</span></div><div><strong>Respuestas cerradas correctas</strong><p>${summary.incorrect} para repasar · ${questions.filter(q => q.type !== "open" && !isAnswered(q, attempt.answers[q.id])).length} sin responder</p><p>La actividad escrita se autoevalúa por separado. No está incluida en este puntaje.</p></div></section>
-    <h2>Tu recorrido, actividad por actividad</h2><p class="field-note">Abrí cada actividad para ver tu respuesta, la solución y la explicación.</p>
+    <h2>Tu recorrido, actividad por actividad</h2><p class="field-note">Los aciertos muestran el planteo completo. Los errores te orientan sin revelar la solución y permiten volver a intentarlo.</p>
     ${questions.map((q, i) => `<details class="result-card"><summary>${i + 1}. ${e(q.title)} ${badge(grade(q, attempt.answers[q.id]))}</summary>
       <div class="result-content">${promptHTML(q)}<h3>Tu respuesta</h3><p class="saved-answer">${e(answerText(q))}</p>
-      ${q.type !== "open" ? `<h3>Respuesta esperada</h3><p>${e(expectedAnswer(q))}</p>` : ""}
-      <p>${e(q.explanation)}</p>${q.type === "open" ? `<h3>Una respuesta posible</h3><p>${e(q.modelAnswer)}</p>${rubricHTML(q)}` : ""}
+      ${isAnswered(q, attempt.answers[q.id]) ? feedbackHTML(q) : `<p>No hay una respuesta para revisar todavía. Probá un planteo antes de consultar una devolución.</p>${button("retry", "Intentar esta actividad", "", `data-index="${i}"`)}`}
       <p class="field-note">Pistas consultadas: ${attempt.hints[q.id] ?? 0} de ${q.hints.length}.</p></div></details>`).join("")}
     <div class="actions">${button("home", "← Volver a módulos")}${button("new", "Practicar otra combinación →", "primary", `data-module="${e(attempt.moduleId)}"`)}</div>`;
 }
@@ -184,6 +203,13 @@ root.addEventListener("click", event => {
   }
   if (action === "resume") { screen = "attempt"; render(true); return; }
   if (!attempt) return;
+  if (action === "retry") {
+    const index = Number(target.dataset.index);
+    delete attempt.checked[attempt.questionIds[index]];
+    moveTo(index);
+    root.querySelector(".answer-area input, .answer-area select, .answer-area textarea")?.focus();
+    return;
+  }
   if (action === "goto") { moveTo(Number(target.dataset.index)); return; }
   if (action === "previous") { if (attempt.index > 0) moveTo(attempt.index - 1); return; }
   if (action === "next") {

@@ -31,7 +31,20 @@ export function validateBank(bank) {
         if (q.type === "select" && (!Array.isArray(q.fields) || q.fields.length !== 2 ||
             new Set(q.fields.map(f => f.id)).size !== q.fields.length ||
             q.fields.some(f => !f.id || !f.label || !validOptions(f.options, f.answer)))) fail(`campos inválidos en ${q.id}.`);
+        const validGuidance = value => value && typeof value.reason === "string" && value.reason.trim() &&
+          typeof value.question === "string" && value.question.trim() &&
+          (value.calculation === undefined || (typeof value.calculation === "string" && value.calculation.trim()));
+        if (q.type === "choice" && (!q.errorFeedback || Object.keys(q.errorFeedback).length !== q.options.length - 1 ||
+            q.options.some(o => o.id !== q.answer && !validGuidance(q.errorFeedback[o.id])) ||
+            Object.hasOwn(q.errorFeedback, q.answer))) fail(`falta orientación para cada error en ${q.id}.`);
+        if (q.type === "select" && (!validGuidance(q.errorFeedback) ||
+            q.fields.some(f => f.options.some(o => !o.id.trim() || !Number.isFinite(Number(o.id)))) ||
+            !Array.isArray(q.verification) || q.verification.length !== 2 ||
+            q.verification.some(v => !Array.isArray(v.quantities) || v.quantities.length !== q.fields.length ||
+              v.quantities.some(n => !Number.isFinite(n) || n <= 0) || !Number.isFinite(v.total) || v.total <= 0))) fail(`comprobación de precios inválida en ${q.id}.`);
         if (q.type === "open" && (!q.modelAnswer || !Array.isArray(q.rubric) || !q.rubric.length || q.rubric.some(r => typeof r !== "string"))) fail(`rúbrica incompleta en ${q.id}.`);
+        if (q.type === "open" && (!Array.isArray(q.reflectionQuestions) || !q.reflectionQuestions.length ||
+            q.reflectionQuestions.some(r => typeof r !== "string" || !r.trim()))) fail(`faltan preguntas de reflexión en ${q.id}.`);
         if (q.visual) {
           const v = q.visual;
           if (!["net", "chart"].includes(v.kind)) fail(`ilustración desconocida en ${q.id}.`);
@@ -73,6 +86,19 @@ export function grade(question, answer) {
   if (question.type === "open") return "manual";
   if (question.type === "select") return question.fields.every(f => answer[f.id] === f.answer) ? "correct" : "incorrect";
   return answer === question.answer ? "correct" : "incorrect";
+}
+
+export function errorGuidance(question, answer) {
+  if (grade(question, answer) !== "incorrect") throw new Error("La orientación de error requiere una respuesta incorrecta completa.");
+  if (question.type === "choice") return question.errorFeedback[answer];
+  const format = value => new Intl.NumberFormat("es-UY", { maximumFractionDigits: 2 }).format(value);
+  const prices = question.fields.map(f => Number(answer[f.id]));
+  const checks = question.verification.map((v, i) => {
+    const total = v.quantities.reduce((sum, quantity, index) => sum + quantity * prices[index], 0);
+    const expression = v.quantities.map((quantity, index) => `${format(quantity)} × ${format(prices[index])}`).join(" + ");
+    return `Compra ${i + 1}: ${expression} = $${format(total)}. El enunciado indica $${format(v.total)}: ${Math.abs(total - v.total) < 0.005 ? "coincide" : "no coincide"}.`;
+  });
+  return { ...question.errorFeedback, calculation: checks.join("\n") };
 }
 
 export function summarize(questions, answers) {

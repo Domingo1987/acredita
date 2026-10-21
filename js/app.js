@@ -5,6 +5,11 @@ import {
 } from "./core.js";
 import { escapeHTML as e, visualHTML, boxSVG } from "./visuals.js";
 import { initializeMath, reasoningHTML as math } from "./math.js";
+import {
+  HISTORY_KEY, LEARNING_LABELS as learningLabels, emptyHistory, validateHistory,
+  snapshotAttempt, upsertHistory, updateArchivedExtras
+} from "./history.js";
+import { progressHTML } from "./history-view.js";
 
 const root = document.querySelector("#app");
 const notice = document.querySelector("#notice");
@@ -12,10 +17,9 @@ const labels = { correct: "Correcta", incorrect: "Para repasar", unanswered: "Si
 let bank;
 let attempt = null;
 let screen = "home";
-const learningLabels = {
-  independent: "Primer intento sin pistas", withHints: "Primer intento con pistas",
-  afterReview: "Resuelta después de revisar", toPractice: "Para seguir practicando", unknown: "Sin registro inicial"
-};
+let archive = emptyHistory();
+let archiveError = "";
+let historyStatus = "";
 
 function activityContext() {
   if (attempt.activeReinforcement) {
@@ -30,12 +34,64 @@ function warn(message, error) {
   notice.hidden = false;
 }
 
-function save() {
+function persistAttempt() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(attempt));
+    return true;
   } catch (error) {
     warn("No se pudo guardar el progreso en este navegador. Podés seguir practicando, pero al cerrar o recargar se perderán los cambios no guardados.", error);
+    return false;
   }
+}
+
+function persistArchive(next) {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+    archive = next;
+    if (next.entries.length) historyStatus = "";
+    return true;
+  } catch (error) {
+    warn("No se pudo guardar el historial. Los cambios no archivados pueden perderse al recargar. Conservá esta pestaña y reintentá antes de empezar otro bloque.", error);
+    return false;
+  }
+}
+
+function save() {
+  const saved = persistAttempt();
+  if (!archive || !attempt || attempt.historyExcluded) return saved;
+  const next = updateArchivedExtras(bank, archive, attempt);
+  return next === archive ? saved : persistArchive(next) && saved;
+}
+
+function archiveCurrent() {
+  if (!attempt || attempt.historyExcluded) return true;
+  if (!archive) {
+    warn("El historial no está disponible. No reemplazamos el bloque finalizado: revisá «Mi progreso» antes de iniciar otro.", new Error(archiveError));
+    return false;
+  }
+  if (attempt.phase !== "results") {
+    if (archive.entries.some(entry => entry.id === attempt.id)) return true;
+    warn("Este bloque tuvo una entrega que no se pudo archivar. Volvé a finalizarlo antes de iniciar otro para conservar su resumen.", new Error("Falta el resumen finalizado."));
+    return false;
+  }
+  return persistArchive(upsertHistory(archive, snapshotAttempt(bank, attempt)));
+}
+
+function loadArchive() {
+  try {
+    const saved = localStorage.getItem(HISTORY_KEY);
+    archive = saved === null ? emptyHistory() : validateHistory(JSON.parse(saved));
+  } catch (error) {
+    archive = null;
+    archiveError = error.message;
+    warn("No se pudo leer el historial. No lo sobrescribimos; podés revisarlo en «Mi progreso». Tu intento actual se mantiene separado.", error);
+  }
+}
+
+function showScreen(next) {
+  screen = next;
+  globalThis.history.replaceState(null, "", next === "progress" ? "#progreso" : location.pathname + location.search);
+  render(true);
 }
 
 function button(action, text, style = "", extra = "") {
@@ -48,6 +104,7 @@ function badge(status) {
 
 function render(focus = false) {
   root.innerHTML = screen === "home" ? homeHTML() :
+    screen === "progress" ? progressHTML(archive, { error: archiveError, status: historyStatus, hasAttempt: Boolean(attempt) }) :
     attempt.activeReinforcement || attempt.phase === "exercise" ? exerciseHTML() :
     attempt.phase === "review" ? reviewHTML() : resultsHTML();
   if (focus) {
@@ -69,6 +126,7 @@ function homeHTML() {
       <p>No se trata de hacerlo rápido.<br>Se trata de entender cómo.</p>
     </div></div>
   </section>
+  <aside class="progress-invite"><div><h2>Tu práctica deja un recorrido</h2><p>${archive ? `${archive.entries.length} bloques finalizados guardados en este navegador.` : "El historial necesita atención; tu intento actual sigue disponible."}</p></div>${button("progress", "Ver mi progreso →")}</aside>
   <section aria-labelledby="modules-title"><div class="section-heading"><h2 id="modules-title">Elegí tu módulo de práctica</h2><span>6 actividades por intento · Nuevas combinaciones</span></div>
     <div class="modules">${bank.modules.map(module => {
       const ready = module.status === "ready";
@@ -238,7 +296,7 @@ function resultsHTML() {
       ${isAnswered(q, attempt.answers[q.id]) ? feedbackHTML(q) : `<p>No hay una respuesta para revisar todavía. Probá un planteo antes de consultar una devolución.</p>${button("retry", "Intentar esta actividad", "", `data-index="${i}"`)}`}
       ${learningRecordHTML(q)}
       <p class="field-note">Pistas consultadas: ${attempt.hints[q.id] ?? 0} de ${q.hints.length}.</p></div></details>`).join("")}
-    <div class="actions">${button("home", "← Volver a módulos")}${button("new", "Practicar otra combinación →", "primary", `data-module="${e(attempt.moduleId)}"`)}</div>`;
+    <div class="actions">${button("home", "← Volver a módulos")}${button("progress", "Ver mi progreso →")}${button("new", "Practicar otra combinación →", "primary", `data-module="${e(attempt.moduleId)}"`)}</div>`;
 }
 
 function moveTo(index) {
@@ -253,13 +311,28 @@ root.addEventListener("click", event => {
   const target = event.target.closest("button[data-action]");
   if (!target) return;
   const action = target.dataset.action;
-  if (action === "home") { screen = "home"; render(true); return; }
-  if (action === "new") {
-    if (attempt && !confirm("Al iniciar otro intento se reemplazará el progreso y el resultado anterior guardados en este navegador. ¿Continuar?")) return;
-    attempt = createAttempt(bank.modules.find(m => m.id === target.dataset.module));
-    screen = "attempt"; save(); render(true); return;
+  if (action === "home") { showScreen("home"); return; }
+  if (action === "progress") { showScreen("progress"); return; }
+  if (action === "clear-history") {
+    if (!confirm("¿Borrar todos los resúmenes del historial de este navegador? No se pueden recuperar. Tu intento actual no se borra y no se volverá a archivar hasta que lo finalices nuevamente.")) return;
+    if (attempt) {
+      const previous = attempt.historyExcluded;
+      attempt.historyExcluded = true;
+      if (!persistAttempt()) { attempt.historyExcluded = previous; return; }
+    }
+    if (!persistArchive(emptyHistory())) return;
+    archiveError = "";
+    historyStatus = attempt ? "Historial borrado. Tu intento actual sigue disponible; solo se archivará de nuevo si volvés a finalizarlo." : "Historial borrado.";
+    if (notice.textContent.includes("historial")) notice.hidden = true;
+    showScreen("progress"); return;
   }
-  if (action === "resume") { screen = "attempt"; render(true); return; }
+  if (action === "new") {
+    if (attempt && !confirm("Al iniciar otro intento se reemplaza el progreso actual. Los bloques finalizados se conservan en «Mi progreso»; lo que no hayas finalizado se pierde. ¿Continuar?")) return;
+    if (attempt && !attempt.historyExcluded && (attempt.phase === "results" || attempt.completedAt !== null) && !archiveCurrent()) return;
+    attempt = createAttempt(bank.modules.find(m => m.id === target.dataset.module));
+    save(); showScreen("attempt"); return;
+  }
+  if (action === "resume") { showScreen("attempt"); return; }
   if (!attempt) return;
   if (action === "reinforce") {
     startReinforcement(bank, attempt, target.dataset.question);
@@ -291,7 +364,10 @@ root.addEventListener("click", event => {
   }
   if (action === "finalize") {
     for (const q of questionsFor(bank, attempt)) if (isAnswered(q, attempt.answers[q.id])) recordSubmission(q, attempt);
-    attempt.phase = "results"; save(); render(true); return;
+    attempt.phase = "results";
+    attempt.completedAt ??= new Date().toISOString();
+    attempt.historyExcluded = false;
+    save(); archiveCurrent(); render(true); return;
   }
   const { q, state } = activityContext();
   if (action === "hint") {
@@ -373,12 +449,16 @@ async function start() {
     if (!response.ok) throw new Error(`No se pudo cargar el banco (HTTP ${response.status}).`);
     bank = validateBank(await response.json());
     await initializeMath(warn);
+    loadArchive();
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) attempt = restoreAttempt(bank, JSON.parse(saved));
     } catch (error) {
       warn("No se pudo recuperar el progreso anterior. Podés comenzar un intento nuevo; el guardado previo se reemplazará al hacerlo.", error);
     }
+    if (attempt && save() && archive && !attempt.historyExcluded && attempt.phase === "results" &&
+        !archive.entries.some(entry => entry.id === attempt.id)) archiveCurrent();
+    screen = location.hash === "#progreso" ? "progress" : "home";
     render();
   } catch (error) {
     console.error("No se pudo iniciar la aplicación.", error);
@@ -387,5 +467,11 @@ async function start() {
     root.setAttribute("aria-busy", "false");
   }
 }
+
+addEventListener("hashchange", () => {
+  if (!bank) return;
+  screen = location.hash === "#progreso" ? "progress" : "home";
+  render(true);
+});
 
 start();

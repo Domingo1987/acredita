@@ -68,6 +68,7 @@ function createResponseState() {
 export function createAttempt(module, random = Math.random) {
   if (module.status !== "ready") throw new Error("Este módulo todavía no está disponible.");
   return {
+    id: globalThis.crypto.randomUUID(), startedAt: new Date().toISOString(), completedAt: null, historyExcluded: false,
     moduleId: module.id,
     questionIds: module.slots.map(slot => slot.questions[Math.floor(random() * slot.questions.length)].id),
     ...createResponseState(), reinforcements: {}, activeReinforcement: null, index: 0, phase: "exercise"
@@ -201,6 +202,12 @@ export function restoreAttempt(bank, value) {
   const module = bank.modules.find(m => m.id === value.moduleId && m.status === "ready");
   if (!module || !Array.isArray(value.questionIds) || value.questionIds.length !== 6 ||
       value.questionIds.some((id, i) => !module.slots[i].questions.some(q => q.id === id))) throw new Error("El progreso guardado ya no coincide con el banco actual.");
+  if (["id", "startedAt", "completedAt", "historyExcluded"].every(key => value[key] === undefined)) {
+    Object.assign(value, { id: globalThis.crypto.randomUUID(), startedAt: null, completedAt: null, historyExcluded: false });
+  }
+  if (typeof value.id !== "string" || !value.id.trim() || typeof value.historyExcluded !== "boolean" ||
+      (value.startedAt !== null && !isISODate(value.startedAt)) ||
+      (value.completedAt !== null && !isISODate(value.completedAt))) throw new Error("La identidad o las fechas del intento no son válidas.");
   validateResponseState(questionsFor(bank, value), value, true);
   if (value.reinforcements === undefined && value.activeReinforcement === undefined) {
     value.reinforcements = {};
@@ -215,6 +222,10 @@ export function restoreAttempt(bank, value) {
     validateResponseState([question], practice);
   }
   return value;
+}
+
+export function isISODate(value) {
+  return typeof value === "string" && Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value;
 }
 
 function validateResponseState(questions, value, migrateLegacy = false) {

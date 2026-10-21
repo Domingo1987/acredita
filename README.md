@@ -16,6 +16,7 @@ Aplicación estática e independiente para practicar resolución de problemas ma
 - Navegación hacia atrás, borrado y revisión antes de finalizar; se puede finalizar con actividades sin responder.
 - Resultado automático sobre **cinco respuestas cerradas**. En los resultados, los errores y las actividades vacías tampoco revelan soluciones; permiten reintentar. El puntaje se recalcula con las respuestas actuales al finalizar de nuevo.
 - Recorrido de aprendizaje por actividad: primera respuesta comprobada, reintentos con respuestas diferentes y pistas consultadas antes de la primera comprobación. Un resumen separa aciertos iniciales sin pistas, con pistas y después de revisar, sin penalizar la ayuda.
+- **Mi progreso:** historial local de bloques finalizados, con fechas, resultados, ayudas, refuerzos y resumen por tema. Empezar otro intento conserva los resúmenes anteriores.
 - Refuerzo opcional después de corregir un error: otra variante del mismo tipo con datos distintos, guardada por separado y sin sumar una séptima actividad ni modificar el puntaje principal.
 - La respuesta escrita recibe preguntas de reflexión. El modelo y la rúbrica de **autoevaluación** solo se muestran al abrir una comparación explícita: no se pretende corregir lenguaje natural automáticamente.
 - Progreso, combinación sorteada y resultados guardados en `localStorage`, solo en ese navegador y origen. Un nuevo intento reemplaza al anterior, previa confirmación. No hay cuentas, analítica ni envío de respuestas.
@@ -46,7 +47,33 @@ Cuando se corrige una actividad que antes se comprobó incorrectamente, se ofrec
 
 El primer acierto del refuerzo sin sus propias pistas permite observar cómo se resolvió ese nuevo problema después de estudiar el original, no certificar aprendizaje permanente. Si una posición solo tiene una variante, no se ofrece un refuerzo inventado.
 
-Los progresos anteriores se conservan, pero se identifican como registros parciales: no se reconstruyen ni se atribuyen primeros intentos que no fueron observados. **Borrar una respuesta no borra su recorrido**; iniciar otro intento reemplaza todo el intento anterior, incluidos sus refuerzos. Todavía no hay un historial de varios bloques.
+Los progresos anteriores se conservan, pero se identifican como registros parciales: no se reconstruyen ni se atribuyen primeros intentos que no fueron observados. **Borrar una respuesta no borra su recorrido**. Iniciar otro intento reemplaza el intento editable y sus refuerzos, pero conserva el resumen de los bloques finalizados en «Mi progreso».
+
+## Mi progreso
+
+Accedé desde la cabecera, la portada o los resultados. También podés abrir [index.html#progreso](./index.html#progreso).
+
+- Cada intento tiene una identidad propia y una fecha de inicio. Al finalizar se archiva un resumen de las seis actividades, manteniendo el puntaje automático sobre cinco.
+- Volver a finalizar el mismo bloque actualiza su última entrega: **no crea un bloque duplicado**. Su primera fecha de entrega registrada se conserva.
+- Las ediciones principales que aún no se volvieron a finalizar no cambian la entrega archivada. Los refuerzos y los criterios de autoevaluación escrita sí se actualizan por separado.
+- Los registros guardan resultados, primeros resultados observados, cantidad de comprobaciones, pistas y estado del refuerzo. **No copian las respuestas escritas, las soluciones ni el banco completo**.
+- El resumen por tema agrupa cada posición dentro de su módulo. Usa los resultados archivados, sin recalcularlos con versiones nuevas del banco. Muestra cuántas variantes distintas se practicaron para no confundir repeticiones con transferencia.
+- La escritura conserva su condición de autoevaluación, nunca se incluye en el puntaje automático ni en los cinco temas cerrados.
+- Un resultado previo que siga siendo el intento actual puede recuperarse con fecha de entrega desconocida. Se registra cuándo se guardó el resumen, pero **no se inventa cuándo se hizo el bloque**. Los intentos ya reemplazados antes de esta función no se pueden recuperar.
+
+El historial usa la clave `matematica-historial-v1` de `localStorage`, separada de `matematica-practica-v1` para el intento actual. Solo existe en ese navegador, perfil y origen; no se sincroniza entre dispositivos ni se envía a un servidor. Borrar datos del sitio o cambiar de dominio puede hacer que deje de estar disponible. No se eliminan registros automáticamente para imponer un cupo.
+
+### Borrar el historial
+
+«Borrar historial» pide confirmación y elimina todos los resúmenes, **sin borrar el intento editable actual**. Ese intento queda marcado para que el historial no reaparezca al recargar o al iniciar otro bloque. Si se vuelve a finalizar explícitamente, se archiva otra vez.
+
+El borrado no se puede deshacer. Si el navegador no permite guardar la marca de exclusión o escribir el historial vacío, se muestra un error y no se anuncia un borrado exitoso.
+
+### Fallos de almacenamiento
+
+Si el historial está dañado o tiene otra versión, no se sustituye silenciosamente por uno vacío: «Mi progreso» muestra el error y permite borrarlo explícitamente. El intento actual sigue funcionando de forma independiente.
+
+Si se agota el almacenamiento o falla una escritura, se informa y el intento actual se conserva mientras sea posible. No se permite reemplazar un bloque finalizado cuyo resumen no se pudo archivar: primero hay que volver a finalizar para reintentar o resolver el problema del historial. Esto evita mostrar un éxito que en realidad perdería el bloque.
 
 ## Usar localmente
 
@@ -95,11 +122,14 @@ Publicá también los archivos de `vendor`, incluida la carpeta `fonts` y la lic
 - [js/core.js](./js/core.js): validación del banco, sorteo, corrección y restauración.
 - [js/visuals.js](./js/visuals.js): diagramas y gráficas SVG locales.
 - [js/math.js](./js/math.js): formato seguro de razonamientos con LaTeX.
+- [js/history.js](./js/history.js): resúmenes persistentes y agregación por tema.
+- [js/history-view.js](./js/history-view.js): vista de «Mi progreso».
 - [vendor/katex](./vendor/katex/): biblioteca, fuentes y licencia distribuidas con el sitio.
 - [scripts/vendor-math.js](./scripts/vendor-math.js): preparación de los recursos locales.
 - [data/activities.json](./data/activities.json): módulos y ejercicios editables.
 - [tests/core.test.js](./tests/core.test.js): pruebas del motor y de las respuestas matemáticas.
 - [tests/learning.test.js](./tests/learning.test.js): registro de primeros intentos, migración y aislamiento de los refuerzos.
+- [tests/history.test.js](./tests/history.test.js): conservación de bloques, fechas, revisiones sin duplicados, resúmenes por tema y privacidad de los datos guardados.
 
 ## Agregar ejercicios en JSON
 

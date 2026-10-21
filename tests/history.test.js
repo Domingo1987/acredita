@@ -18,7 +18,7 @@ const correct = q => q.type === "select" ? Object.fromEntries(q.fields.map(f => 
 const wrong = q => q.options.find(o => o.id !== q.answer).id;
 
 function completed(variant = 0, id = "block-1") {
-  const attempt = createAttempt(bank.modules[0], () => (variant + .5) / 3);
+  const attempt = createAttempt(bank.modules[0], () => (variant + .5) / bank.modules[0].slots[0].questions.length);
   Object.assign(attempt, { id, startedAt: firstDate, completedAt: finishedDate });
   const qs = questionsFor(bank, attempt);
   for (const [index, q] of qs.entries()) {
@@ -126,17 +126,17 @@ test("bloques con la misma combinación pero distinta identidad se conservan por
 
 test("se agrupan variantes del mismo tema sin mezclar otras posiciones ni la escritura", () => {
   let history = emptyHistory();
-  for (let variant = 0; variant < 3; variant++) history = upsertHistory(history, snapshotAttempt(bank, completed(variant, `b-${variant}`), updatedDate));
+  for (let variant = 0; variant < 10; variant++) history = upsertHistory(history, snapshotAttempt(bank, completed(variant, `b-${variant}`), updatedDate));
   const topics = topicsSummary(history);
   assert.equal(topics.length, 5);
   for (const topic of topics) {
-    assert.equal(topic.blocks, 3);
-    assert.equal(topic.distinctQuestions, 3);
-    assert.equal(Object.values(topic.categories).reduce((sum, n) => sum + n, 0), 3);
+    assert.equal(topic.blocks, 10);
+    assert.equal(topic.distinctQuestions, 10);
+    assert.equal(Object.values(topic.categories).reduce((sum, n) => sum + n, 0), 10);
   }
-  assert.equal(topics[0].categories.independent, 3);
-  assert.equal(topics[1].categories.afterReview, 3);
-  assert.equal(topics[2].hints, 3);
+  assert.equal(topics[0].categories.independent, 10);
+  assert.equal(topics[1].categories.afterReview, 10);
+  assert.equal(topics[2].hints, 10);
 });
 
 test("los refuerzos en curso y comprobados se distinguen y no cambian el puntaje principal", () => {

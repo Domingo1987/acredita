@@ -183,7 +183,7 @@ test("solo se ofrece refuerzo después de corregir un error de una actividad cer
   recordSubmission(q, attempt, true);
   assert.deepEqual(reinforcementCandidates(bank, attempt, q.id), []);
   const corrected = correctedAttempt();
-  assert.equal(reinforcementCandidates(bank, corrected.attempt, corrected.q.id).length, 2);
+  assert.equal(reinforcementCandidates(bank, corrected.attempt, corrected.q.id).length, 9);
   const open = questionsFor(bank, attempt)[5];
   attempt.answers[open.id] = correct(open);
   recordSubmission(open, attempt, true);
@@ -199,6 +199,20 @@ test("cada refuerzo es una variante distinta de la misma posición, nunca una s�
     assert.equal(variant.type, q.type);
     assert.ok(bank.modules[0].slots[i].questions.includes(variant));
     assert.equal(attempt.questionIds.length, 6);
+  }
+});
+
+test("las nueve alternativas de refuerzo de cada posición cerrada son alcanzables", () => {
+  for (let index = 0; index < 5; index++) {
+    const seen = new Set();
+    for (let variant = 0; variant < 9; variant++) {
+      const { attempt, q } = correctedAttempt(index);
+      startReinforcement(bank, attempt, q.id, () => (variant + .5) / 9);
+      const practice = reinforcementQuestion(bank, attempt);
+      assert.notEqual(practice.id, q.id);
+      seen.add(practice.id);
+    }
+    assert.equal(seen.size, 9);
   }
 });
 

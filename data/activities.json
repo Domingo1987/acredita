@@ -51,6 +51,104 @@
               ],
               "hints": ["Las ecuaciones son \\(2a+3i=940\\) y \\(4a+2i=1160\\).", "Duplicá la primera ecuación y restá la segunda. Así quedan solamente entradas infantiles."],
               "explanation": "Sean \\(a\\) e \\(i\\) los precios de las entradas de adulto e infantil:\\[\\begin{cases}2a+3i=940\\\\4a+2i=1160\\end{cases}\\]Duplicamos la primera ecuación y restamos la segunda:\\[(4a+6i)-(4a+2i)=1880-1160\\]\\[4i=720\\quad\\Rightarrow\\quad i=180\\]Sustituimos:\\[2a+3\\cdot180=940\\]\\[a=\\frac{940-540}{2}=200\\]La entrada de adulto cuesta $200 y la infantil $180. Verificamos:\\[2\\cdot200+3\\cdot180=940\\]\\[4\\cdot200+2\\cdot180=1160\\]"
+            },
+            {
+              "id": "a-precios-4",
+              "type": "select",
+              "title": "Dos compras en la feria",
+              "prompt": ["En la feria, 2 kg de manzanas y 3 kg de peras cuestan $340. Una segunda compra de 4 kg de manzanas y 2 kg de peras cuesta $440. Cada fruta mantiene su precio por kilogramo.", "¿Cuánto cuesta un kilogramo de cada fruta?"],
+              "verification": [{"quantities": [2, 3], "total": 340}, {"quantities": [4, 2], "total": 440}],
+              "fields": [
+                {"id": "manzana", "label": "Un kg de manzanas (pesos)", "options": [{"id": "60", "label": "$60"}, {"id": "70", "label": "$70"}, {"id": "80", "label": "$80"}, {"id": "100", "label": "$100"}], "answer": "80"},
+                {"id": "pera", "label": "Un kg de peras (pesos)", "options": [{"id": "40", "label": "$40"}, {"id": "50", "label": "$50"}, {"id": "60", "label": "$60"}, {"id": "80", "label": "$80"}], "answer": "60"}
+              ],
+              "errorFeedback": {"reason": "Tus precios no reproducen las dos compras. Quizás usaste el precio promedio de toda la fruta, aunque los dos productos pueden tener precios diferentes. La sustitución muestra lo que implican tus elecciones.", "question": "¿Cada precio corresponde a un kilogramo y no a toda la compra? Si duplicás la primera compra, ¿qué producto queda en la misma cantidad que en la segunda?"},
+              "hints": ["Llamá \\(m\\) y \\(p\\) a los precios por kg. Escribí una igualdad por compra.", "Buscá igualar los kilogramos de manzanas. ¿Qué información obtenés al restar las compras equivalentes?"],
+              "explanation": "Las compras forman este sistema:\\[\\begin{cases}2m+3p=340\\\\4m+2p=440\\end{cases}\\]Duplicamos la primera ecuación y restamos la segunda:\\[(4m+6p)-(4m+2p)=680-440\\]\\[4p=240\\quad\\Rightarrow\\quad p=60\\]Sustituimos:\\[m=\\frac{340-3\\cdot60}{2}=80\\]Un kg de manzanas cuesta $80 y uno de peras $60. Verificamos:\\[2\\cdot80+3\\cdot60=340\\]\\[4\\cdot80+2\\cdot60=440\\]"
+            },
+            {
+              "id": "a-precios-5",
+              "type": "select",
+              "title": "Preparar el salón",
+              "prompt": ["Para una jornada se alquilan 4 sillas y 1 mesa por $260. Otro grupo alquila 2 sillas y 2 mesas por $310. Los precios por unidad y por jornada son los mismos.", "Determiná el precio de alquiler de una silla y de una mesa."],
+              "verification": [{"quantities": [4, 1], "total": 260}, {"quantities": [2, 2], "total": 310}],
+              "fields": [
+                {"id": "silla", "label": "Alquiler de una silla (pesos)", "options": [{"id": "25", "label": "$25"}, {"id": "35", "label": "$35"}, {"id": "45", "label": "$45"}, {"id": "65", "label": "$65"}], "answer": "35"},
+                {"id": "mesa", "label": "Alquiler de una mesa (pesos)", "options": [{"id": "100", "label": "$100"}, {"id": "110", "label": "$110"}, {"id": "120", "label": "$120"}, {"id": "140", "label": "$140"}], "answer": "120"}
+              ],
+              "errorFeedback": {"reason": "La pareja de precios no explica ambos alquileres. Puede que hayas distribuido el costo por igual entre objetos distintos o intercambiado sus precios. Estos cálculos comprueban los valores elegidos, no tu procedimiento.", "question": "¿Qué pasaría si alquilaras dos veces lo del primer grupo? ¿Podrías comparar esa compra con la segunda para eliminar las mesas?"},
+              "hints": ["Representá por separado el precio de una silla y el de una mesa.", "Para eliminar una variable, necesitás la misma cantidad de ese objeto en las dos expresiones."],
+              "explanation": "Sean \\(s\\) el precio de una silla y \\(m\\) el de una mesa:\\[\\begin{cases}4s+m=260\\\\2s+2m=310\\end{cases}\\]Duplicamos la primera y restamos la segunda:\\[(8s+2m)-(2s+2m)=520-310\\]\\[6s=210\\quad\\Rightarrow\\quad s=35\\]Luego, \\(m=260-4\\cdot35=120\\). Comprobamos:\\[4\\cdot35+120=260\\]\\[2\\cdot35+2\\cdot120=310\\]"
+            },
+            {
+              "id": "a-precios-6",
+              "type": "select",
+              "title": "La cantina del club",
+              "prompt": ["En una cantina, 2 sándwiches y 3 jugos cuestan $330. Por 3 sándwiches y 2 jugos se pagan $370. No hay promociones y los precios unitarios no cambian.", "¿Cuál es el precio de cada producto?"],
+              "verification": [{"quantities": [2, 3], "total": 330}, {"quantities": [3, 2], "total": 370}],
+              "fields": [
+                {"id": "sandwich", "label": "Un sándwich (pesos)", "options": [{"id": "70", "label": "$70"}, {"id": "80", "label": "$80"}, {"id": "90", "label": "$90"}, {"id": "110", "label": "$110"}], "answer": "90"},
+                {"id": "jugo", "label": "Un jugo (pesos)", "options": [{"id": "40", "label": "$40"}, {"id": "50", "label": "$50"}, {"id": "60", "label": "$60"}, {"id": "70", "label": "$70"}], "answer": "50"}
+              ],
+              "errorFeedback": {"reason": "Con estos precios no se obtienen los dos totales. Como cada compra tiene cinco productos, podría parecer útil un promedio, pero ese promedio mezcla cantidades diferentes de cada producto.", "question": "¿Que haya cinco productos en cada compra obliga a que todos cuesten lo mismo? ¿Qué multiplicaciones permiten comparar iguales cantidades de sándwiches?"},
+              "hints": ["Las ecuaciones son \\(2s+3j=330\\) y \\(3s+2j=370\\).", "El mínimo común múltiplo de 2 y 3 ayuda a igualar los coeficientes de una variable."],
+              "explanation": "Multiplicamos la primera compra por 3 y la segunda por 2:\\[\\begin{cases}6s+9j=990\\\\6s+4j=740\\end{cases}\\]Restamos:\\[5j=250\\quad\\Rightarrow\\quad j=50\\]Sustituimos en la primera compra:\\[s=\\frac{330-3\\cdot50}{2}=90\\]Verificamos los precios de $90 y $50:\\[2\\cdot90+3\\cdot50=330\\]\\[3\\cdot90+2\\cdot50=370\\]"
+            },
+            {
+              "id": "a-precios-7",
+              "type": "select",
+              "title": "Materiales para un taller",
+              "prompt": ["En una mercería, 2 metros de tela y 4 metros de cinta cuestan $420. Por 3 metros de esa tela y 2 metros de la misma cinta se pagan $510. Los precios por metro son constantes.", "Completá los precios por metro de los dos materiales."],
+              "verification": [{"quantities": [2, 4], "total": 420}, {"quantities": [3, 2], "total": 510}],
+              "fields": [
+                {"id": "tela", "label": "Un metro de tela (pesos)", "options": [{"id": "120", "label": "$120"}, {"id": "140", "label": "$140"}, {"id": "150", "label": "$150"}, {"id": "170", "label": "$170"}], "answer": "150"},
+                {"id": "cinta", "label": "Un metro de cinta (pesos)", "options": [{"id": "20", "label": "$20"}, {"id": "30", "label": "$30"}, {"id": "40", "label": "$40"}, {"id": "60", "label": "$60"}], "answer": "30"}
+              ],
+              "errorFeedback": {"reason": "Los valores elegidos no verifican ambas compras. Tal vez se confundió el precio por metro con el importe de varios metros. Revisamos las cantidades completas con tus elecciones.", "question": "¿Multiplicaste cada precio por todos los metros correspondientes? ¿Qué compra conviene duplicar para igualar los metros de cinta?"},
+              "hints": ["Usá una variable para el precio por metro de cada material.", "Cuando la cantidad de cinta sea igual en las dos expresiones, restá para obtener información de la tela."],
+              "explanation": "Sean \\(t\\) y \\(c\\) los precios por metro:\\[\\begin{cases}2t+4c=420\\\\3t+2c=510\\end{cases}\\]Duplicamos la segunda ecuación y restamos la primera:\\[(6t+4c)-(2t+4c)=1020-420\\]\\[4t=600\\quad\\Rightarrow\\quad t=150\\]Después:\\[c=\\frac{420-2\\cdot150}{4}=30\\]Comprobación:\\[2\\cdot150+4\\cdot30=420\\]\\[3\\cdot150+2\\cdot30=510\\]"
+            },
+            {
+              "id": "a-precios-8",
+              "type": "select",
+              "title": "Una salida a la piscina",
+              "prompt": ["Una piscina cobra $800 por 2 entradas de adulto y 2 infantiles. Otro grupo paga $900 por 3 entradas de adulto y 1 infantil. Las tarifas son iguales para ambos grupos.", "¿Cuánto cuesta cada tipo de entrada?"],
+              "verification": [{"quantities": [2, 2], "total": 800}, {"quantities": [3, 1], "total": 900}],
+              "fields": [
+                {"id": "adulto", "label": "Entrada de adulto (pesos)", "options": [{"id": "200", "label": "$200"}, {"id": "225", "label": "$225"}, {"id": "250", "label": "$250"}, {"id": "300", "label": "$300"}], "answer": "250"},
+                {"id": "infantil", "label": "Entrada infantil (pesos)", "options": [{"id": "100", "label": "$100"}, {"id": "125", "label": "$125"}, {"id": "150", "label": "$150"}, {"id": "200", "label": "$200"}], "answer": "150"}
+              ],
+              "errorFeedback": {"reason": "Las tarifas seleccionadas no producen los dos pagos indicados. Dividir el primer total entre cuatro da un promedio, pero no permite conocer cada tarifa por separado.", "question": "Si dividís toda la primera compra entre dos, ¿qué combinación de entradas obtenés? ¿En qué se diferencia de la segunda compra?"},
+              "hints": ["Escribí \\(2a+2i=800\\) y \\(3a+i=900\\).", "Podés simplificar una ecuación dividiendo todos sus términos por el mismo número."],
+              "explanation": "Dividimos la primera ecuación entre dos:\\[a+i=400\\]La comparamos con la segunda:\\[(3a+i)-(a+i)=900-400\\]\\[2a=500\\quad\\Rightarrow\\quad a=250\\]Entonces \\(i=400-250=150\\). Verificamos:\\[2\\cdot250+2\\cdot150=800\\]\\[3\\cdot250+150=900\\]Las entradas cuestan $250 y $150."
+            },
+            {
+              "id": "a-precios-9",
+              "type": "select",
+              "title": "Productos de una cooperativa",
+              "prompt": ["Una cooperativa vende frascos de mermelada y panes. Una compra de 2 frascos y 4 panes cuesta $400; otra de 3 frascos y 2 panes cuesta $420. Cada producto tiene un único precio.", "Encontrá el precio de un frasco y el de un pan."],
+              "verification": [{"quantities": [2, 4], "total": 400}, {"quantities": [3, 2], "total": 420}],
+              "fields": [
+                {"id": "frasco", "label": "Un frasco de mermelada (pesos)", "options": [{"id": "90", "label": "$90"}, {"id": "100", "label": "$100"}, {"id": "110", "label": "$110"}, {"id": "130", "label": "$130"}], "answer": "110"},
+                {"id": "pan", "label": "Un pan (pesos)", "options": [{"id": "35", "label": "$35"}, {"id": "40", "label": "$40"}, {"id": "45", "label": "$45"}, {"id": "55", "label": "$55"}], "answer": "45"}
+              ],
+              "errorFeedback": {"reason": "Los precios no explican ambos tickets. La diferencia entre los pagos no es por sí sola el precio de un producto: entre las compras cambian dos cantidades.", "question": "¿Qué cantidades aumentan y cuáles disminuyen entre las compras? ¿Podés formar una comparación en la que una de ellas no cambie?"},
+              "hints": ["Modelá los tickets como \\(2m+4p=400\\) y \\(3m+2p=420\\).", "Duplicar la segunda compra permite igualar el número de panes."],
+              "explanation": "Duplicamos la segunda compra y restamos la primera:\\[(6m+4p)-(2m+4p)=840-400\\]\\[4m=440\\quad\\Rightarrow\\quad m=110\\]Sustituimos en el primer ticket:\\[p=\\frac{400-2\\cdot110}{4}=45\\]El frasco cuesta $110 y el pan $45. Verificamos:\\[2\\cdot110+4\\cdot45=400\\]\\[3\\cdot110+2\\cdot45=420\\]"
+            },
+            {
+              "id": "a-precios-10",
+              "type": "select",
+              "title": "Reservas de alojamiento",
+              "prompt": ["Un alojamiento cobra $4800 por una noche en 2 habitaciones dobles y 1 individual. Para la misma fecha, una noche en 1 doble y 2 individuales cuesta $4200. Cada tipo tiene una tarifa fija por habitación y por noche.", "¿Cuál es la tarifa de cada tipo de habitación?"],
+              "verification": [{"quantities": [2, 1], "total": 4800}, {"quantities": [1, 2], "total": 4200}],
+              "fields": [
+                {"id": "doble", "label": "Habitación doble por noche (pesos)", "options": [{"id": "1500", "label": "$1500"}, {"id": "1800", "label": "$1800"}, {"id": "2000", "label": "$2000"}, {"id": "2400", "label": "$2400"}], "answer": "1800"},
+                {"id": "individual", "label": "Habitación individual por noche (pesos)", "options": [{"id": "1000", "label": "$1000"}, {"id": "1200", "label": "$1200"}, {"id": "1400", "label": "$1400"}, {"id": "1600", "label": "$1600"}], "answer": "1200"}
+              ],
+              "errorFeedback": {"reason": "Las tarifas elegidas no reproducen ambos presupuestos. Puede que hayas calculado un costo por persona en lugar de por habitación, o supuesto que las tres habitaciones cuestan igual.", "question": "¿Qué unidad pide la consigna: persona, habitación o reserva completa? ¿Cómo igualarías la cantidad de habitaciones dobles para comparar?"},
+              "hints": ["Las ecuaciones son \\(2d+i=4800\\) y \\(d+2i=4200\\).", "Duplicá una de las reservas para igualar las habitaciones dobles; después restá."],
+              "explanation": "Duplicamos la segunda reserva y restamos la primera:\\[(2d+4i)-(2d+i)=8400-4800\\]\\[3i=3600\\quad\\Rightarrow\\quad i=1200\\]Luego:\\[d=\\frac{4800-1200}{2}=1800\\]Las tarifas por noche son $1800 y $1200. Verificamos:\\[2\\cdot1800+1200=4800\\]\\[1800+2\\cdot1200=4200\\]"
             }
           ]
         },
@@ -101,6 +199,111 @@
               "answer": "c",
               "hints": ["Conservar el 75 % y luego el 90 % no es lo mismo que conservar el 65 %.", "Planteá \\(m\\cdot0{,}75\\cdot0{,}90=540\\). ¿Qué operación permite recuperar \\(m\\)?"],
               "explanation": "La limpieza conserva el 75 % y la cocción el 90 % de la masa limpia. Si \\(m\\) es la masa comprada:\\[m\\cdot0{,}75\\cdot0{,}90=540\\]El factor conservado es \\(0{,}675\\). Por lo tanto:\\[m=\\frac{540}{0{,}675}=800\\ \\mathrm{g}\\]Verificación: \\(800\\cdot0{,}75=600\\) g limpios y \\(600\\cdot0{,}90=540\\) g cocidos."
+            },
+            {
+              "id": "a-porcentaje-4",
+              "type": "choice",
+              "title": "Papas para una preparación",
+              "prompt": ["Una preparación necesita 680 g de papas cocidas. El pelado elimina el 15 % de la masa comprada y la cocción elimina el 20 % de la masa ya pelada.", "¿Cuántos gramos de papas con cáscara se necesitan al principio?"],
+              "options": [{"id": "a", "label": "800 g"}, {"id": "b", "label": "850 g"}, {"id": "c", "label": "1000 g"}, {"id": "d", "label": "1046 g"}],
+              "answer": "c",
+              "errorFeedback": {
+                "a": {"reason": "Esta elección puede aparecer al deshacer solo la pérdida del pelado, olvidando la cocción.", "calculation": "\\[\\frac{680}{0{,}85}=800\\]Pero al aplicar las dos etapas:\\[800\\cdot0{,}85\\cdot0{,}8=544\\ \\mathrm{g}\\]", "question": "¿Estás recuperando una etapa o las dos? ¿Qué cantidad recibe la cocción?"},
+                "b": {"reason": "La masa seleccionada no alcanza para obtener lo pedido. La comprobación permite revisar el cálculo sin suponer cómo llegaste al valor.", "calculation": "\\[850\\cdot0{,}85\\cdot0{,}8=578\\ \\mathrm{g}\\]", "question": "¿Qué parte queda después del pelado y qué parte de esa cantidad queda tras cocinar?"},
+                "d": {"reason": "Este valor aproxima lo que se obtiene sumando las pérdidas como un 35 % de una única masa inicial.", "calculation": "\\[\\frac{680}{1-0{,}15-0{,}20}\\approx1046\\ \\mathrm{g}\\]", "question": "¿La segunda pérdida se calcula sobre las papas compradas o sobre las que quedaron peladas?"}
+              },
+              "hints": ["Una pérdida del 15 % conserva el 85 %; una pérdida del 20 % conserva el 80 %.", "¿Qué ecuación relaciona la masa inicial con los 680 g finales usando ambos factores?"],
+              "explanation": "Sea \\(m\\) la masa comprada:\\[m\\cdot0{,}85\\cdot0{,}80=680\\]\\[m=\\frac{680}{0{,}68}=1000\\ \\mathrm{g}\\]Verificamos: tras pelar quedan \\(1000\\cdot0{,}85=850\\) g y tras cocinar, \\(850\\cdot0{,}80=680\\) g."
+            },
+            {
+              "id": "a-porcentaje-5",
+              "type": "choice",
+              "title": "Bananas para una conserva",
+              "prompt": ["Para una conserva se necesitan 1260 g de banana cocida. Las cáscaras representan el 30 % de la masa de la fruta entera. Después, la cocción elimina el 10 % de la masa sin cáscaras.", "¿Qué masa de bananas enteras hay que comprar?"],
+              "options": [{"id": "a", "label": "1400 g"}, {"id": "b", "label": "1800 g"}, {"id": "c", "label": "2000 g"}, {"id": "d", "label": "2100 g"}],
+              "answer": "c",
+              "errorFeedback": {
+                "a": {"reason": "Esta opción puede salir al deshacer únicamente la cocción. Todavía corresponde a una masa sin recuperar la pérdida de cáscaras.", "calculation": "\\[\\frac{1260}{0{,}90}=1400\\]", "question": "¿Ese resultado representa fruta entera o fruta ya pelada? ¿Qué etapa falta recorrer hacia atrás?"},
+                "b": {"reason": "Esta elección es compatible con recuperar solo el retiro de cáscaras, sin deshacer la cocción.", "calculation": "\\[\\frac{1260}{0{,}70}=1800\\]\\[1800\\cdot0{,}70\\cdot0{,}90=1134\\ \\mathrm{g}\\]", "question": "¿Se obtienen los gramos finales pedidos si comprobás las dos etapas?"},
+                "d": {"reason": "Este valor coincide con tratar las pérdidas como un único 40 %. Los porcentajes se aplican sobre masas distintas.", "calculation": "\\[\\frac{1260}{0{,}60}=2100\\]", "question": "¿Podés sumar una pérdida sobre fruta entera y otra sobre fruta pelada como si tuvieran la misma base?"}
+              },
+              "hints": ["Trabajá con la parte conservada en cada etapa, no con la suma de las partes perdidas.", "Si conocés el resultado de multiplicar dos factores, ¿cómo recuperás la masa de partida?"],
+              "explanation": "Se conserva el 70 % al pelar y el 90 % de lo restante al cocinar:\\[m\\cdot0{,}70\\cdot0{,}90=1260\\]\\[m=\\frac{1260}{0{,}63}=2000\\ \\mathrm{g}\\]Comprobación: \\(2000\\cdot0{,}70=1400\\) g pelados y \\(1400\\cdot0{,}90=1260\\) g cocidos."
+            },
+            {
+              "id": "a-porcentaje-6",
+              "type": "choice",
+              "title": "Dos descuentos en una campera",
+              "prompt": ["Una tienda aplica un descuento del 15 % al precio de una campera. Después aplica otro descuento del 10 % sobre el precio ya rebajado. El importe final es de 1530 pesos.", "¿Cuál era el precio antes de los dos descuentos?"],
+              "options": [{"id": "a", "label": "1700 pesos"}, {"id": "b", "label": "2000 pesos"}, {"id": "c", "label": "1800 pesos"}, {"id": "d", "label": "2040 pesos"}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "Este cálculo recupera solo el último descuento. El precio que obtenés todavía incluye la primera rebaja.", "calculation": "\\[\\frac{1530}{0{,}90}=1700\\]", "question": "¿Ese importe es el precio original o el que había entre los dos descuentos?"},
+                "c": {"reason": "Esta opción puede salir al deshacer solo el descuento del 15 %, dejando pendiente el otro.", "calculation": "\\[\\frac{1530}{0{,}85}=1800\\]", "question": "¿Qué operación te permite comprobar los dos descuentos a partir de tu precio elegido?"},
+                "d": {"reason": "El valor coincide con sumar 15 % y 10 % como un descuento único del 25 %. La segunda rebaja tiene otra base.", "calculation": "\\[\\frac{1530}{0{,}75}=2040\\]", "question": "¿El segundo 10 % se calcula sobre el precio original o sobre el ya rebajado?"}
+              },
+              "hints": ["Después de cada descuento queda una fracción del precio que recibió esa etapa.", "Planteá \\(p\\cdot0{,}85\\cdot0{,}90=1530\\) y pensá cómo despejar \\(p\\)."],
+              "explanation": "Los factores conservados son \\(0{,}85\\) y \\(0{,}90\\):\\[p\\cdot0{,}85\\cdot0{,}90=1530\\]\\[p=\\frac{1530}{0{,}765}=2000\\]El precio original era 2000 pesos. Verificamos: \\(2000\\cdot0{,}85=1700\\), y \\(1700\\cdot0{,}90=1530\\)."
+            },
+            {
+              "id": "a-porcentaje-7",
+              "type": "choice",
+              "title": "Agua para la huerta",
+              "prompt": ["Durante el almacenamiento se evapora el 5 % del agua de un recipiente. Luego, el proceso de filtrado descarta el 20 % del agua que quedó. Se necesitan 380 litros filtrados.", "¿Cuántos litros debían colocarse inicialmente en el recipiente?"],
+              "options": [{"id": "a", "label": "400 litros"}, {"id": "b", "label": "475 litros"}, {"id": "c", "label": "500 litros"}, {"id": "d", "label": "507 litros"}],
+              "answer": "c",
+              "errorFeedback": {
+                "a": {"reason": "Esta elección puede surgir al recuperar solo la evaporación, sin compensar el descarte del filtrado.", "calculation": "\\[\\frac{380}{0{,}95}=400\\]", "question": "¿Qué pérdida todavía falta deshacer después de ese cálculo?"},
+                "b": {"reason": "Este valor recupera únicamente el filtrado. Aún falta considerar el agua evaporada antes.", "calculation": "\\[\\frac{380}{0{,}80}=475\\]", "question": "¿El volumen calculado corresponde al agua antes o después de la evaporación?"},
+                "d": {"reason": "El valor aproxima una compensación basada en sumar ambas pérdidas como un 25 %. Las dos etapas no usan la misma base.", "calculation": "\\[\\frac{380}{0{,}75}\\approx507\\]", "question": "¿Qué volumen recibe el filtro? ¿Por qué su 20 % no se calcula sobre el volumen inicial?"}
+              },
+              "hints": ["Después de evaporarse el 5 % queda el 95 %.", "Representá por separado la parte conservada al almacenar y la parte conservada al filtrar."],
+              "explanation": "Si \\(v\\) es el volumen inicial:\\[v\\cdot0{,}95\\cdot0{,}80=380\\]\\[v=\\frac{380}{0{,}76}=500\\ \\mathrm{L}\\]Comprobación: quedan \\(500\\cdot0{,}95=475\\) litros tras la evaporación, y \\(475\\cdot0{,}80=380\\) litros tras el filtrado."
+            },
+            {
+              "id": "a-porcentaje-8",
+              "type": "choice",
+              "title": "Arcilla para piezas de cerámica",
+              "prompt": ["Un lote de arcilla pierde el 10 % de su masa durante el secado. En la cocción pierde otro 20 % de la masa ya seca. Las piezas terminadas deben sumar 1440 g.", "¿Cuál debe ser la masa de arcilla antes de secar?"],
+              "options": [{"id": "a", "label": "1600 g"}, {"id": "b", "label": "2000 g"}, {"id": "c", "label": "1800 g"}, {"id": "d", "label": "2057 g"}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "Este valor coincide con recuperar solo la pérdida del secado, sin recuperar la de cocción.", "calculation": "\\[\\frac{1440}{0{,}90}=1600\\]", "question": "¿Qué sucede si a tu masa elegida le aplicás también la reducción del horno?"},
+                "c": {"reason": "La opción puede aparecer al deshacer únicamente la cocción. Ese resultado no es todavía la masa húmeda inicial.", "calculation": "\\[\\frac{1440}{0{,}80}=1800\\]", "question": "¿Qué transformación ocurrió antes de entrar al horno y cómo podrías deshacerla?"},
+                "d": {"reason": "Esta opción aproxima el cálculo con una pérdida única del 30 %. Las bases de las dos reducciones son diferentes.", "calculation": "\\[\\frac{1440}{1-0{,}10-0{,}20}\\approx2057\\]", "question": "¿El 20 % se pierde de la arcilla húmeda inicial o de la arcilla ya seca?"}
+              },
+              "hints": ["El secado conserva el 90 % y la cocción el 80 % de lo que recibe.", "¿Cómo relacionás los 1440 g finales con el producto de esos factores y la masa inicial?"],
+              "explanation": "Sea \\(m\\) la masa inicial:\\[m\\cdot0{,}90\\cdot0{,}80=1440\\]\\[m=\\frac{1440}{0{,}72}=2000\\ \\mathrm{g}\\]Verificamos las etapas: \\(2000\\cdot0{,}90=1800\\) g secos y \\(1800\\cdot0{,}80=1440\\) g cocidos."
+            },
+            {
+              "id": "a-porcentaje-9",
+              "type": "choice",
+              "title": "Pescado para una comida",
+              "prompt": ["Para servir una comida se necesitan 900 g de pescado cocido. La limpieza elimina el 25 % de la masa comprada; al hornear se pierde el 20 % de la masa ya limpia.", "¿Qué cantidad de pescado hay que comprar antes de limpiar?"],
+              "options": [{"id": "a", "label": "1125 g"}, {"id": "b", "label": "1200 g"}, {"id": "c", "label": "1636 g"}, {"id": "d", "label": "1500 g"}],
+              "answer": "d",
+              "errorFeedback": {
+                "a": {"reason": "Este cálculo deshace solo la cocción y obtiene la masa limpia, no la masa comprada.", "calculation": "\\[\\frac{900}{0{,}80}=1125\\]", "question": "¿Qué etapa anterior a la cocción falta recuperar?"},
+                "b": {"reason": "La opción coincide con deshacer únicamente la limpieza. Falta tener en cuenta el horno.", "calculation": "\\[\\frac{900}{0{,}75}=1200\\]", "question": "¿Obtendrías 900 g si comprobaras las dos pérdidas a partir de tu elección?"},
+                "c": {"reason": "Esta masa aproxima una compensación por un 45 % de pérdida única. La reducción del horno no se aplica sobre la masa comprada.", "calculation": "\\[\\frac{900}{0{,}55}\\approx1636\\]", "question": "¿Podés sumar el 25 % y el 20 % directamente? ¿Sobre qué masa se calcula cada uno?"}
+              },
+              "hints": ["Identificá la fracción que permanece después de cada proceso.", "Planteá una ecuación para la masa final; después invertí las operaciones para volver a la masa inicial."],
+              "explanation": "La masa comprada \\(m\\) debe cumplir:\\[m\\cdot0{,}75\\cdot0{,}80=900\\]\\[m=\\frac{900}{0{,}60}=1500\\ \\mathrm{g}\\]Verificación: \\(1500\\cdot0{,}75=1125\\) g limpios, y \\(1125\\cdot0{,}80=900\\) g cocidos."
+            },
+            {
+              "id": "a-porcentaje-10",
+              "type": "choice",
+              "title": "Una oferta en dos etapas",
+              "prompt": ["Un comercio rebaja un artículo un 20 %. En la caja aplica un descuento adicional del 25 % sobre el precio que ya estaba rebajado. El precio final es de 1200 pesos.", "¿Cuánto costaba el artículo antes de ambos descuentos?"],
+              "options": [{"id": "a", "label": "1500 pesos"}, {"id": "b", "label": "2000 pesos"}, {"id": "c", "label": "1600 pesos"}, {"id": "d", "label": "2182 pesos"}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "Este importe coincide con deshacer solo el primer porcentaje sobre el precio final. No recupera las dos rebajas.", "calculation": "\\[\\frac{1200}{0{,}80}=1500\\]", "question": "¿Qué significa cada precio intermedio y qué descuento falta deshacer?"},
+                "c": {"reason": "Esta elección puede salir al deshacer solo el descuento de caja. Todavía falta recuperar la rebaja anterior.", "calculation": "\\[\\frac{1200}{0{,}75}=1600\\]", "question": "¿Ese resultado es el precio original o el precio que llegó a la caja?"},
+                "d": {"reason": "El valor aproxima el resultado de sumar los descuentos como un 45 % del mismo precio original.", "calculation": "\\[\\frac{1200}{0{,}55}\\approx2182\\]", "question": "¿El descuento de caja se calcula antes o después de la primera rebaja? ¿Qué cambia en la base del porcentaje?"}
+              },
+              "hints": ["Después del primer descuento queda el 80 %; después del segundo queda el 75 % de ese importe.", "¿Qué ecuación debe satisfacer el precio original para que la caja cobre 1200 pesos?"],
+              "explanation": "Si \\(p\\) es el precio original:\\[p\\cdot0{,}80\\cdot0{,}75=1200\\]\\[p=\\frac{1200}{0{,}60}=2000\\]El artículo costaba 2000 pesos. Después del primer descuento cuesta \\(2000\\cdot0{,}80=1600\\); después del segundo, \\(1600\\cdot0{,}75=1200\\)."
             }
           ]
         },
@@ -154,6 +357,118 @@
               "answer": "a",
               "hints": ["La última y la primera cara del recorrido circular también son vecinas.", "Revisá las opciones: ¿hay parejas enfrentadas o una letra usada en dos caras distintas? ¿Qué relación debe conservar una vista válida?"],
               "explanation": "El orden alrededor del desarrollo es P, Q, R, S y vuelve a P. Por eso P y S son vecinas y pueden compartir una arista del techo. P con R y Q con S son parejas opuestas; además, solo existe una cara R, que no puede repetirse en dos caras distintas."
+            },
+            {
+              "id": "a-espacio-4",
+              "type": "choice",
+              "title": "Una caja para bombones",
+              "prompt": ["El desarrollo forma una caja de base cuadrada, paredes rectangulares y techo de cuatro triángulos. Las letras identifican las caras del techo.", "¿Qué pareja puede verse compartiendo una arista del techo al armar la caja? Las marcas no se pueden mover ni repetir."],
+              "visual": {"kind": "net", "base": 16, "wall": 4, "height": 12, "symbols": ["E", "F", "G", "H"], "dimensions": false},
+              "options": [{"id": "a", "label": "Caras E y G", "faces": ["E", "G"]}, {"id": "b", "label": "Caras F y H", "faces": ["F", "H"]}, {"id": "c", "label": "Dos caras G", "faces": ["G", "G"]}, {"id": "d", "label": "Caras H y E", "faces": ["H", "E"]}],
+              "answer": "d",
+              "errorFeedback": {
+                "a": {"reason": "E y G están enfrentadas alrededor de la base. Una rotación de la caja no cambia esa relación.", "question": "¿Son consecutivas esas letras si recorrés el borde del centro? ¿Qué implica estar enfrentadas al cerrar el techo?"},
+                "b": {"reason": "F y H ocupan posiciones opuestas en el desarrollo, aunque la opción las muestre juntas.", "question": "¿Qué caras quedan entre ellas en el recorrido circular? ¿Las enfrentadas comparten una arista del techo?"},
+                "c": {"reason": "La plantilla contiene una sola cara G. La opción utiliza esa misma marca en dos caras distintas.", "question": "¿Podés asignar cada triángulo visible a un triángulo diferente del desarrollo sin repetir ninguno?"}
+              },
+              "hints": ["Recorré las cuatro caras alrededor del cuadrado central, no según la distancia entre sus letras.", "El recorrido se cierra: la última cara y la primera también son vecinas."],
+              "explanation": "El orden circular es E, F, G, H y vuelve a E. H y E son consecutivas, por lo que sus triángulos comparten una arista al cerrar el techo. E y G, así como F y H, son opuestas. La opción con dos G repite una cara que existe una sola vez. La vista posible es la D."
+            },
+            {
+              "id": "a-espacio-5",
+              "type": "choice",
+              "title": "Marcas en un envase de regalo",
+              "prompt": ["Una caja con techo piramidal se arma plegando este desarrollo. Cada letra aparece una sola vez en las caras triangulares.", "Seleccioná la vista que respeta qué caras pueden quedar juntas compartiendo una arista."],
+              "visual": {"kind": "net", "base": 18, "wall": 3, "height": 12, "symbols": ["L", "M", "N", "O"], "dimensions": false},
+              "options": [{"id": "a", "label": "Caras L y M", "faces": ["L", "M"]}, {"id": "b", "label": "Caras L y N", "faces": ["L", "N"]}, {"id": "c", "label": "Caras M y O", "faces": ["M", "O"]}, {"id": "d", "label": "Dos caras O", "faces": ["O", "O"]}],
+              "answer": "a",
+              "errorFeedback": {
+                "b": {"reason": "L y N quedan en lados opuestos de la base. La perspectiva del dibujo armado no permite cambiar su vecindad.", "question": "¿Qué caras están inmediatamente antes y después de cada una en el recorrido del desarrollo?"},
+                "c": {"reason": "M y O están enfrentadas. Es posible que hayas confundido las caras opuestas con dos caras que se tocan.", "question": "¿Compartir un vértice del techo equivale a compartir una arista? ¿Qué relación se pide exactamente?"},
+                "d": {"reason": "Solo hay un triángulo O. Girar o plegar la caja no produce una segunda cara con esa marca.", "question": "¿Cada cara de la opción tiene una cara distinta de origen en la plantilla?"}
+              },
+              "hints": ["Leé el orden de las letras alrededor del centro.", "Las parejas vecinas deben ser consecutivas en ese orden, incluyendo el cierre del recorrido."],
+              "explanation": "En el desarrollo el orden es L, M, N, O. L y M son vecinas y pueden compartir una arista del techo. L y N son opuestas, al igual que M y O. Repetir O en dos caras no es posible. La vista A respeta la plantilla."
+            },
+            {
+              "id": "a-espacio-6",
+              "type": "choice",
+              "title": "Doblar sin cambiar las caras",
+              "prompt": ["Un taller arma cajas a partir de una base cuadrada con cuatro paredes y cuatro triángulos de techo marcados U, V, W y X.", "¿Cuál de estas parejas puede ocupar dos caras del techo que comparten una arista?"],
+              "visual": {"kind": "net", "base": 22, "wall": 5, "height": 15, "symbols": ["U", "V", "W", "X"], "dimensions": false},
+              "options": [{"id": "a", "label": "Caras U y W", "faces": ["U", "W"]}, {"id": "b", "label": "Caras V y X", "faces": ["V", "X"]}, {"id": "c", "label": "Caras W y X", "faces": ["W", "X"]}, {"id": "d", "label": "Dos caras V", "faces": ["V", "V"]}],
+              "answer": "c",
+              "errorFeedback": {
+                "a": {"reason": "U y W tienen otra cara entre ellas en el recorrido y quedan enfrentadas al cerrar.", "question": "¿Cuántos pasos alrededor del centro separan esas caras? ¿Son vecinas o son opuestas?"},
+                "b": {"reason": "V y X también están en posiciones opuestas. La opción no conserva la relación entre las caras del desarrollo.", "question": "Si levantás las cuatro paredes, ¿cuáles triángulos se encuentran a los lados de cada cara?"},
+                "d": {"reason": "La opción requiere dos triángulos con V, pero la plantilla solo tiene uno.", "question": "¿El plegado cambia la cantidad de caras con cada letra o solamente su posición en el espacio?"}
+              },
+              "hints": ["Las líneas discontinuas son pliegues; las marcas siguen perteneciendo a la misma pieza.", "Descartá las parejas enfrentadas y las opciones que repiten una marca inexistente."],
+              "explanation": "El orden circular es U, V, W, X. W y X son consecutivas y se encuentran en una arista del techo. U y W están opuestas, igual que V y X. La marca V no puede ocupar dos caras distintas. La opción correcta es C."
+            },
+            {
+              "id": "a-espacio-7",
+              "type": "choice",
+              "title": "La vista de una caja cerrada",
+              "prompt": ["La figura es el desarrollo de un envase de base cuadrada y techo piramidal. R, S, T y U identifican sus cuatro triángulos.", "¿Qué opción muestra una pareja de caras del techo que puede compartir una arista?"],
+              "visual": {"kind": "net", "base": 25, "wall": 5, "height": 15, "symbols": ["R", "S", "T", "U"], "dimensions": false},
+              "options": [{"id": "a", "label": "Caras R y T", "faces": ["R", "T"]}, {"id": "b", "label": "Caras S y T", "faces": ["S", "T"]}, {"id": "c", "label": "Caras S y U", "faces": ["S", "U"]}, {"id": "d", "label": "Dos caras U", "faces": ["U", "U"]}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "R y T están en lados opuestos del centro. La vista propuesta las pone como vecinas sin respetar el desarrollo.", "question": "¿Qué diferencia hay entre una cara de enfrente y una inmediatamente contigua?"},
+                "c": {"reason": "S y U están enfrentadas en la plantilla. Rotar el envase no vuelve vecinas a las caras opuestas.", "question": "¿Cambiar el punto de vista altera qué triángulos comparten una arista?"},
+                "d": {"reason": "La vista repite U, una marca que solo aparece en un triángulo.", "question": "¿Cuántas caras diferentes de la plantilla necesitarías para representar esa opción?"}
+              },
+              "hints": ["Seguí la secuencia de triángulos alrededor de la base.", "Una arista del techo une dos triángulos consecutivos de ese recorrido."],
+              "explanation": "S está a la derecha y T abajo: son caras consecutivas en R, S, T, U. Al cerrar el techo comparten una arista. R con T y S con U son parejas opuestas; dos U repetirían una cara. Por eso es posible la opción B."
+            },
+            {
+              "id": "a-espacio-8",
+              "type": "choice",
+              "title": "Reconocer los símbolos vecinos",
+              "prompt": ["Este envase tiene un círculo vacío, un signo más, un círculo lleno y un signo igual en sus caras triangulares. Cada símbolo identifica una sola cara.", "¿Qué vista puede obtenerse al plegar la plantilla, sin mover ni duplicar símbolos?"],
+              "visual": {"kind": "net", "base": 28, "wall": 4, "height": 17, "symbols": ["○", "+", "●", "="], "dimensions": false},
+              "options": [{"id": "a", "label": "Círculo vacío y círculo lleno", "faces": ["○", "●"]}, {"id": "b", "label": "Signo más y signo igual", "faces": ["+", "="]}, {"id": "c", "label": "Dos signos iguales", "faces": ["=", "="]}, {"id": "d", "label": "Signo más y círculo lleno", "faces": ["+", "●"]}],
+              "answer": "d",
+              "errorFeedback": {
+                "a": {"reason": "Los dos círculos ocupan posiciones opuestas del desarrollo. No forman una pareja de caras contiguas.", "question": "¿Qué símbolos aparecen entre los círculos cuando recorrés el centro?"},
+                "b": {"reason": "El signo más y el signo igual están a derecha e izquierda, no en posiciones consecutivas.", "question": "¿Qué caras quedarían enfrentadas al levantar las paredes? ¿Son esas las que pueden compartir una arista lateral del techo?"},
+                "c": {"reason": "El signo igual aparece una sola vez en la plantilla. La vista lo duplica en dos caras.", "question": "¿Hay una segunda pieza con ese símbolo que permita construir la opción elegida?"}
+              },
+              "hints": ["No importa que los símbolos se parezcan: importa dónde está cada triángulo.", "Comprobá si las dos marcas elegidas son consecutivas alrededor de la base y si ambas existen una sola vez."],
+              "explanation": "El signo más y el círculo lleno son vecinos, ubicados a derecha y abajo del centro. Pueden compartir una arista al plegar. Los círculos son opuestos, así como los signos más e igual. Dos signos iguales repetirían una marca. La opción posible es D."
+            },
+            {
+              "id": "a-espacio-9",
+              "type": "choice",
+              "title": "Cerrar el recorrido de las caras",
+              "prompt": ["Las caras triangulares de un envase se marcaron A, C, E y G. El cuadrado central será la base de la caja.", "¿Cuál de estas vistas conserva las caras que pueden compartir una arista del techo?"],
+              "visual": {"kind": "net", "base": 24, "wall": 4, "height": 15, "symbols": ["A", "C", "E", "G"], "dimensions": false},
+              "options": [{"id": "a", "label": "Caras G y A", "faces": ["G", "A"]}, {"id": "b", "label": "Caras A y E", "faces": ["A", "E"]}, {"id": "c", "label": "Caras C y G", "faces": ["C", "G"]}, {"id": "d", "label": "Dos caras E", "faces": ["E", "E"]}],
+              "answer": "a",
+              "errorFeedback": {
+                "b": {"reason": "A y E están enfrentadas, aunque sus letras puedan parecer cercanas en una lista.", "question": "¿Debés comparar el orden alfabético o las posiciones físicas alrededor del centro?"},
+                "c": {"reason": "C y G también son opuestas en la plantilla. No pueden formar la arista que muestra la vista.", "question": "¿Qué dos caras son las vecinas inmediatas de cada triángulo al recorrer el borde?"},
+                "d": {"reason": "La opción necesita dos caras E, pero hay una sola pieza con esa letra.", "question": "¿Podés emparejar cada cara visible con una pieza distinta del desarrollo?"}
+              },
+              "hints": ["El orden de las letras en el alfabeto no determina cuáles se tocan.", "El recorrido circular vuelve al punto de inicio; tené en cuenta ese último encuentro."],
+              "explanation": "El orden circular es A, C, E, G y vuelve a A. Por eso G y A son vecinas y pueden compartir una arista. A y E están opuestas, así como C y G. No existen dos caras E. La opción A respeta el desarrollo."
+            },
+            {
+              "id": "a-espacio-10",
+              "type": "choice",
+              "title": "Una plantilla, varias perspectivas",
+              "prompt": ["Se arma una caja de base cuadrada con cuatro caras triangulares en el techo. Cada letra del dibujo queda en la cara donde fue impresa.", "Elegí una vista posible de dos caras del techo que compartan una arista."],
+              "visual": {"kind": "net", "base": 26, "wall": 6, "height": 16, "symbols": ["B", "D", "F", "H"], "dimensions": false},
+              "options": [{"id": "a", "label": "Caras B y F", "faces": ["B", "F"]}, {"id": "b", "label": "Caras D y F", "faces": ["D", "F"]}, {"id": "c", "label": "Caras D y H", "faces": ["D", "H"]}, {"id": "d", "label": "Dos caras H", "faces": ["H", "H"]}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "B y F se ubican en lados opuestos de la base. La perspectiva no transforma esa relación en vecindad.", "question": "¿Las dos caras elegidas son consecutivas en el recorrido del desarrollo?"},
+                "c": {"reason": "D y H son caras enfrentadas. En la vista aparecen tocándose de una manera que el plegado no permite.", "question": "¿Podés seguir los pliegues sin mover los triángulos de la pared a la que están unidos?"},
+                "d": {"reason": "Hay una sola cara H. Esta opción repite una marca en lugar de mostrar dos caras diferentes.", "question": "¿Cuántas piezas de la plantilla llevan H? ¿Una rotación cambia esa cantidad?"}
+              },
+              "hints": ["Distinguí entre rotar toda la caja y cambiar de lugar una cara; solo lo primero está permitido.", "Revisá consecutividad y cantidad de marcas antes de elegir una vista."],
+              "explanation": "D y F son consecutivas en el recorrido B, D, F, H. Al plegar, comparten una arista del techo. Las parejas B-F y D-H son opuestas; dos H duplicarían una cara única. La vista B es la posible."
             }
           ]
         },
@@ -207,6 +522,118 @@
               "answer": "b",
               "hints": ["Separá las piezas en un cuadrado, cuatro rectángulos y cuatro triángulos. ¿Qué fórmula de área corresponde a cada una?", "¿Tu denominador representa el área de la lámina, \\(80^2\\), o solamente la longitud de su lado?"],
               "explanation": "Sumamos las áreas de las piezas:\\[A_b=30^2=900\\ \\mathrm{cm}^2\\]\\[A_p=4\\cdot30\\cdot7=840\\ \\mathrm{cm}^2\\]\\[A_t=4\\cdot\\frac{30\\cdot14}{2}=840\\ \\mathrm{cm}^2\\]El total es \\(A_d=900+840+840=2580\\ \\mathrm{cm}^2\\). La lámina tiene \\(A_l=80^2=6400\\ \\mathrm{cm}^2\\).\\[P=\\frac{2580}{6400}\\cdot100=40{,}3125\\%\\]Redondeando, se aprovecha aproximadamente el 40 %."
+            },
+            {
+              "id": "a-area-4",
+              "type": "choice",
+              "title": "Cartón para una caja de bombones",
+              "prompt": ["Una lámina cuadrada mide 50 cm de lado. Se recorta una caja con base de 16 × 16 cm, cuatro paredes de 16 × 4 cm y cuatro triángulos de base 16 cm y altura 12 cm.", "Sin pestañas ni superposiciones, ¿qué porcentaje aproximado de la lámina ocupa el desarrollo? Redondeá al entero más cercano."],
+              "visual": {"kind": "net", "base": 16, "wall": 4, "height": 12, "symbols": ["E", "F", "G", "H"], "dimensions": true},
+              "options": [{"id": "a", "label": "10 %"}, {"id": "b", "label": "20 %"}, {"id": "c", "label": "36 %"}, {"id": "d", "label": "51 %"}],
+              "answer": "c",
+              "errorFeedback": {
+                "a": {"reason": "El porcentaje aproxima el área de la base sola. Una caja también necesita las paredes y el techo.", "calculation": "\\[\\frac{16^2}{50^2}\\cdot100=10{,}24\\%\\]", "question": "¿Qué piezas del desarrollo todavía no están contadas?"},
+                "b": {"reason": "La elección puede salir al contar base y paredes, pero dejar fuera los cuatro triángulos.", "calculation": "\\[\\frac{16^2+4\\cdot16\\cdot4}{2500}\\cdot100=20{,}48\\%\\]", "question": "¿El techo forma parte del cartón recortado? ¿Cómo calcularías su área?"},
+                "d": {"reason": "Esta opción aproxima el resultado de tratar cada triángulo como un rectángulo completo.", "calculation": "\\[\\frac{256+256+4\\cdot16\\cdot12}{2500}\\cdot100=51{,}2\\%\\]", "question": "¿Qué diferencia hay entre el área de un triángulo y la de un rectángulo de igual base y altura?"}
+              },
+              "hints": ["Separá el desarrollo en un cuadrado, cuatro rectángulos y cuatro triángulos.", "El 100 % corresponde a la lámina completa, no a su lado ni a la base de la caja."],
+              "explanation": "Las áreas de base, paredes y techo son:\\[A_b=16^2=256\\ \\mathrm{cm}^2\\]\\[A_p=4\\cdot16\\cdot4=256\\ \\mathrm{cm}^2\\]\\[A_t=4\\cdot\\frac{16\\cdot12}{2}=384\\ \\mathrm{cm}^2\\]El desarrollo suma \\(896\\ \\mathrm{cm}^2\\) y la lámina ocupa \\(50^2=2500\\ \\mathrm{cm}^2\\).\\[P=\\frac{896}{2500}\\cdot100=35{,}84\\%\\]Redondeando al entero más cercano, se utiliza el 36 %."
+            },
+            {
+              "id": "a-area-5",
+              "type": "choice",
+              "title": "Una caja para un regalo",
+              "prompt": ["Una caja se corta de una lámina de 60 × 60 cm. Tiene base cuadrada de 18 cm de lado, cuatro paredes de 18 × 3 cm y cuatro triángulos de base 18 cm y altura 12 cm.", "¿Qué porcentaje de la superficie de la lámina se utiliza? No se cuentan pestañas y el sobrante no se reutiliza."],
+              "visual": {"kind": "net", "base": 18, "wall": 3, "height": 12, "symbols": ["L", "M", "N", "O"], "dimensions": true},
+              "options": [{"id": "a", "label": "9 %"}, {"id": "b", "label": "27 %"}, {"id": "c", "label": "15 %"}, {"id": "d", "label": "39 %"}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "El cálculo corresponde únicamente al cuadrado central, sin las paredes ni el techo.", "calculation": "\\[\\frac{18^2}{3600}\\cdot100=9\\%\\]", "question": "¿La caja cerrada puede construirse solo con esa pieza? ¿Qué superficies faltan?"},
+                "c": {"reason": "Esta elección coincide con sumar base y paredes, pero omitir los triángulos.", "calculation": "\\[\\frac{324+4\\cdot18\\cdot3}{3600}\\cdot100=15\\%\\]", "question": "¿Marcaste los cuatro triángulos a medida que calculabas las áreas?"},
+                "d": {"reason": "El porcentaje coincide con contar el doble del área triangular, usando base por altura sin dividir entre dos.", "calculation": "\\[\\frac{324+216+4\\cdot18\\cdot12}{3600}\\cdot100=39\\%\\]", "question": "¿La fórmula que usaste para el techo es la de un triángulo o la de un rectángulo?"}
+              },
+              "hints": ["Calculá cada grupo de caras una sola vez.", "Para el techo, cada una de las cuatro piezas tiene área \\(\\frac{b\\cdot h}{2}\\)."],
+              "explanation": "Sumamos las piezas:\\[A_b=18^2=324\\]\\[A_p=4\\cdot18\\cdot3=216\\]\\[A_t=4\\cdot\\frac{18\\cdot12}{2}=432\\]Todas las áreas están en \\(\\mathrm{cm}^2\\). El total es \\(324+216+432=972\\), frente a una lámina de \\(3600\\ \\mathrm{cm}^2\\).\\[P=\\frac{972}{3600}\\cdot100=27\\%\\]"
+            },
+            {
+              "id": "a-area-6",
+              "type": "choice",
+              "title": "Estimar el aprovechamiento",
+              "prompt": ["De una lámina cuadrada de 70 cm de lado se recorta un envase con base de 22 × 22 cm, cuatro paredes de 22 × 5 cm y cuatro caras de techo triangulares de base 22 cm y altura 15 cm.", "Sin pestañas ni superposiciones, ¿qué porcentaje de la lámina se aprovecha, redondeado al entero más cercano?"],
+              "visual": {"kind": "net", "base": 22, "wall": 5, "height": 15, "symbols": ["U", "V", "W", "X"], "dimensions": true},
+              "options": [{"id": "a", "label": "32 %"}, {"id": "b", "label": "19 %"}, {"id": "c", "label": "46 %"}, {"id": "d", "label": "10 %"}],
+              "answer": "a",
+              "errorFeedback": {
+                "b": {"reason": "La opción aproxima el porcentaje de base y paredes, dejando sin contar el techo.", "calculation": "\\[\\frac{484+440}{4900}\\cdot100\\approx18{,}86\\%\\]", "question": "¿Qué piezas todavía faltan para completar el desarrollo?"},
+                "c": {"reason": "El valor es compatible con duplicar el área triangular al omitir la división entre dos.", "calculation": "\\[\\frac{484+440+4\\cdot22\\cdot15}{4900}\\cdot100\\approx45{,}80\\%\\]", "question": "¿Cuál es el área de un solo triángulo y cuántos hay realmente?"},
+                "d": {"reason": "Esta elección aproxima el área de la base sola como parte de la lámina.", "calculation": "\\[\\frac{22^2}{70^2}\\cdot100\\approx9{,}88\\%\\]", "question": "¿Las paredes y el techo ya aparecen en tu suma o solo el cuadrado central?"}
+              },
+              "hints": ["Sumá áreas en centímetros cuadrados antes de calcular el porcentaje.", "Dividir por el área total de la lámina permite expresar qué parte se aprovecha."],
+              "explanation": "Calculamos las áreas en \\(\\mathrm{cm}^2\\):\\[A_b=22^2=484\\]\\[A_p=4\\cdot22\\cdot5=440\\]\\[A_t=4\\cdot\\frac{22\\cdot15}{2}=660\\]El total es \\(1584\\) y la lámina tiene \\(70^2=4900\\).\\[P=\\frac{1584}{4900}\\cdot100\\approx32{,}33\\%\\]La aproximación al entero es 32 %."
+            },
+            {
+              "id": "a-area-7",
+              "type": "choice",
+              "title": "Una lámina para el taller",
+              "prompt": ["Un taller recorta una caja de una lámina de 70 × 70 cm. La base mide 25 × 25 cm; hay cuatro paredes de 25 × 5 cm y cuatro triángulos de base 25 cm y altura 15 cm.", "¿Qué porcentaje aproximado de la lámina ocupa el desarrollo? Ignorá pestañas y redondeá al entero más cercano."],
+              "visual": {"kind": "net", "base": 25, "wall": 5, "height": 15, "symbols": ["R", "S", "T", "U"], "dimensions": true},
+              "options": [{"id": "a", "label": "13 %"}, {"id": "b", "label": "23 %"}, {"id": "c", "label": "54 %"}, {"id": "d", "label": "38 %"}],
+              "answer": "d",
+              "errorFeedback": {
+                "a": {"reason": "El porcentaje aproxima la base cuadrada sola, no la caja completa.", "calculation": "\\[\\frac{625}{4900}\\cdot100\\approx12{,}76\\%\\]", "question": "¿Qué otras piezas se recortan de la misma lámina?"},
+                "b": {"reason": "El valor puede surgir al incluir el cuadrado y los rectángulos, pero no los triángulos.", "calculation": "\\[\\frac{625+500}{4900}\\cdot100\\approx22{,}96\\%\\]", "question": "¿El techo está incluido en esa cuenta? ¿Cómo añadirías las cuatro caras triangulares?"},
+                "c": {"reason": "La elección aproxima una cuenta en la que cada triángulo se trató como un rectángulo completo.", "calculation": "\\[\\frac{625+500+4\\cdot25\\cdot15}{4900}\\cdot100\\approx53{,}57\\%\\]", "question": "¿Qué factor distingue el área de las piezas triangulares?"}
+              },
+              "hints": ["Hacé un inventario de las nueve piezas: base, paredes y techo.", "Primero sumá sus áreas; después compará el total con \\(70^2\\)."],
+              "explanation": "Las áreas de las piezas son:\\[A_b=25^2=625\\]\\[A_p=4\\cdot25\\cdot5=500\\]\\[A_t=4\\cdot\\frac{25\\cdot15}{2}=750\\]En total se usan \\(1875\\ \\mathrm{cm}^2\\) de una lámina de \\(4900\\ \\mathrm{cm}^2\\).\\[P=\\frac{1875}{4900}\\cdot100\\approx38{,}27\\%\\]El entero más cercano es 38 %."
+            },
+            {
+              "id": "a-area-8",
+              "type": "choice",
+              "title": "Cartón para una caja ancha",
+              "prompt": ["La base de una caja es un cuadrado de 28 cm de lado. El desarrollo incluye cuatro paredes de 28 × 4 cm y cuatro triángulos de base 28 cm y altura 17 cm. Se corta de una lámina de 80 × 80 cm.", "Sin contar pestañas, ¿qué porcentaje aproximado de la lámina se usa? Redondeá al entero más cercano."],
+              "visual": {"kind": "net", "base": 28, "wall": 4, "height": 17, "symbols": ["○", "+", "●", "="], "dimensions": true},
+              "options": [{"id": "a", "label": "34 %"}, {"id": "b", "label": "12 %"}, {"id": "c", "label": "19 %"}, {"id": "d", "label": "49 %"}],
+              "answer": "a",
+              "errorFeedback": {
+                "b": {"reason": "Esta elección aproxima solo la proporción correspondiente a la base.", "calculation": "\\[\\frac{28^2}{6400}\\cdot100=12{,}25\\%\\]", "question": "¿Dónde están las paredes y los triángulos en tu suma de superficies?"},
+                "c": {"reason": "La cuenta puede haber incluido la base y las paredes, pero dejó fuera el techo.", "calculation": "\\[\\frac{784+448}{6400}\\cdot100=19{,}25\\%\\]", "question": "¿Cuánto cartón consumen las cuatro piezas triangulares y qué fórmula corresponde usar?"},
+                "d": {"reason": "El porcentaje coincide con contar cada triángulo con el área de un rectángulo de igual base y altura.", "calculation": "\\[\\frac{784+448+4\\cdot28\\cdot17}{6400}\\cdot100=49\\%\\]", "question": "¿Un triángulo ocupa toda esa superficie rectangular o solamente una parte?"}
+              },
+              "hints": ["Calculá el techo como cuatro triángulos, no como cuatro rectángulos.", "El área de la lámina representa el 100 % aunque parte del cartón se descarte."],
+              "explanation": "En centímetros cuadrados:\\[A_b=28^2=784\\]\\[A_p=4\\cdot28\\cdot4=448\\]\\[A_t=4\\cdot\\frac{28\\cdot17}{2}=952\\]El desarrollo ocupa \\(2184\\ \\mathrm{cm}^2\\).\\[P=\\frac{2184}{80^2}\\cdot100=34{,}125\\%\\]Se usa aproximadamente el 34 % de la lámina."
+            },
+            {
+              "id": "a-area-9",
+              "type": "choice",
+              "title": "Planificar una caja de obsequio",
+              "prompt": ["Se dispone de una lámina cuadrada de 70 cm de lado. La caja tendrá base de 24 × 24 cm, cuatro paredes de 24 × 4 cm y cuatro caras triangulares de base 24 cm y altura 15 cm.", "¿Qué porcentaje de la lámina se aprovechará aproximadamente? No se cuentan pestañas y se redondea al entero más cercano."],
+              "visual": {"kind": "net", "base": 24, "wall": 4, "height": 15, "symbols": ["A", "C", "E", "G"], "dimensions": true},
+              "options": [{"id": "a", "label": "12 %"}, {"id": "b", "label": "34 %"}, {"id": "c", "label": "20 %"}, {"id": "d", "label": "49 %"}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "El valor aproxima el área de una sola de las partes: la base cuadrada.", "calculation": "\\[\\frac{576}{4900}\\cdot100\\approx11{,}76\\%\\]", "question": "¿Cuántos grupos de piezas requiere el envase completo?"},
+                "c": {"reason": "Este porcentaje puede salir al sumar base y paredes sin incorporar el techo.", "calculation": "\\[\\frac{576+384}{4900}\\cdot100\\approx19{,}59\\%\\]", "question": "¿Qué área aporta cada triángulo y cuántos deberías sumar?"},
+                "d": {"reason": "La elección aproxima el resultado de omitir la mitad en la fórmula de cada triángulo.", "calculation": "\\[\\frac{576+384+4\\cdot24\\cdot15}{4900}\\cdot100\\approx48{,}98\\%\\]", "question": "¿Tu expresión para un triángulo incluye la división entre dos?"}
+              },
+              "hints": ["No midas el dibujo: usá las longitudes indicadas y calculá las superficies.", "¿Qué cociente expresa el área usada como parte del área disponible?"],
+              "explanation": "La base, las paredes y el techo ocupan:\\[A_b=24^2=576\\]\\[A_p=4\\cdot24\\cdot4=384\\]\\[A_t=4\\cdot\\frac{24\\cdot15}{2}=720\\]La suma es \\(1680\\ \\mathrm{cm}^2\\), mientras que la lámina ocupa \\(4900\\ \\mathrm{cm}^2\\).\\[P=\\frac{1680}{4900}\\cdot100\\approx34{,}29\\%\\]Por eso la aproximación pedida es 34 %."
+            },
+            {
+              "id": "a-area-10",
+              "type": "choice",
+              "title": "Comparar superficie usada y disponible",
+              "prompt": ["Un envase se recorta de una lámina de 80 × 80 cm. Su desarrollo tiene base cuadrada de 26 cm de lado, cuatro paredes de 26 × 6 cm y cuatro triángulos de base 26 cm y altura 16 cm.", "¿Qué porcentaje aproximado de la lámina se utiliza? Ignorá pestañas y redondeá al entero más cercano."],
+              "visual": {"kind": "net", "base": 26, "wall": 6, "height": 16, "symbols": ["B", "D", "F", "H"], "dimensions": true},
+              "options": [{"id": "a", "label": "11 %"}, {"id": "b", "label": "20 %"}, {"id": "c", "label": "46 %"}, {"id": "d", "label": "33 %"}],
+              "answer": "d",
+              "errorFeedback": {
+                "a": {"reason": "El porcentaje aproxima la base sola y no el conjunto de piezas.", "calculation": "\\[\\frac{676}{6400}\\cdot100=10{,}5625\\%\\]", "question": "¿Qué superficies faltan para construir las paredes y cerrar el techo?"},
+                "b": {"reason": "Esta opción aproxima una suma de base y paredes sin las piezas triangulares.", "calculation": "\\[\\frac{676+624}{6400}\\cdot100=20{,}3125\\%\\]", "question": "¿Cómo incorporarías las cuatro caras del techo sin contarlas de más?"},
+                "c": {"reason": "La elección coincide con tratar los triángulos como rectángulos completos.", "calculation": "\\[\\frac{676+624+4\\cdot26\\cdot16}{6400}\\cdot100=46{,}3125\\%\\]", "question": "¿La base y la altura de un triángulo se multiplican sin más o hace falta otro factor?"}
+              },
+              "hints": ["Separá el cálculo de cada tipo de figura para controlar que no falte ninguna.", "Una vez obtenida el área total, dividí entre el área de la lámina y convertí a porcentaje."],
+              "explanation": "Calculamos en \\(\\mathrm{cm}^2\\):\\[A_b=26^2=676\\]\\[A_p=4\\cdot26\\cdot6=624\\]\\[A_t=4\\cdot\\frac{26\\cdot16}{2}=832\\]El desarrollo ocupa \\(2132\\ \\mathrm{cm}^2\\).\\[P=\\frac{2132}{6400}\\cdot100=33{,}3125\\%\\]Redondeando, se usa el 33 % de la lámina."
             }
           ]
         },
@@ -260,6 +687,118 @@
               "answer": "b",
               "hints": ["Planteá \\(15x+200>350\\).", "¿Qué valor de \\(x\\) iguala la meta? ¿Ese valor sirve si se pide superarla? Después convertí los años transcurridos al año de calendario."],
               "explanation": "La ecuación de bicicletas debe superar la meta:\\[15x+200>350\\]\\[15x>150\\quad\\Rightarrow\\quad x>10\\]El primer entero es \\(x=11\\), de modo que:\\[2023+11=2034\\]En 2033, \\(15\\cdot10+200=350\\): solo se iguala la meta. En 2034, \\(15\\cdot11+200=365>350\\)."
+            },
+            {
+              "id": "a-modelo-4",
+              "type": "choice",
+              "title": "Las bolsas de una huerta",
+              "prompt": ["Una huerta estima las ventas mensuales de bolsas de verduras y de frutas con las rectas del gráfico. x cuenta los años desde 2022. Se consideran años enteros.", "Según el modelo de verduras, ¿cuál será el primer año en que se superen las 300 bolsas mensuales?"],
+              "visual": {"kind": "chart", "baseYear": 2022, "unit": "Bolsas mensuales", "series": [{"label": "Verduras", "slope": 18, "intercept": 120}, {"label": "Frutas", "slope": 7, "intercept": 60}]},
+              "options": [{"id": "a", "label": "2032"}, {"id": "b", "label": "2033"}, {"id": "c", "label": "2034"}, {"id": "d", "label": "2039"}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "En ese año se llega exactamente a la meta. La consigna pide una cantidad mayor, no igual.", "calculation": "En 2032, \\(x=10\\):\\[18\\cdot10+120=300\\]", "question": "¿Cumplir una igualdad alcanza para satisfacer la palabra «superar»?"},
+                "c": {"reason": "La cantidad supera la meta, pero podría haber un año anterior que ya cumpla la condición.", "calculation": "En 2034, \\(x=12\\):\\[18\\cdot12+120=336\\]", "question": "¿Qué pasa en el año inmediatamente anterior al que elegiste?"},
+                "d": {"reason": "La elección es un año con ventas suficientes, pero la pregunta no pide cualquier año que sirva.", "calculation": "En 2039, \\(x=17\\):\\[18\\cdot17+120=426\\]", "question": "¿Cómo hallarías el menor entero que satisface la desigualdad?"}
+              },
+              "hints": ["Elegí la ecuación de verduras, no la de frutas.", "Traducí «superar 300» a una desigualdad y distinguí x del año de calendario."],
+              "explanation": "Usamos el modelo de verduras:\\[18x+120>300\\]\\[18x>180\\quad\\Rightarrow\\quad x>10\\]El menor entero que cumple es \\(x=11\\).\\[2022+11=2033\\]En el año anterior el modelo da 300; en 2033 da \\(18\\cdot11+120=318>300\\)."
+            },
+            {
+              "id": "a-modelo-5",
+              "type": "choice",
+              "title": "Ventas de compost",
+              "prompt": ["Un vivero modela los kilogramos vendidos por mes de compost y de sustrato. Para el compost usa y = 7,5x + 140, donde x representa años desde 2026. Se consideran años enteros.", "¿Cuál será el primer año en que las ventas mensuales de compost superen los 200 kg?"],
+              "visual": {"kind": "chart", "baseYear": 2026, "unit": "Kilogramos mensuales", "series": [{"label": "Compost", "slope": 7.5, "intercept": 140}, {"label": "Sustrato", "slope": 3, "intercept": 70}]},
+              "options": [{"id": "a", "label": "2034"}, {"id": "b", "label": "2036"}, {"id": "c", "label": "2035"}, {"id": "d", "label": "2033"}],
+              "answer": "c",
+              "errorFeedback": {
+                "a": {"reason": "El año seleccionado iguala la meta en lugar de superarla. El coeficiente decimal no cambia el sentido de la desigualdad.", "calculation": "En 2034, \\(x=8\\):\\[7{,}5\\cdot8+140=200\\]", "question": "¿La condición es vender al menos 200 kg o vender más de 200 kg?"},
+                "b": {"reason": "El año elegido supera la cantidad, pero es necesario comprobar si es el primero.", "calculation": "En 2036, \\(x=10\\):\\[7{,}5\\cdot10+140=215\\]", "question": "¿El año previo también cumple? ¿Cómo controlarías que tu elección sea mínima?"},
+                "d": {"reason": "En ese año el modelo todavía queda por debajo de la cantidad solicitada.", "calculation": "En 2033, \\(x=7\\):\\[7{,}5\\cdot7+140=192{,}5\\]", "question": "¿Qué valor de x obtuviste y qué cantidad predice realmente para ese año?"}
+              },
+              "hints": ["Restá el valor inicial antes de dividir entre el crecimiento anual.", "Buscá el primer entero que cumple la desigualdad estricta; luego sumalo al año base."],
+              "explanation": "Planteamos:\\[7{,}5x+140>200\\]\\[x>\\frac{60}{7{,}5}=8\\]El primer entero es \\(x=9\\), correspondiente a:\\[2026+9=2035\\]En 2034 se estiman 200 kg; en 2035, \\(7{,}5\\cdot9+140=207{,}5\\) kg, que sí superan la meta."
+            },
+            {
+              "id": "a-modelo-6",
+              "type": "choice",
+              "title": "Más cartón recuperado",
+              "prompt": ["Una cooperativa estima su recuperación mensual de cartón y de plástico con las rectas del gráfico. x son los años transcurridos desde 2020. Para responder se usan años enteros.", "¿Cuál es el primer año en que el cartón recuperado superará los 500 kg mensuales?"],
+              "visual": {"kind": "chart", "baseYear": 2020, "unit": "Kilogramos mensuales", "series": [{"label": "Cartón", "slope": 16, "intercept": 180}, {"label": "Plástico", "slope": 8, "intercept": 90}]},
+              "options": [{"id": "a", "label": "2041"}, {"id": "b", "label": "2040"}, {"id": "c", "label": "2039"}, {"id": "d", "label": "2042"}],
+              "answer": "a",
+              "errorFeedback": {
+                "b": {"reason": "El año elegido corresponde a la igualdad con 500 kg, no a una cantidad mayor.", "calculation": "En 2040, \\(x=20\\):\\[16\\cdot20+180=500\\]", "question": "¿Qué diferencia hay entre alcanzar la meta y superarla?"},
+                "c": {"reason": "La estimación para ese año todavía no llega al valor de referencia.", "calculation": "En 2039, \\(x=19\\):\\[16\\cdot19+180=484\\]", "question": "¿Tu elección satisface la desigualdad cuando la sustituís en el modelo?"},
+                "d": {"reason": "La condición se cumple, pero elegir un año suficientemente lejano no garantiza que sea el primero.", "calculation": "En 2042, \\(x=22\\):\\[16\\cdot22+180=532\\]", "question": "¿Qué ocurre un año antes? ¿Qué comprobaciones aseguran que encontraste el primer año válido?"}
+              },
+              "hints": ["Usá la recta correspondiente a cartón.", "La condición se aplica a la cantidad estimada; x sigue siendo el número de años desde 2020."],
+              "explanation": "La desigualdad del cartón es:\\[16x+180>500\\]\\[16x>320\\quad\\Rightarrow\\quad x>20\\]El primer entero es 21:\\[2020+21=2041\\]En 2040 hay exactamente 500 kg; en 2041 se estiman \\(16\\cdot21+180=516\\) kg."
+            },
+            {
+              "id": "a-modelo-7",
+              "type": "choice",
+              "title": "Un taller de bicicletas",
+              "prompt": ["Un taller modela el promedio mensual de reparaciones con y = 9x + 95 para bicicletas. También muestra la tendencia de patinetas. x cuenta los años desde 2025 y se consideran valores enteros.", "¿Cuál será el primer año en que el promedio mensual de bicicletas reparadas supere las 200?"],
+              "visual": {"kind": "chart", "baseYear": 2025, "unit": "Reparaciones mensuales", "series": [{"label": "Bicicletas", "slope": 9, "intercept": 95}, {"label": "Patinetas", "slope": 4, "intercept": 40}]},
+              "options": [{"id": "a", "label": "2036"}, {"id": "b", "label": "2038"}, {"id": "c", "label": "2040"}, {"id": "d", "label": "2037"}],
+              "answer": "d",
+              "errorFeedback": {
+                "a": {"reason": "Este año todavía queda por debajo de la meta. Podría surgir de redondear hacia abajo un número no entero de años.", "calculation": "En 2036, \\(x=11\\):\\[9\\cdot11+95=194\\]", "question": "¿Redondear hacia abajo conserva la condición «más de 200»?"},
+                "b": {"reason": "El año supera la meta, pero puede no ser el primero que lo hace.", "calculation": "En 2038, \\(x=13\\):\\[9\\cdot13+95=212\\]", "question": "¿Qué valor predice la recta para el año inmediatamente anterior?"},
+                "c": {"reason": "La estimación es suficiente, pero la consigna pide el primer año y no una fecha cualquiera posterior.", "calculation": "En 2040, \\(x=15\\):\\[9\\cdot15+95=230\\]", "question": "¿Cómo usarías el límite de la desigualdad para evitar avanzar años de más?"}
+              },
+              "hints": ["Pasá el 95 al otro miembro antes de dividir entre 9.", "Si el límite no es entero, probá el entero inferior y el superior para decidir cuál cumple."],
+              "explanation": "Planteamos la condición:\\[9x+95>200\\]\\[x>\\frac{105}{9}\\approx11{,}67\\]El menor entero que sirve es \\(x=12\\).\\[2025+12=2037\\]En 2036 se estiman 194 reparaciones; en 2037, \\(9\\cdot12+95=203>200\\)."
+            },
+            {
+              "id": "a-modelo-8",
+              "type": "choice",
+              "title": "Actividades de un centro cultural",
+              "prompt": ["Un centro cultural modela sus asistencias mensuales a música y a teatro. Para música usa y = 25x + 300. x representa años desde 2021 y se evalúan años enteros.", "¿En qué primer año las asistencias mensuales a música superarán las 600?"],
+              "visual": {"kind": "chart", "baseYear": 2021, "unit": "Asistencias mensuales", "series": [{"label": "Música", "slope": 25, "intercept": 300}, {"label": "Teatro", "slope": 10, "intercept": 150}]},
+              "options": [{"id": "a", "label": "2033"}, {"id": "b", "label": "2034"}, {"id": "c", "label": "2035"}, {"id": "d", "label": "2032"}],
+              "answer": "b",
+              "errorFeedback": {
+                "a": {"reason": "Esta elección alcanza exactamente la cantidad indicada, pero la pregunta exige superarla.", "calculation": "En 2033, \\(x=12\\):\\[25\\cdot12+300=600\\]", "question": "¿Qué signo matemático representa «superar» y se cumple con ese valor?"},
+                "c": {"reason": "El resultado es mayor que la meta, pero falta comprobar que ningún año anterior ya la supere.", "calculation": "En 2035, \\(x=14\\):\\[25\\cdot14+300=650\\]", "question": "¿Qué ocurre en el año previo a tu elección?"},
+                "d": {"reason": "La estimación de ese año no alcanza todavía las asistencias requeridas.", "calculation": "En 2032, \\(x=11\\):\\[25\\cdot11+300=575\\]", "question": "¿Usaste los años transcurridos desde 2021 o directamente el año de calendario en la ecuación?"}
+              },
+              "hints": ["Identificá cuál de las dos rectas corresponde a música.", "Una vez despejado x, distinguí el momento de igualdad del primer año entero por encima."],
+              "explanation": "Para música:\\[25x+300>600\\]\\[25x>300\\quad\\Rightarrow\\quad x>12\\]El menor entero es 13:\\[2021+13=2034\\]En el año anterior se llega a 600; en 2034, \\(25\\cdot13+300=625\\) asistencias."
+            },
+            {
+              "id": "a-modelo-9",
+              "type": "choice",
+              "title": "Alquileres en el parque",
+              "prompt": ["La recta de bicicletas estima el promedio diario de alquileres con y = 4,5x + 60. La otra recta corresponde a patines. x son los años desde 2024; el promedio puede ser decimal, pero se comparan años enteros.", "¿Cuál es el primer año en que el promedio diario de bicicletas alquiladas superará las 100?"],
+              "visual": {"kind": "chart", "baseYear": 2024, "unit": "Promedio diario", "series": [{"label": "Bicicletas", "slope": 4.5, "intercept": 60}, {"label": "Patines", "slope": 1.5, "intercept": 25}]},
+              "options": [{"id": "a", "label": "2033"}, {"id": "b", "label": "2032"}, {"id": "c", "label": "2034"}, {"id": "d", "label": "2035"}],
+              "answer": "a",
+              "errorFeedback": {
+                "b": {"reason": "En ese año la recta todavía está por debajo de 100. Tal vez hayas redondeado los años transcurridos hacia abajo.", "calculation": "En 2032, \\(x=8\\):\\[4{,}5\\cdot8+60=96\\]", "question": "¿La sustitución verifica que ya se superó la meta?"},
+                "c": {"reason": "El año elegido cumple la condición, pero puede no ser el primero. Un promedio decimal no obliga a esperar hasta llegar a un promedio entero.", "calculation": "En 2034, \\(x=10\\):\\[4{,}5\\cdot10+60=105\\]", "question": "¿La consigna exige que el promedio sea entero o solamente que lo sea el año?"},
+                "d": {"reason": "Esta fecha es posterior a valores que podrían cumplir la condición. Hace falta localizar el primer entero válido.", "calculation": "En 2035, \\(x=11\\):\\[4{,}5\\cdot11+60=109{,}5\\]", "question": "¿Cómo comprobarías que no estás dejando pasar años que ya superaban los 100 alquileres de promedio?"}
+              },
+              "hints": ["No redondees el promedio antes de comparar con 100.", "Resolvé la desigualdad y elegí un valor entero para x, no necesariamente para y."],
+              "explanation": "El modelo debe cumplir:\\[4{,}5x+60>100\\]\\[x>\\frac{40}{4{,}5}\\approx8{,}89\\]El primer entero es \\(x=9\\):\\[2024+9=2033\\]En 2032 se estiman 96 alquileres diarios de promedio; en 2033, \\(4{,}5\\cdot9+60=100{,}5>100\\)."
+            },
+            {
+              "id": "a-modelo-10",
+              "type": "choice",
+              "title": "Instrumentos que circulan",
+              "prompt": ["Una escuela de música modela sus préstamos mensuales de instrumentos y de equipos. Para instrumentos usa y = 30x + 450, con x igual a los años desde 2023.", "Si se mantiene el modelo, ¿cuál será el primer año entero en que los préstamos mensuales de instrumentos superen los 900?"],
+              "visual": {"kind": "chart", "baseYear": 2023, "unit": "Préstamos mensuales", "series": [{"label": "Instrumentos", "slope": 30, "intercept": 450}, {"label": "Equipos", "slope": 12, "intercept": 150}]},
+              "options": [{"id": "a", "label": "2038"}, {"id": "b", "label": "2040"}, {"id": "c", "label": "2039"}, {"id": "d", "label": "2037"}],
+              "answer": "c",
+              "errorFeedback": {
+                "a": {"reason": "El año elegido corresponde a igualar 900, no a superarlo.", "calculation": "En 2038, \\(x=15\\):\\[30\\cdot15+450=900\\]", "question": "¿Qué condición queda pendiente si el modelo da exactamente el valor de referencia?"},
+                "b": {"reason": "El modelo ya supera la meta en la fecha elegida, pero puede hacerlo antes.", "calculation": "En 2040, \\(x=17\\):\\[30\\cdot17+450=960\\]", "question": "¿Comprobaste el año anterior para asegurarte de elegir el primero?"},
+                "d": {"reason": "La cantidad estimada para ese año todavía no alcanza la meta.", "calculation": "En 2037, \\(x=14\\):\\[30\\cdot14+450=870\\]", "question": "¿Qué diferencia hay entre el límite que obtuviste y el entero que realmente satisface la desigualdad?"}
+              },
+              "hints": ["Restá el término independiente y dividí entre la pendiente.", "Recordá que x cuenta años desde 2023 y que superar no significa igualar."],
+              "explanation": "Resolvemos:\\[30x+450>900\\]\\[30x>450\\quad\\Rightarrow\\quad x>15\\]El primer entero es 16:\\[2023+16=2039\\]En 2038 se llega a 900; en 2039 se estiman \\(30\\cdot16+450=930>900\\) préstamos."
             }
           ]
         },
@@ -301,6 +840,90 @@
               "explanation": "Las pendientes coinciden. Restamos las funciones para comprobar si cambia la separación:\\[A(x)-B(x)=(9x+160)-(9x+90)\\]\\[A(x)-B(x)=70\\]La diferencia es constante y positiva: las rectas son paralelas y B no alcanza a A.",
               "modelAnswer": "No. Ambos servicios aumentan 9 entregas semanales por cada año transcurrido. A empieza con 160 y B con 90. Como \\(A(x)-B(x)=70\\) para cualquier \\(x\\), B siempre queda 70 entregas por debajo de A y no lo alcanza ni lo supera.",
               "rubric": ["Respondí que B no alcanza ni supera a A.", "Identifiqué que las pendientes son iguales: ambas valen 9.", "Justifiqué que la diferencia se mantiene en 70 entregas usando las ecuaciones."]
+            },
+            {
+              "id": "a-argumento-4",
+              "type": "open",
+              "title": "Dos rutas de reparto",
+              "prompt": ["Una cooperativa modela sus entregas semanales en dos rutas con R(x) = 8x + 120 y S(x) = 8x + 80. x cuenta los años desde 2024.", "¿Puede la ruta S alcanzar o superar a R para x ≥ 0 si los modelos se mantienen? Justificá con las ecuaciones."],
+              "visual": {"kind": "chart", "baseYear": 2024, "unit": "Entregas semanales", "series": [{"label": "Ruta R", "slope": 8, "intercept": 120}, {"label": "Ruta S", "slope": 8, "intercept": 80}]},
+              "reflectionQuestions": ["¿Qué representa el término independiente en cada ruta?", "¿Qué ocurre con los términos con x al restar las funciones?", "¿Una diferencia constante puede desaparecer con el paso de los años?"],
+              "hints": ["Compará primero las pendientes y después los valores iniciales.", "La resta de las funciones permite describir la distancia entre las dos cantidades."],
+              "explanation": "Las pendientes son iguales. Restamos:\\[R(x)-S(x)=(8x+120)-(8x+80)\\]\\[R(x)-S(x)=40\\]La diferencia siempre es positiva y no depende de x. Las rectas son paralelas; S permanece por debajo de R.",
+              "modelAnswer": "No. Ambas rutas aumentan 8 entregas semanales por cada año transcurrido. R comienza con 40 más y esa diferencia se mantiene: \\(R(x)-S(x)=40\\). Por eso S no alcanza ni supera a R.",
+              "rubric": ["Concluí que S no alcanza ni supera a R en el dominio indicado.", "Identifiqué que las dos pendientes valen 8.", "Expliqué que la diferencia permanece en 40 usando las ecuaciones."]
+            },
+            {
+              "id": "a-argumento-5",
+              "type": "open",
+              "title": "Dos deportes en el club",
+              "prompt": ["Un club estima personas inscritas con B(x) = 12x + 120 para básquet y V(x) = 24x + 60 para vóley. x representa años desde 2024.", "¿Puede vóley superar a básquet? Explicá cuándo se igualan y cuál es el primer año entero en que vóley queda por encima."],
+              "visual": {"kind": "chart", "baseYear": 2024, "unit": "Personas inscritas", "series": [{"label": "Básquet", "slope": 12, "intercept": 120}, {"label": "Vóley", "slope": 24, "intercept": 60}]},
+              "reflectionQuestions": ["¿Qué deporte empieza con más personas y cuál tiene mayor pendiente?", "¿Qué ecuación expresa que las dos cantidades son iguales?", "¿El año de igualdad ya cumple la condición de superar?"],
+              "hints": ["Una cantidad que empieza más baja puede alcanzar a otra si crece más rápido.", "Igualá las funciones y luego analizá qué ocurre al pasar a un valor entero mayor de x."],
+              "explanation": "Buscamos la igualdad:\\[24x+60=12x+120\\]\\[12x=60\\quad\\Rightarrow\\quad x=5\\]Se igualan en \\(2024+5=2029\\), con 180 personas. Para superar:\\[V(x)-B(x)=12x-60>0\\]\\[x>5\\]El primer entero es 6, correspondiente a \\(2024+6=2030\\).",
+              "modelAnswer": "Sí. Vóley crece 24 personas por año y básquet 12. Se igualan en 2029 con 180 personas; vóley supera a básquet para \\(x>5\\). El primer año entero por encima es 2030.",
+              "rubric": ["Relacioné la mayor pendiente de vóley con la posibilidad de alcanzar a básquet.", "Encontré la igualdad en x = 5, año 2029, con 180 personas.", "Distinguí la igualdad del primer año por encima: 2030."]
+            },
+            {
+              "id": "a-argumento-6",
+              "type": "open",
+              "title": "Un servicio que empieza más abajo",
+              "prompt": ["Dos servicios de reparación estiman sus trabajos mensuales con A(x) = 18x + 80 y B(x) = 8x + 180. x son los años desde 2020.", "Al comienzo A hace menos trabajos. ¿Puede alcanzar y superar a B? Indicá el año de igualdad y el primer año entero en que A queda por encima."],
+              "visual": {"kind": "chart", "baseYear": 2020, "unit": "Trabajos mensuales", "series": [{"label": "Servicio A", "slope": 18, "intercept": 80}, {"label": "Servicio B", "slope": 8, "intercept": 180}]},
+              "reflectionQuestions": ["¿El servicio que empieza con más trabajos es también el que crece más rápido?", "¿Cómo representás que A alcanza a B?", "¿Qué signo debe tener A(x) − B(x) para que A sea mayor?"],
+              "hints": ["Compará la diferencia de pendientes con la diferencia inicial.", "Después de encontrar la igualdad, comprobá un año entero antes y otro después."],
+              "explanation": "Aunque A empieza 100 trabajos por debajo, crece 10 por año más que B. Igualamos:\\[18x+80=8x+180\\]\\[10x=100\\quad\\Rightarrow\\quad x=10\\]Se igualan en \\(2020+10=2030\\), con 260 trabajos. La condición para A mayor es:\\[A(x)-B(x)=10x-100>0\\]\\[x>10\\]El primer año entero es \\(2020+11=2031\\).",
+              "modelAnswer": "Sí. A tiene una pendiente mayor, aunque su valor inicial sea menor. Ambos modelos dan 260 trabajos en 2030. Para \\(x>10\\), A supera a B; el primer año entero es 2031.",
+              "rubric": ["No confundí un mayor valor inicial con un mayor crecimiento.", "Encontré la igualdad en x = 10, año 2030, con 260 trabajos.", "Justifiqué que A queda por encima para x > 10 e indiqué 2031."]
+            },
+            {
+              "id": "a-argumento-7",
+              "type": "open",
+              "title": "Mismo comienzo, distinto crecimiento",
+              "prompt": ["Dos grupos de una cooperativa modelan sus pedidos semanales con A(x) = 11x + 60 y B(x) = 5x + 60. x cuenta los años desde 2026.", "Para x ≥ 0, ¿puede B superar a A? Explicá qué ocurre en el año inicial y qué cambia después."],
+              "visual": {"kind": "chart", "baseYear": 2026, "unit": "Pedidos semanales", "series": [{"label": "Grupo A", "slope": 11, "intercept": 60}, {"label": "Grupo B", "slope": 5, "intercept": 60}]},
+              "reflectionQuestions": ["¿Cuánto vale cada función cuando x = 0?", "¿Qué función aumenta más por cada año?", "¿La diferencia es estrictamente positiva también en x = 0 o solo después?"],
+              "hints": ["El mismo término independiente implica un punto inicial compartido.", "Restá las funciones y distinguí entre x = 0 y x > 0."],
+              "explanation": "En el año inicial ambos modelos valen 60. La diferencia es:\\[A(x)-B(x)=(11x+60)-(5x+60)=6x\\]En \\(x=0\\) la diferencia es cero; para \\(x>0\\) es positiva. B no supera a A: primero son iguales y luego A queda por encima.",
+              "modelAnswer": "No. En 2026 ambos grupos tienen 60 pedidos según el modelo. Después A crece más rápido, porque su pendiente es 11 frente a 5. La diferencia \\(6x\\) es cero al inicio y positiva para años posteriores.",
+              "rubric": ["Reconocí que las cantidades son iguales al inicio.", "Comparé las pendientes o calculé la diferencia 6x.", "Concluí que B no supera a A y distinguí x = 0 de x > 0."]
+            },
+            {
+              "id": "a-argumento-8",
+              "type": "open",
+              "title": "Comparar dos bibliotecas",
+              "prompt": ["Dos bibliotecas estiman sus préstamos mensuales con E(x) = 5x + 90 para la sede Este y O(x) = 9x + 150 para la sede Oeste. x representa años desde 2025.", "¿Podrá la sede Este alcanzar a la Oeste para x ≥ 0 si se mantienen las tendencias? Justificá sin basarte únicamente en el dibujo."],
+              "visual": {"kind": "chart", "baseYear": 2025, "unit": "Préstamos mensuales", "series": [{"label": "Sede Este", "slope": 5, "intercept": 90}, {"label": "Sede Oeste", "slope": 9, "intercept": 150}]},
+              "reflectionQuestions": ["¿Qué sede empieza con un valor mayor?", "¿La sede que empieza más alta crece más o menos que la otra?", "¿Qué signo tiene la diferencia entre las funciones en todo el dominio pedido?"],
+              "hints": ["Compará tanto los valores iniciales como las pendientes.", "Elegí una resta entre las funciones que permita interpretar qué sede queda por encima."],
+              "explanation": "Oeste empieza con más préstamos y además crece más rápido. Su diferencia con Este es:\\[O(x)-E(x)=(9x+150)-(5x+90)\\]\\[O(x)-E(x)=4x+60\\]Para \\(x\\ge0\\) la diferencia siempre es positiva. Por eso Este no alcanza a Oeste.",
+              "modelAnswer": "No. Oeste comienza con 150 frente a 90 y crece 9 por año frente a 5. La diferencia \\(4x+60\\) es positiva para todo \\(x\\ge0\\), de modo que la distancia no se cierra.",
+              "rubric": ["Concluí que Este no alcanza a Oeste en el dominio indicado.", "Comparé correctamente el inicio y el crecimiento de ambas sedes.", "Usé las ecuaciones para justificar una diferencia positiva, no solo el gráfico."]
+            },
+            {
+              "id": "a-argumento-9",
+              "type": "open",
+              "title": "Equipos que se retiran de uso",
+              "prompt": ["Dos talleres retiran equipos sin incorporar nuevos. Sus cantidades se modelan con A(x) = 200 − 4x y B(x) = 260 − 10x. x son los años desde 2025. Los modelos se usan solo mientras las cantidades sean no negativas: 0 ≤ x ≤ 26.", "¿Se igualarán las cantidades? ¿Cuál será el primer año entero en que B tenga menos equipos que A? Explicá también por qué no conviene prolongar el modelo indefinidamente."],
+              "visual": {"kind": "chart", "baseYear": 2025, "unit": "Equipos en uso", "series": [{"label": "Taller A", "slope": -4, "intercept": 200}, {"label": "Taller B", "slope": -10, "intercept": 260}]},
+              "reflectionQuestions": ["¿Qué taller empieza con más equipos y cuál retira más por año?", "¿Cómo representarías que B tiene menos equipos que A?", "¿Qué significaría una predicción negativa de equipos y qué límite se indicó?"],
+              "hints": ["Una pendiente más negativa representa una disminución más rápida.", "Buscá la igualdad y luego el signo de la diferencia B(x) − A(x), respetando el dominio."],
+              "explanation": "Buscamos cuándo coinciden:\\[200-4x=260-10x\\]\\[6x=60\\quad\\Rightarrow\\quad x=10\\]Se igualan en \\(2025+10=2035\\), con 160 equipos. Para B menor:\\[B(x)-A(x)=60-6x<0\\]\\[x>10\\]El primer entero es 11: año \\(2025+11=2036\\). En ese año, A tiene 156 y B 150. El dominio termina en \\(x=26\\), cuando B llega a cero; después la predicción negativa dejaría de tener sentido en este contexto.",
+              "modelAnswer": "Sí: se igualan en 2035 con 160 equipos. Como B retira equipos más rápido, queda por debajo de A para \\(x>10\\); el primer año entero es 2036. Solo interpretamos el modelo dentro de \\(0\\le x\\le26\\), porque no puede haber una cantidad negativa de equipos.",
+              "rubric": ["Encontré la igualdad en x = 10, año 2035, con 160 equipos.", "Justifiqué que B queda por debajo para x > 10 e indiqué 2036.", "Expliqué que el modelo está limitado por la imposibilidad de cantidades negativas."]
+            },
+            {
+              "id": "a-argumento-10",
+              "type": "open",
+              "title": "Dos reservas que disminuyen",
+              "prompt": ["Una cooperativa tiene dos reservas de vales. Se modelan con A(x) = 180 − 6x y B(x) = 120 − 6x, donde x cuenta años desde 2026. El período de uso de los modelos es 0 ≤ x ≤ 20.", "Como ambas reservas disminuyen, ¿podrá B alcanzar a A en ese período? Justificá con las pendientes y la diferencia entre las funciones."],
+              "visual": {"kind": "chart", "baseYear": 2026, "unit": "Vales disponibles", "series": [{"label": "Reserva A", "slope": -6, "intercept": 180}, {"label": "Reserva B", "slope": -6, "intercept": 120}]},
+              "reflectionQuestions": ["¿Qué significa que las dos pendientes sean negativas e iguales?", "¿Una disminución igual en ambos grupos reduce la diferencia entre ellos?", "¿Qué ocurre en el extremo del período indicado y qué limita el modelo?"],
+              "hints": ["No confundas que ambas cantidades disminuyan con que la distancia entre ellas disminuya.", "Restá B(x) de A(x) y comprobá si el resultado depende de x."],
+              "explanation": "Las dos reservas pierden 6 vales por año. Su diferencia es:\\[A(x)-B(x)=(180-6x)-(120-6x)\\]\\[A(x)-B(x)=60\\]La diferencia positiva no cambia. B no alcanza a A dentro del período. En \\(x=20\\), B llega a cero y A conserva 60; extender el modelo produciría valores negativos para B.",
+              "modelAnswer": "No. Las pendientes iguales, ambas −6, mantienen rectas paralelas. Aunque las dos reservas bajan, \\(A(x)-B(x)=60\\) durante todo \\(0\\le x\\le20\\). B no alcanza a A antes de agotarse.",
+              "rubric": ["Distinguí disminuir las cantidades de disminuir su diferencia.", "Identifiqué pendientes iguales y calculé una separación constante de 60.", "Concluí que B no alcanza a A en el período y respeté el límite de uso del modelo."]
             }
           ]
         }

@@ -67,10 +67,14 @@ test("todas las fórmulas del banco son válidas y sus delimitadores están comp
   visit(bank);
   assert.ok(formulas >= 140, `Solo se encontraron ${formulas} fórmulas.`);
   assert.equal(failures.length, start);
+  for (const q of questions.filter(q => q.visual?.kind !== "net" || q.visual.dimensions)) {
+    assert.ok(q.explanation.includes("\\["), `${q.id}: falta el planteo matemático en bloques`);
+  }
 });
 
-test("las 45 parejas incorrectas generan fórmulas válidas, sin cambiar sus respuestas", () => {
+test("las 150 parejas incorrectas generan fórmulas válidas, sin cambiar sus respuestas", () => {
   const start = failures.length;
+  let pairs = 0;
   for (const q of questions.filter(item => item.type === "select")) {
     for (const a of q.fields[0].options) {
       for (const b of q.fields[1].options) {
@@ -81,10 +85,12 @@ test("las 45 parejas incorrectas generan fórmulas válidas, sin cambiar sus res
         assert.equal((result.match(/class="math-block"/g) ?? []).length, 2);
         assert.doesNotMatch(result, /math-error/);
         assert.deepEqual(answer, previous);
+        pairs++;
       }
     }
   }
   assert.equal(failures.length, start);
+  assert.equal(pairs, 150);
 });
 
 test("CSS, fuentes, biblioteca y licencia se publican localmente", () => {

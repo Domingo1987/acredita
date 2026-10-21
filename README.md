@@ -4,7 +4,7 @@ Aplicación estática e independiente para practicar resolución de problemas ma
 
 ## Qué incluye
 
-- Módulo A: **18 ejercicios originales**, tres variantes por cada una de seis posiciones.
+- Módulo A: **60 ejercicios originales**, diez variantes por cada una de seis posiciones.
 - Cada intento elige **una variante aleatoria por posición**, conservando esta estructura:
   1. Precios y sistemas de ecuaciones: dos menús desplegables.
   2. Porcentajes sucesivos: opción múltiple.
@@ -26,6 +26,23 @@ Aplicación estática e independiente para practicar resolución de problemas ma
 - [Página de orientaciones](./orientaciones.html) con síntesis propia de la sección 3 de ANEP y acceso a la fuente oficial completa. No es una transcripción; distingue los contenidos oficiales del alcance parcial de la app.
 
 Las variantes se sortean de manera independiente. Los ejercicios de áreas y de tendencias incluyen todos sus propios datos: no dependen de la variante elegida en otra posición. Un nuevo intento puede repetir ejercicios; no se garantiza una combinación distinta.
+
+### Banco ampliado del módulo A
+
+Las seis posiciones mantienen su estructura y ahora tienen diez variantes cada una:
+
+| Posición | Variantes | Situaciones |
+| --- | --- | --- |
+| Sistemas de ecuaciones | 10 | Panadería, papelería, entradas, feria, alquiler de mobiliario, cantina, mercería, piscina, cooperativa y alojamiento. |
+| Porcentajes sucesivos | 10 | Pérdidas de masa, descuentos consecutivos, evaporación y filtrado. Se distingue qué cantidad es la base de cada porcentaje. |
+| Visualización espacial | 10 | Caras vecinas y opuestas, marcas que no pueden duplicarse y cierre del recorrido alrededor de la base. |
+| Áreas y aprovechamiento | 10 | Diferentes bases, paredes, techos y láminas; inventario de piezas, áreas triangulares y redondeo de porcentajes. |
+| Modelos lineales | 10 | Metas de ventas, préstamos, reciclaje, reparaciones y alquileres; pendientes enteras o decimales y primer año que supera una meta. |
+| Argumentación | 10 | Rectas paralelas, cruces, valores iniciales iguales, distinta rapidez de crecimiento y modelos decrecientes con dominio limitado. |
+
+Se conservan los 18 ejercicios iniciales con sus identificadores y respuestas, para no romper los intentos guardados. Las variantes nuevas usan los sufijos `-4` a `-10`. Tras corregir un error hay nueve variantes alternativas para el refuerzo de esa posición; solo se selecciona una y se conserva al retomarla.
+
+Cada variante nueva incluye dos pistas y una explicación completa. Las preguntas cerradas tienen orientación para todas sus opciones incorrectas; las escritas tienen preguntas de reflexión y rúbrica, sin corrección automática. B y C siguen pendientes y no se presentan como réplicas oficiales.
 
 ## Primer intento, reintentos y refuerzo
 
@@ -229,7 +246,7 @@ Con Node.js 20 o superior:
 npm test
 ```
 
-Las pruebas verifican las seis posiciones y sus tres variantes, selección independiente, corrección, restauración de progreso, rechazo de datos inválidos, formatos SVG y **cálculos de las soluciones**: sistemas, porcentajes sucesivos, vecindad de caras, áreas, desigualdades estrictas y tendencias. También recorren todos los distractores y las combinaciones de precios, validan LaTeX y comprueban el registro inmutable del primer intento, la deduplicación de entregas, la migración de progresos anteriores y el aislamiento del refuerzo.
+Las pruebas verifican las seis posiciones y sus diez variantes, selección independiente, corrección, restauración de progreso, rechazo de datos inválidos, formatos SVG y **cálculos de las soluciones**: sistemas con solución única, porcentajes sucesivos, vecindad de caras, áreas, desigualdades estrictas y tendencias crecientes o decrecientes. Se recorren las 120 opciones incorrectas y las 150 parejas incorrectas de precios, se valida LaTeX y se comprueba la compatibilidad de los ejercicios anteriores, el registro inmutable del primer intento, la deduplicación de entregas, la migración de progresos anteriores y el aislamiento del refuerzo.
 
 Después de editar el banco, ejecutá las pruebas y revisá el flujo en el navegador. El validador detecta varios errores de estructura, pero no sustituye la revisión pedagógica ni comprueba automáticamente cualquier ejercicio nuevo.
 

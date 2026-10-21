@@ -9,16 +9,36 @@ const moduleA = bank.modules[0];
 const clone = value => structuredClone(value);
 const selectedAnswer = q => q.options.find(o => o.id === q.answer).label;
 
-test("el banco contiene A con seis posiciones de tres variantes y B/C pendientes", () => {
+test("el banco contiene A con sesenta ejercicios y B/C pendientes", () => {
   assert.equal(validateBank(bank), bank);
-  assert.deepEqual(moduleA.slots.map(s => s.questions.length), [3, 3, 3, 3, 3, 3]);
+  assert.deepEqual(moduleA.slots.map(s => s.questions.length), [10, 10, 10, 10, 10, 10]);
+  assert.equal(new Set(moduleA.slots.flatMap(s => s.questions.map(q => q.title))).size, 60);
   assert.deepEqual(bank.modules.slice(1).map(m => m.status), ["pending", "pending"]);
   assert.throws(() => createAttempt(bank.modules[1]), /disponible/);
 });
 
-test("cada variante es alcanzable y se conserva el orden de los seis tipos", () => {
+test("los dieciocho ejercicios previos conservan sus identificadores y respuestas guardadas", () => {
+  const prefixes = ["a-precios", "a-porcentaje", "a-espacio", "a-area", "a-modelo", "a-argumento"];
+  const prices = [{ pan: "60", galleta: "20" }, { cuaderno: "90", lapiz: "10" }, { adulto: "200", infantil: "180" }];
+  const choices = [["c", "c", "b", "b"], ["b", "b", "c", "c"], ["c", "a", "b", "b"]];
   for (let variant = 0; variant < 3; variant++) {
-    const attempt = createAttempt(moduleA, () => (variant + 0.5) / 3);
+    const ids = prefixes.map(prefix => `${prefix}-${variant + 1}`);
+    assert.deepEqual(moduleA.slots.map(s => s.questions[variant].id), ids);
+    const answers = { [ids[0]]: prices[variant], [ids[5]]: "Mi argumento anterior." };
+    choices[variant].forEach((answer, i) => { answers[ids[i + 1]] = answer; });
+    const restored = restoreAttempt(bank, {
+      moduleId: "A", questionIds: ids, answers: clone(answers), hints: {}, checked: {},
+      selfChecks: {}, index: 5, phase: "results"
+    });
+    assert.deepEqual(restored.answers, answers);
+    assert.deepEqual(questionsFor(bank, restored).map(q => grade(q, restored.answers[q.id])),
+      ["correct", "correct", "correct", "correct", "correct", "manual"]);
+  }
+});
+
+test("cada variante es alcanzable y se conserva el orden de los seis tipos", () => {
+  for (let variant = 0; variant < 10; variant++) {
+    const attempt = createAttempt(moduleA, () => (variant + 0.5) / 10);
     const questions = questionsFor(bank, attempt);
     assert.equal(new Set(attempt.questionIds).size, 6);
     assert.deepEqual(questions.map(q => q.type), ["select", "choice", "choice", "choice", "choice", "open"]);
@@ -30,7 +50,7 @@ test("se elige de manera independiente una variante por posición", () => {
   const samples = [0, .4, .9, .9, 0, .4];
   let index = 0;
   const attempt = createAttempt(moduleA, () => samples[index++]);
-  assert.deepEqual(attempt.questionIds, moduleA.slots.map((s, i) => s.questions[[0, 1, 2, 2, 0, 1][i]].id));
+  assert.deepEqual(attempt.questionIds, moduleA.slots.map((s, i) => s.questions[[0, 4, 9, 9, 0, 4][i]].id));
 });
 
 test("la corrección distingue vacía, parcial, correcta e incorrecta", () => {
@@ -80,10 +100,10 @@ test("cada distractor tiene orientación y pregunta sin la respuesta correcta ni
     assert.throws(() => errorGuidance(q, q.answer), /incorrecta/);
     assert.throws(() => errorGuidance(q, ""), /incorrecta/);
   }
-  assert.equal(errors, 36);
+  assert.equal(errors, 120);
 });
 
-test("se comprueban las 45 parejas incorrectas de precios usando solo las elecciones", () => {
+test("se comprueban las 150 parejas incorrectas de precios usando solo las elecciones", () => {
   let errors = 0;
   for (const q of moduleA.slots[0].questions) {
     const [a, b] = q.fields;
@@ -109,7 +129,7 @@ test("se comprueban las 45 parejas incorrectas de precios usando solo las elecci
       }
     }
   }
-  assert.equal(errors, 45);
+  assert.equal(errors, 150);
 });
 
 test("el banco exige devoluciones completas y preguntas de reflexión", () => {
@@ -207,19 +227,37 @@ test("los precios correctos verifican las dos compras de cada variante", () => {
   const coefficients = [
     [[4, 6, 360], [2, 4, 200]],
     [[3, 2, 290], [2, 4, 220]],
-    [[2, 3, 940], [4, 2, 1160]]
+    [[2, 3, 940], [4, 2, 1160]],
+    [[2, 3, 340], [4, 2, 440]],
+    [[4, 1, 260], [2, 2, 310]],
+    [[2, 3, 330], [3, 2, 370]],
+    [[2, 4, 420], [3, 2, 510]],
+    [[2, 2, 800], [3, 1, 900]],
+    [[2, 4, 400], [3, 2, 420]],
+    [[2, 1, 4800], [1, 2, 4200]]
   ];
   moduleA.slots[0].questions.forEach((q, i) => {
     const [a, b] = q.fields.map(f => Number(f.answer));
+    assert.deepEqual(q.verification.map(v => [...v.quantities, v.total]), coefficients[i]);
     for (const [ca, cb, total] of coefficients[i]) assert.equal(ca * a + cb * b, total);
+    const [[ca, cb], [da, db]] = coefficients[i];
+    assert.notEqual(ca * db - cb * da, 0, `${q.id}: el sistema debe tener solución única`);
   });
 });
 
 test("los porcentajes sucesivos conservan la masa final indicada", () => {
-  const recipes = [[480, .8, .8], [810, .9, .75], [540, .75, .9]];
+  const recipes = [
+    [480, .8, .8], [810, .9, .75], [540, .75, .9], [680, .85, .8], [1260, .7, .9],
+    [1530, .85, .9], [380, .95, .8], [1440, .9, .8], [900, .75, .8], [1200, .8, .75]
+  ];
   moduleA.slots[1].questions.forEach((q, i) => {
+    const prompt = q.prompt.join(" ");
+    assert.match(prompt, new RegExp(`\\b${recipes[i][0]}\\b`));
+    for (const factor of recipes[i].slice(1)) assert.match(prompt, new RegExp(`${Math.round((1 - factor) * 100)}\\s*%`));
     const initial = Number.parseFloat(selectedAnswer(q));
     assert.ok(Math.abs(initial * recipes[i][1] * recipes[i][2] - recipes[i][0]) < 1e-8);
+    const matching = q.options.filter(o => Math.abs(Number.parseFloat(o.label) * recipes[i][1] * recipes[i][2] - recipes[i][0]) < 1e-8);
+    assert.deepEqual(matching.map(o => o.id), [q.answer]);
   });
 });
 
@@ -235,19 +273,29 @@ test("hay exactamente una vista espacial válida en cada variante", () => {
 });
 
 test("el área y porcentaje coinciden y el desarrollo cabe en la lámina", () => {
-  const sheets = [80, 60, 80];
+  const sheets = [80, 60, 80, 50, 60, 70, 70, 80, 70, 80];
+  const dimensions = [
+    [24, 6, 12], [20, 5, 10], [30, 7, 14], [16, 4, 12], [18, 3, 12],
+    [22, 5, 15], [25, 5, 15], [28, 4, 17], [24, 4, 15], [26, 6, 16]
+  ];
   moduleA.slots[3].questions.forEach((q, i) => {
     const { base: b, wall: w, height: h } = q.visual;
+    assert.deepEqual([b, w, h], dimensions[i]);
+    for (const measure of [b, w, h, sheets[i]]) assert.match(q.prompt.join(" "), new RegExp(`\\b${measure}\\b`));
     const area = b * b + 4 * b * w + 2 * b * h;
     assert.equal(Math.round(area / sheets[i] ** 2 * 100), Number.parseFloat(selectedAnswer(q)));
     assert.ok(b + 2 * w + 2 * h <= sheets[i]);
+    if (i >= 3) assert.ok(h > b / 2, `${q.id}: el nuevo techo debe admitir una altura positiva`);
   });
 });
 
 test("el año correcto es el primero que SUPERA, no iguala, la meta", () => {
-  const targets = [400, 300, 350];
+  const targets = [400, 300, 350, 300, 200, 500, 200, 600, 100, 900];
+  const expectedYears = [2037, 2041, 2034, 2033, 2035, 2041, 2037, 2034, 2033, 2039];
   moduleA.slots[4].questions.forEach((q, i) => {
     const year = Number(selectedAnswer(q));
+    assert.match(q.prompt.join(" "), new RegExp(`\\b${targets[i]}\\b`));
+    assert.equal(year, expectedYears[i], q.id);
     const x = year - q.visual.baseYear;
     const s = q.visual.series[0];
     assert.ok(s.slope * x + s.intercept > targets[i]);
@@ -255,15 +303,46 @@ test("el año correcto es el primero que SUPERA, no iguala, la meta", () => {
   });
 });
 
-test("las tres rúbricas representan tendencias distintas y coherentes", () => {
-  const visuals = moduleA.slots[5].questions.map(q => q.visual);
-  const [[l, r], [n, y], [a, b]] = visuals.map(v => v.series);
-  assert.ok(l.intercept > r.intercept && l.slope > r.slope);
-  const crossing = (n.intercept - y.intercept) / (y.slope - n.slope);
-  assert.equal(crossing, 10);
-  assert.equal(visuals[1].baseYear + crossing + 1, 2036);
-  assert.equal(a.slope, b.slope);
-  assert.equal(a.intercept - b.intercept, 70);
+test("las diez rúbricas cubren cruces, paralelas, comienzos iguales y descensos con dominio limitado", () => {
+  const cases = [
+    { lines: [[12, 250], [5, 100]], ahead: 0 },
+    { lines: [[10, 200], [20, 100]], crossing: 10, after: 1 },
+    { lines: [[9, 160], [9, 90]], gap: 70 },
+    { lines: [[8, 120], [8, 80]], gap: 40 },
+    { lines: [[12, 120], [24, 60]], crossing: 5, after: 1 },
+    { lines: [[18, 80], [8, 180]], crossing: 10, after: 0 },
+    { lines: [[11, 60], [5, 60]], crossing: 0, after: 0 },
+    { lines: [[5, 90], [9, 150]], ahead: 1 },
+    { lines: [[-4, 200], [-10, 260]], crossing: 10, after: 0, maximum: 26 },
+    { lines: [[-6, 180], [-6, 120]], gap: 60, maximum: 20 }
+  ];
+  moduleA.slots[5].questions.forEach((q, i) => {
+    const expected = cases[i], [a, b] = q.visual.series;
+    assert.deepEqual(q.visual.series.map(s => [s.slope, s.intercept]), expected.lines);
+    const value = (s, x) => s.slope * x + s.intercept;
+    if (expected.crossing !== undefined) {
+      const x = (b.intercept - a.intercept) / (a.slope - b.slope);
+      assert.equal(x, expected.crossing);
+      assert.equal(value(a, x), value(b, x));
+      const next = Math.floor(x) + 1;
+      assert.ok(value(q.visual.series[expected.after], next) > value(q.visual.series[1 - expected.after], next));
+      if (x > 0) {
+        assert.ok(q.modelAnswer.includes(String(q.visual.baseYear + x)));
+        assert.ok(q.modelAnswer.includes(String(q.visual.baseYear + next)));
+      }
+    } else if (expected.gap !== undefined) {
+      assert.equal(a.slope, b.slope);
+      for (const x of [0, 1, expected.maximum ?? 20]) assert.equal(value(a, x) - value(b, x), expected.gap);
+    } else {
+      const lead = q.visual.series[expected.ahead], other = q.visual.series[1 - expected.ahead];
+      assert.ok(lead.intercept > other.intercept && lead.slope > other.slope);
+    }
+    if (expected.maximum !== undefined) {
+      assert.ok(q.prompt.join("").replace(/\s/g, "").includes(`0≤x≤${expected.maximum}`));
+      assert.equal(Math.min(value(a, expected.maximum), value(b, expected.maximum)), 0);
+      assert.ok(Math.min(value(a, expected.maximum + 1), value(b, expected.maximum + 1)) < 0);
+    }
+  });
 });
 
 test("las ilustraciones son locales, accesibles y escapan texto del banco", () => {
